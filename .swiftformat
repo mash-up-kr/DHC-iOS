@@ -72,6 +72,3 @@
 --rules genericExtensions
 --rules trailingClosures
 --rules sortTypealiases
-
-# exclude
---scripts

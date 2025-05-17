@@ -14,16 +14,34 @@ protocol RequestTarget {
   var path: String { get }
   var method: HTTPMethod { get }
   var headers: HTTPHeaders? { get }
-  var parameters: Parameters? { get }
+  var queryParameters: Parameters? { get }
+  var bodyParameters: Parameters? { get }
 
   func asURLRequest() throws -> URLRequest
 }
 
 extension RequestTarget {
   func asURLRequest() throws -> URLRequest {
-    let url = baseURL.appendingPathComponent(path)
-    var request = try URLRequest(url: url, method: method, headers: headers)
-    request = try URLEncoding.default.encode(request, with: parameters)
+    var url = baseURL.appendingPathComponent(path)
+    
+    if let queryParameters {
+      var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+      components?.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+      if let modifiedURL = components?.url { url = modifiedURL }
+    }
+
+    var request = URLRequest(url: url)
+
+    request.httpMethod = method.rawValue
+
+    if let headers {
+      request.allHTTPHeaderFields = headers.dictionary
+    }
+
+    if let bodyParameters {
+      request.httpBody = try JSONSerialization.data(withJSONObject: bodyParameters)
+      request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    }
 
     return request
   }

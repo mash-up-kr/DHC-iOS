@@ -9,22 +9,30 @@ import Foundation
 
 import Alamofire
 
-final class NetworkManager {
-  static let shared = NetworkManager()
-  private init() {}
+protocol NetworkRequestable {
+  func request(_ target: RequestTarget) async throws -> DHCNetworkResponse
+}
 
-  func request<T: Decodable>(_ target: RequestTarget, type: T.Type) async throws -> T {
+final class NetworkManager: NetworkRequestable {
+  func request(_ target: RequestTarget) async throws -> DHCNetworkResponse {
     let request = try target.asURLRequest()
+
     let response = await AF.request(request)
       .validate()
-      .serializingDecodable(T.self)
+      .serializingDecodable(DHCNetworkResponse.self)
       .response
 
     switch response.result {
-    case .success(let decoded):
-      return decoded
+    case .success(let decodedResponse):
+      return decodedResponse
     case .failure(let error):
       throw error
     }
   }
+}
+
+struct DHCNetworkResponse: Decodable {
+  let status: String
+  let message: String
+  let data: Data?
 }

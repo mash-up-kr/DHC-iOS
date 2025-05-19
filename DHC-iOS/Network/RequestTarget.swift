@@ -27,7 +27,12 @@ extension RequestTarget {
     if let queryParameters {
       var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
       components?.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
-      if let modifiedURL = components?.url { url = modifiedURL }
+      
+      guard let modifiedURL = components?.url else {
+        throw NetworkManagerError.invalidURL
+      }
+      
+      url = modifiedURL
     }
 
     var request = URLRequest(url: url)

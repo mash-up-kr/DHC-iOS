@@ -23,29 +23,20 @@ protocol RequestTarget {
 extension RequestTarget {
   func asURLRequest() throws -> URLRequest {
     var url = baseURL.appendingPathComponent(path)
-    
+
     if let queryParameters {
-      var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-      components?.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
-      
-      guard let modifiedURL = components?.url else {
-        throw NetworkManagerError.invalidURL
-      }
-      
-      url = modifiedURL
+      let queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+      url = url.appending(queryItems: queryItems)
     }
 
     var request = URLRequest(url: url)
 
     request.httpMethod = method.rawValue
 
-    if let headers {
-      request.allHTTPHeaderFields = headers.dictionary
-    }
+    if let headers { request.headers = headers }
 
     if let bodyParameters {
       request.httpBody = try JSONSerialization.data(withJSONObject: bodyParameters)
-      request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     }
 
     return request

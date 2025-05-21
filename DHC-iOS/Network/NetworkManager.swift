@@ -19,7 +19,7 @@ final class NetworkManager: NetworkRequestable {
 
     let response = await AF.request(request)
       .validate()
-      .serializingDecodable(DHCNetworkResponse.self)
+      .serializingResponse(using: DHCResponseSerializer())
       .response
 
     switch response.result {
@@ -29,10 +29,4 @@ final class NetworkManager: NetworkRequestable {
       throw error
     }
   }
-}
-
-struct DHCNetworkResponse: Decodable {
-  let status: String
-  let message: String
-  let data: Data?
 }

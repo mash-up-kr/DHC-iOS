@@ -26,7 +26,7 @@ final class NetworkManager: NetworkRequestable {
     case .success(let decodedResponse):
       return decodedResponse
     case .failure(let error):
-      throw error
+      throw NetworkManagerError.requestFailed(underlying: error)
     }
   }
 }

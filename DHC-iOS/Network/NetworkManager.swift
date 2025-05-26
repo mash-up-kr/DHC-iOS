@@ -14,6 +14,8 @@ protocol NetworkRequestable {
 }
 
 final class NetworkManager: NetworkRequestable {
+  private  let responseSerializer = DHCResponseSerializer()
+
   func request(_ target: RequestTarget) async throws -> DHCNetworkResponse {
     let request: URLRequest
     do {
@@ -24,7 +26,7 @@ final class NetworkManager: NetworkRequestable {
 
     let response = await AF.request(request)
       .validate()
-      .serializingResponse(using: DHCResponseSerializer())
+      .serializingResponse(using: responseSerializer)
       .response
 
     switch response.result {

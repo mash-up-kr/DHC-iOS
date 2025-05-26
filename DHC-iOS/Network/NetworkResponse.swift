@@ -10,8 +10,8 @@ import Foundation
 import Alamofire
 
 struct DHCNetworkResponse {
-  let statusCode: Int
-  let data: Data
+  let statusCode: Int?
+  let data: Data?
   let response: HTTPURLResponse?
 }
 
@@ -26,17 +26,9 @@ struct DHCResponseSerializer: ResponseSerializer {
       throw NetworkManagerError.requestFailed(underlying: error)
     }
 
-    guard let response else {
-      throw NetworkManagerError.unknown
-    }
-
-    guard let responseData = data else {
-      throw NetworkManagerError.emptyResponse
-    }
-
     return DHCNetworkResponse(
-      statusCode: response.statusCode,
-      data: responseData,
+      statusCode: response?.statusCode,
+      data: data,
       response: response
     )
   }

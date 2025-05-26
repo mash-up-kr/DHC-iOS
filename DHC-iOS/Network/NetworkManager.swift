@@ -15,7 +15,12 @@ protocol NetworkRequestable {
 
 final class NetworkManager: NetworkRequestable {
   func request(_ target: RequestTarget) async throws -> DHCNetworkResponse {
-    let request = try target.asURLRequest()
+    let request: URLRequest
+    do {
+      request = try target.asURLRequest()
+    } catch {
+      throw NetworkManagerError.invalidURL
+    }
 
     let response = await AF.request(request)
       .validate()

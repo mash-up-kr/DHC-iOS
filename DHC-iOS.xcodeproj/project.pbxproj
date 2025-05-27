@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		94EFC44C2DE5552E00264B2D /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 94EFC44B2DE5552E00264B2D /* ComposableArchitecture */; };
 		D84399D42DC7B0FC00F92616 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D84399D32DC7B0FC00F92616 /* Alamofire */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D84399D42DC7B0FC00F92616 /* Alamofire in Frameworks */,
+				94EFC44C2DE5552E00264B2D /* ComposableArchitecture in Frameworks */
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			name = "DHC-iOS";
 			packageProductDependencies = (
 				D84399D32DC7B0FC00F92616 /* Alamofire */,
+				94EFC44B2DE5552E00264B2D /* ComposableArchitecture */
 			);
 			productName = "DHC-iOS";
 			productReference = 686D8DAF2DAD25FE00303663 /* DHC-iOS.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				D84399D22DC7B0FC00F92616 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				94EFC44A2DE5552E00264B2D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 686D8DB02DAD25FE00303663 /* Products */;
@@ -353,6 +357,14 @@
 				minimumVersion = 5.10.2;
 			};
 		};
+		94EFC44A2DE5552E00264B2D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.19.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -360,6 +372,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D84399D22DC7B0FC00F92616 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+        };
+		94EFC44B2DE5552E00264B2D /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94EFC44A2DE5552E00264B2D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

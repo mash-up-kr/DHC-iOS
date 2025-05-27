@@ -1,0 +1,1 @@
+cp -r /Users/hyerin/workspace/DHC-iOS/template/DHComposableArchitecture ~/Library/Developer/Xcode/Templates/File\ Templates/

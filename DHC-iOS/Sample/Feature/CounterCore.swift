@@ -13,12 +13,19 @@ struct CounterCore {
 
   @ObservableState
   struct State: Equatable {
-    // State 프로퍼티에 기본값 설정해줘야하는 경우 initializer가 아닌 default value로 바로 작성
-    var count: Int = 0
-    var isLoadingFact: Bool = false
-    var fact: String? = nil
+    var count: Int
+    var isLoadingFact: Bool
+    var fact: String?
     
-    init() {}
+    init(
+      count: Int = 0,
+      isLoadingFact: Bool = false,
+      fact: String? = nil
+    ) {
+      self.count = count
+      self.isLoadingFact = isLoadingFact
+      self.fact = fact
+    }
   }
 
   enum Action {

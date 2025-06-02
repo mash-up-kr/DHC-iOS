@@ -22,6 +22,13 @@ echo -e "   소스: $SOURCE_DIR"
 echo -e "   대상: $TARGET_DIR"
 echo ""
 
+if [ -d "$TARGET_DIR/DHComposableArchitecture" ]; then
+		echo -e "${YELLOW}⚠️  기존 DHComposableArchitecture 템플릿이 존재합니다.${NC}"
+    echo -e "${YELLOW}기존 템플릿을 제거하고 새로 설치합니다...${NC}"
+    rm -rf "$TARGET_DIR/DHComposableArchitecture"
+fi
+
+
 cp -R "$SOURCE_DIR" "$TARGET_DIR/"
 
 if [ $? -eq 0 ]; then

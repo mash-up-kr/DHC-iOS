@@ -44,7 +44,7 @@
 			<key>Type</key>
 			<string>static</string>
 			<key>Default</key>
-			<string>___VARIABLE_productName:identifier___Core</string>
+			<string>___VARIABLE_productName:identifier___Reducer</string>
 		</dict>
 	</array>
 </dict>

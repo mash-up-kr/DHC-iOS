@@ -3,11 +3,14 @@
 import ComposableArchitecture
 
 @Reducer
-struct ___VARIABLE_productName:identifier___Core {
+struct ___VARIABLE_productName:identifier___Reducer {
   init() {}
 
   @ObservableState
   struct State: Equatable {
+
+    init() {
+    }
   }
 
   enum Action {

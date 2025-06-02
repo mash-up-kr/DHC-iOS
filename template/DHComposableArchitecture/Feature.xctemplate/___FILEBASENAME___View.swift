@@ -5,9 +5,9 @@ import SwiftUI
 import ComposableArchitecture
 
 struct ___FILEBASENAMEASIDENTIFIER___: View {
-  let store: StoreOf<___VARIABLE_productName:identifier___Core>
+  let store: StoreOf<___VARIABLE_productName:identifier___Reducer>
   
-  init(store: StoreOf<___VARIABLE_productName:identifier___Core>) {
+  init(store: StoreOf<___VARIABLE_productName:identifier___Reducer>) {
     self.store = store
   }
   
@@ -20,7 +20,7 @@ struct ___FILEBASENAMEASIDENTIFIER___: View {
   ___FILEBASENAMEASIDENTIFIER___(
     store: Store(
       initialState: .init(),
-      reducer: ___VARIABLE_productName:identifier___Core.init
+      reducer: ___VARIABLE_productName:identifier___Reducer.init
     )
   )
 }

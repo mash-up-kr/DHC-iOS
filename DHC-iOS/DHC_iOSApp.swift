@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct DHC_iOSApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+	var body: some Scene {
+		WindowGroup {
+			CounterView(store: .init(initialState: CounterCore.State(), reducer: { CounterCore() }))
+		}
+	}
 }

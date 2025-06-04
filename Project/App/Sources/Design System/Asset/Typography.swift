@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Typography {
+enum Typography {
 	protocol TypographyStyle {
 		var font: Font { get }
 		var fontSize: CGFloat { get }

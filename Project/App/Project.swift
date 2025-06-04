@@ -36,5 +36,8 @@ let project = Project(
 				]
 			)
 		)
+	],
+	resourceSynthesizers: [
+		.custom(name: "Fonts", parser: .fonts, extensions: ["otf"]),
 	]
 )

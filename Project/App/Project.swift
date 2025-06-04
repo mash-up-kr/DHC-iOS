@@ -11,7 +11,16 @@ let project = Project(
 			productName: "ProductName",
 			bundleId: "com.mashup.DHC-iOS",
 			deploymentTargets: .iOS("18.0"),
-			infoPlist: .default,
+			infoPlist: .extendingDefault(
+				with: [
+					"UIAppFonts": [
+						"WantedSans-Bold.otf",
+						"WantedSans-SemiBold.otf",
+						"WantedSans-Medium.otf",
+						"WantedSans-regular.otf"
+					]
+				]
+			),
 			sources: ["Sources/**"],
 			resources: ["Resources/**"],
 			dependencies: [

@@ -6,7 +6,7 @@ let project = Project(
 	targets: [
 		.target(
 			name: "ProductName",
-			destinations: .iOS,
+      destinations: [.iPhone],
 			product: .app,
 			productName: "ProductName",
 			bundleId: "com.mashup.DHC-iOS",
@@ -18,7 +18,11 @@ let project = Project(
 						"WantedSans-SemiBold.otf",
 						"WantedSans-Medium.otf",
 						"WantedSans-regular.otf"
-					]
+					],
+          "UISupportedInterfaceOrientations": [
+            "UIInterfaceOrientationPortrait"
+          ],
+          "UIUserInterfaceStyle": "Dark"
 				]
 			),
 			sources: ["Sources/**"],

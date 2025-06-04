@@ -28,5 +28,17 @@ echo "\n[3] > Getting development Cert and Provisioning ...\n"
 fastlane match development --readonly
 fastlane match appstore --readonly
 
+echo "\n[4] > mise install and use tuist ...\n"
+mise install tuist
+mise use tuist@4.50.0
+
+# 템플릿 설치
+echo "\n[5] > Installing template ...\n"
+./etc/script/install_template.sh
+
+echo "\n[6] > Generate script ...\n"
+chmod +x ./etc/script/generate.sh
+./etc/script/generate.sh
+
 echo -e "${GREEN}✅ Bootstrap script finished!${NC}"
 

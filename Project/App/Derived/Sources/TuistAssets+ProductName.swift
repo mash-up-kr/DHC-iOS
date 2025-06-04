@@ -80,5 +80,5 @@ public extension SwiftUI.Color {
 }
 #endif
 
-// swiftformat:enable all
 // swiftlint:enable all
+// swiftformat:enable all

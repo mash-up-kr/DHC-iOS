@@ -21,6 +21,7 @@ playground.xcworkspace
 ## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
 build/
 DerivedData/
+Derived/
 *.moved-aside
 *.pbxuser
 !default.pbxuser
@@ -37,7 +38,7 @@ DerivedData/
 # Packages/
 # Package.pins
 # Package.resolved
-# *.xcodeproj
+*.xcodeproj
 #
 # Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
 # hence it is not needed unless you have added a package configuration file to your project
@@ -54,7 +55,7 @@ DerivedData/
 # Pods/
 #
 # Add this line if you want to avoid checking in source code from the Xcode workspace
-# *.xcworkspace
+*.xcworkspace
 
 # Carthage
 #

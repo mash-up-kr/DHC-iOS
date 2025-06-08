@@ -7,11 +7,18 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 @main
 struct DHC_iOSApp: App {
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
+      RootView(
+        store: Store(
+          initialState: RootReducer.State(),
+          reducer: RootReducer.init
+        )
+      )
 		}
 	}
 }

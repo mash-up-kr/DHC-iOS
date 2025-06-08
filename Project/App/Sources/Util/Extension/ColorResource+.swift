@@ -11,4 +11,8 @@ extension ColorResource {
 	var color: Color {
 		Color(self)
 	}
+
+  var uiColor: UIColor {
+    UIColor(resource: self)
+  }
 }

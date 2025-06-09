@@ -10,11 +10,17 @@ import SwiftUI
 extension ColorResource {
 	enum Background {
 		case main
+		case glassEffect
+		case badgePrimary
 		
 		var color: Color {
 			switch self {
 				case .main:
 					return ColorResource.Neutral._900.color
+				case .glassEffect:
+					return ColorResource.Neutral._300.color.opacity(0.15)
+				case .badgePrimary:
+					return ColorResource.Violet._100.color.opacity(0.2)
 			}
 		}
 	}

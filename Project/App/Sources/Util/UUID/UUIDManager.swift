@@ -12,7 +12,7 @@ import ComposableArchitecture
 enum UUIDManager {
   static let uuidKey = "install_uuid"
 
-  @Dependency(\.keychain) static var keychain
+  @Dependency(\.keychainClient) static var keychain
 
   static func saveUUID(_ uuid: UUID) -> Bool {
     keychain.save(uuidKey, uuid.uuidString)

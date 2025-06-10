@@ -30,7 +30,7 @@ extension KeychainClient: DependencyKey {
 }
 
 extension DependencyValues {
-  var keychain: KeychainClient {
+  var keychainClient: KeychainClient {
     get { self[KeychainClient.self] }
     set { self[KeychainClient.self] = newValue }
   }

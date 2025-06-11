@@ -67,7 +67,7 @@ extension DHCButton {
   enum Style {
     case primary
     case secondary
-    case teritary
+    case tertiary
     
     var backgroundColor: Color {
       switch self {
@@ -75,7 +75,7 @@ extension DHCButton {
           return ColorResource.Text.Highlights.primary.color
         case .secondary:
           return ColorResource.Background.glassEffect.color
-        case .teritary:
+        case .tertiary:
           return .clear
       }
     }
@@ -84,7 +84,7 @@ extension DHCButton {
       switch self {
         case .primary, .secondary:
           return ColorResource.Text.main.color
-        case .teritary:
+        case .tertiary:
           return ColorResource.Neutral._300.color
       }
     }
@@ -114,7 +114,7 @@ extension DHCButton {
 		
 		DHCButton(
 			size: .large,
-			style: .teritary,
+			style: .tertiary,
 			title: "금전운 확인하고 시작하기",
       action: {}
 		)

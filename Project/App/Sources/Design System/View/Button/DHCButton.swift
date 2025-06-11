@@ -12,9 +12,8 @@ struct DHCButton: View {
   private let style: Style
 	private let title: String
 	private let action: () -> Void
-	private var isEnabled: Bool {
-		style != .disabled
-	}
+  @Environment(\.isEnabled) private var isEnabled
+  
 	private var verticalOffset: CGFloat {
 		switch size {
 			case .large:
@@ -39,26 +38,23 @@ struct DHCButton: View {
 	var body: some View {
 		Button(
 			action: {
-				if isEnabled {
-					action()
-				}
+        action()
 			},
 			label: {
 				HStack(spacing: 0) {
 					Spacer()
 					Text(title)
 						.textStyle(.h5)
-						.foregroundStyle(style.foregroundColor)
+            .foregroundStyle(isEnabled ? style.foregroundColor : Self.DisabledStyle.disabledForegroundColor)
 					Spacer()
 				}
 				.padding(.vertical, verticalOffset)
 				.background {
 					RoundedRectangle(cornerRadius: 8)
-						.foregroundStyle(style.backgroundColor)
+            .foregroundStyle(isEnabled ? style.backgroundColor : Self.DisabledStyle.disabledBackgroundColor)
 				}
 			}
 		)
-		.disabled(!isEnabled)
 	}
 }
 
@@ -72,7 +68,6 @@ extension DHCButton {
     case primary
     case secondary
     case teritary
-    case disabled
     
     var backgroundColor: Color {
       switch self {
@@ -82,8 +77,6 @@ extension DHCButton {
           return ColorResource.Background.glassEffect.color
         case .teritary:
           return .clear
-        case .disabled:
-          return ColorResource.Neutral._300.color
       }
     }
     
@@ -93,12 +86,14 @@ extension DHCButton {
           return ColorResource.Text.main.color
         case .teritary:
           return ColorResource.Neutral._300.color
-        case .disabled:
-          return ColorResource.Neutral._200.color
       }
     }
   }
 
+  enum DisabledStyle {
+    static let disabledForegroundColor: Color =  ColorResource.Neutral._200.color
+    static let disabledBackgroundColor: Color = ColorResource.Neutral._300.color
+  }
 }
 
 #Preview {
@@ -114,21 +109,22 @@ extension DHCButton {
 			size: .large,
 			style: .secondary,
 			title: "금전운 확인하고 시작하기",
-			action: {}
+      action: {}
 		)
 		
 		DHCButton(
 			size: .large,
 			style: .teritary,
 			title: "금전운 확인하고 시작하기",
-			action: {}
+      action: {}
 		)
 		
 		DHCButton(
 			size: .large,
-			style: .disabled,
+      style: .primary,
 			title: "금전운 확인하고 시작하기",
-			action: {}
+      action: {}
 		)
+    .disabled(true)
 	}
 }

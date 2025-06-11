@@ -22,6 +22,12 @@ struct DHCButton: View {
 				return 12
 		}
 	}
+  private var foregroundColor: Color {
+    isEnabled ? style.foregroundColor : Self.DisabledStyle.disabledForegroundColor
+  }
+  private var backgroundColor: Color {
+    isEnabled ? style.backgroundColor : Self.DisabledStyle.disabledBackgroundColor
+  }
 	
 	init(
 		size: Size,
@@ -41,17 +47,14 @@ struct DHCButton: View {
         action()
 			},
 			label: {
-				HStack(spacing: 0) {
-					Spacer()
-					Text(title)
-						.textStyle(.h5)
-            .foregroundStyle(isEnabled ? style.foregroundColor : Self.DisabledStyle.disabledForegroundColor)
-					Spacer()
-				}
+        Text(title)
+        .textStyle(.h5)
+        .foregroundStyle(foregroundColor)
 				.padding(.vertical, verticalOffset)
+        .frame(maxWidth: .infinity)
 				.background {
 					RoundedRectangle(cornerRadius: 8)
-            .foregroundStyle(isEnabled ? style.backgroundColor : Self.DisabledStyle.disabledBackgroundColor)
+            .foregroundStyle(backgroundColor)
 				}
 			}
 		)

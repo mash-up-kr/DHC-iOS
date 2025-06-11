@@ -7,45 +7,9 @@
 
 import SwiftUI
 
-enum ButtonSize {
-	case large
-	case medium
-}
-
-enum ButtonStyle {
-	case primary
-	case secondary
-	case teritary
-	case disabled
-	
-	var backgroundColor: Color {
-		switch self {
-			case .primary:
-				return ColorResource.Text.Highlights.primary.color
-			case .secondary:
-				return ColorResource.Background.glassEffect.color
-			case .teritary:
-				return .clear
-			case .disabled:
-				return ColorResource.Neutral._300.color
-		}
-	}
-	
-	var foregroundColor: Color {
-		switch self {
-			case .primary, .secondary:
-				return ColorResource.Text.main.color
-			case .teritary:
-				return ColorResource.Neutral._300.color
-			case .disabled:
-				return ColorResource.Neutral._200.color
-		}
-	}
-}
-
 struct DHCButton: View {
-	private let size: ButtonSize
-	private let style: ButtonStyle
+  private let size: Size
+  private let style: Style
 	private let title: String
 	private let action: () -> Void
 	private var isEnabled: Bool {
@@ -61,8 +25,8 @@ struct DHCButton: View {
 	}
 	
 	init(
-		size: ButtonSize,
-		style: ButtonStyle,
+		size: Size,
+		style: Style,
 		title: String,
 		action: @escaping () -> Void
 	) {
@@ -96,6 +60,45 @@ struct DHCButton: View {
 		)
 		.disabled(!isEnabled)
 	}
+}
+
+extension DHCButton {
+  enum Size {
+    case large
+    case medium
+  }
+
+  enum Style {
+    case primary
+    case secondary
+    case teritary
+    case disabled
+    
+    var backgroundColor: Color {
+      switch self {
+        case .primary:
+          return ColorResource.Text.Highlights.primary.color
+        case .secondary:
+          return ColorResource.Background.glassEffect.color
+        case .teritary:
+          return .clear
+        case .disabled:
+          return ColorResource.Neutral._300.color
+      }
+    }
+    
+    var foregroundColor: Color {
+      switch self {
+        case .primary, .secondary:
+          return ColorResource.Text.main.color
+        case .teritary:
+          return ColorResource.Neutral._300.color
+        case .disabled:
+          return ColorResource.Neutral._200.color
+      }
+    }
+  }
+
 }
 
 #Preview {

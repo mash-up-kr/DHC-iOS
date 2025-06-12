@@ -111,6 +111,12 @@ extension Text {
 			.lineSpacing(style.lineHeight - style.fontSize)
 			.kerning(style.letterSpacing)
 	}
+  
+  func textStyle(_ style: Typography.TypographyStyle) -> some View {
+    self.font(style.font)
+      .lineSpacing(style.lineHeight - style.fontSize)
+      .kerning(style.letterSpacing)
+  }
 }
 
 // MARK: - Preview

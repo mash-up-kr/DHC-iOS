@@ -83,6 +83,15 @@ extension CTAButton {
     case secondary
     case tertiary
     
+    var foregroundColor: Color {
+      switch self {
+        case .primary, .secondary:
+          return ColorResource.Text.main.color
+        case .tertiary:
+          return ColorResource.Neutral._300.color
+      }
+    }
+    
     var backgroundColor: Color {
       switch self {
         case .primary:
@@ -94,21 +103,26 @@ extension CTAButton {
       }
     }
     
-    var foregroundColor: Color {
+    var disabledForegroundColor: Color {
       switch self {
-        case .primary, .secondary:
-          return ColorResource.Text.main.color
+        case .primary:
+          return ColorResource.Neutral._200.color
+        case .secondary:
+          return ColorResource.Neutral._300.color
         case .tertiary:
           return ColorResource.Neutral._300.color
       }
     }
     
-    var disabledForegroundColor: Color {
-      ColorResource.Neutral._200.color
-    }
-    
     var disabledBackgroundColor: Color {
-      ColorResource.Neutral._300.color
+      switch self {
+        case .primary:
+          return ColorResource.Neutral._300.color
+        case .secondary:
+          return ColorResource.Neutral._500.color
+        case .tertiary:
+          return .clear
+      }
     }
   }
 }
@@ -142,6 +156,14 @@ extension CTAButton {
 			title: "금전운 확인하고 시작하기",
       action: {}
 		)
+    .disabled(true)
+    
+    CTAButton(
+      size: .large,
+      style: .secondary,
+      title: "금전운 확인하고 시작하기",
+      action: {}
+    )
     .disabled(true)
 	}
 }

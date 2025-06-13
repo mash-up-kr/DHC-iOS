@@ -1,5 +1,5 @@
 //
-//  BottomButton.swift
+//  CTAButton.swift
 //  ProductName
 //
 //  Created by hyerin on 6/9/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BottomButton: View {
+struct CTAButton: View {
   private let size: Size
   private let style: Style
 	private let title: String
@@ -54,7 +54,7 @@ struct BottomButton: View {
 	}
 }
 
-extension BottomButton {
+extension CTAButton {
   enum Size {
     case extraLarge
     case large
@@ -115,28 +115,28 @@ extension BottomButton {
 
 #Preview {
 	VStack {
-    BottomButton(
+    CTAButton(
       size: .extraLarge,
 			style: .primary,
 			title: "금전운 확인하고 시작하기",
 			action: {}
 		)
 		
-    BottomButton(
+    CTAButton(
 			size: .extraLarge,
 			style: .secondary,
 			title: "금전운 확인하고 시작하기",
       action: {}
 		)
 		
-    BottomButton(
+    CTAButton(
 			size: .large,
 			style: .tertiary,
 			title: "금전운 확인하고 시작하기",
       action: {}
 		)
 		
-    BottomButton(
+    CTAButton(
 			size: .large,
       style: .primary,
 			title: "금전운 확인하고 시작하기",

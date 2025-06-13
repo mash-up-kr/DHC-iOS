@@ -19,7 +19,7 @@ struct BirthTimeReducer {
     var isNoIdeaButtonChecked: Bool
 
     init(
-      birthTime: Date = Date(),
+      birthTime: Date = Date(hour: 1, minute: 0),
       isNoIdeaButtonSelected: Bool = false
     ) {
       self.birthTime = birthTime

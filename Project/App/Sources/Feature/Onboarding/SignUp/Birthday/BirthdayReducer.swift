@@ -25,7 +25,7 @@ struct BirthdayReducer {
 
     init(
       dateType: DateType = .solar,
-      birthday: Date = Date()
+      birthday: Date = Date(year: 2000, month: 1, day: 1)
     ) {
       self.dateType = dateType
       self.birthday = birthday

@@ -1,5 +1,5 @@
 //
-//  Check.swift
+//  CheckMark.swift
 //  ProductName
 //
 //  Created by hyerin on 6/12/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Check: View {
+struct CheckMark: View {
   private let size: Size
   private let style: Style
   private let checkImage: Image = ImageResource.check.image
@@ -34,7 +34,7 @@ struct Check: View {
   }
 }
 
-extension Check {
+extension CheckMark {
   enum Size {
     case medium
     case small
@@ -88,14 +88,14 @@ extension Check {
 #Preview {
   VStack {
     HStack {
-      Check(size: .medium, style: .active)
-      Check(size: .medium, style: .enabled)
-      Check(size: .medium, style: .disabled)
+      CheckMark(size: .medium, style: .active)
+      CheckMark(size: .medium, style: .enabled)
+      CheckMark(size: .medium, style: .disabled)
     }
     HStack {
-      Check(size: .small, style: .active)
-      Check(size: .small, style: .enabled)
-      Check(size: .small, style: .disabled)
+      CheckMark(size: .small, style: .active)
+      CheckMark(size: .small, style: .enabled)
+      CheckMark(size: .small, style: .disabled)
     }
   }
 }

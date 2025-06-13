@@ -18,7 +18,7 @@ struct CheckButton: View {
   private var backgroundColor: Color {
     isChecked ? Style.checked.backgroundColor : Style.default.backgroundColor
   }
-  private var check: Check {
+  private var checkMark: CheckMark {
     isChecked ? Style.checked.check : Style.default.check
   }
   
@@ -39,7 +39,7 @@ struct CheckButton: View {
       },
       label: {
         HStack(spacing: 10) {
-          check
+          checkMark
           
           Text(title)
             .foregroundStyle(ColorResource.Text.Body.primary.color)
@@ -73,12 +73,12 @@ extension CheckButton {
       ColorResource.Text.Body.primary.color
     }
     
-    var check: Check {
+    var check: CheckMark {
       switch self {
         case .checked:
-          Check(size: .small, style: .active)
+          CheckMark(size: .small, style: .active)
         case .default:
-          Check(size: .small, style: .enabled)
+          CheckMark(size: .small, style: .enabled)
       }
     }
   }

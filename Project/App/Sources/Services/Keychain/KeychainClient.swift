@@ -9,24 +9,33 @@ import Foundation
 
 import ComposableArchitecture
 
-struct KeychainClient {
-  var save: (_ key: String, _ value: String) -> Bool
-  var load: (_ key: String) -> String?
-  var delete: (_ key: String) -> Bool
+@DependencyClient
+struct KeychainClient: Sendable {
+  var save: (_ key: String, _ value: String) throws -> Void
+  var load: (_ key: String) throws -> String
+  var delete: (_ key: String) throws -> Void
 }
 
 extension KeychainClient: DependencyKey {
-  static let liveValue = KeychainClient(
-    save: { key, value in
-      KeychainService.save(key: key, value: value)
-    },
-    load: { key in
-      KeychainService.load(key: key)
-    },
-    delete: { key in
-      KeychainService.delete(key: key)
-    }
-  )
+  static let liveValue: KeychainClient = {
+    @Dependency(\.keychainService) var keychainService
+
+    return KeychainClient(
+      save: { key, value in
+        try keychainService.save(key: key, value: value)
+      },
+      load: { key in
+        try keychainService.load(key: key)
+      },
+      delete: { key in
+        try keychainService.delete(key: key)
+      }
+    )
+  }()
+
+  static var previewValue = Self()
+
+  static var testValue = Self()
 }
 
 extension DependencyValues {

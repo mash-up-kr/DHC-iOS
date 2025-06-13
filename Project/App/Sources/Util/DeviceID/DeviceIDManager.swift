@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 @DependencyClient
 struct DeviceIDManager: Sendable {
+  var generateDeviceID: () -> UUID = { UUID() }
   var saveDeviceID: (_ uuid: UUID) throws -> Void
   var loadDeviceID: () throws -> UUID
   var deleteDeviceID: () throws -> Void
@@ -22,6 +23,9 @@ extension DeviceIDManager: DependencyKey {
     let key = "DeviceID"
 
     return DeviceIDManager(
+      generateDeviceID: {
+        UUID()
+      },
       saveDeviceID: { uuid in
         try keychainClient.save(key, uuid.uuidString)
       },

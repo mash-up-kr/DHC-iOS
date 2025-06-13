@@ -8,46 +8,75 @@
 import Foundation
 import Security
 
-enum KeychainService {
-  static func save(key: String, value: String) -> Bool {
-    guard let data = value.data(using: .utf8) else { return false }
+import ComposableArchitecture
 
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: key,
-      kSecValueData as String: data,
-    ]
+@DependencyClient
+struct KeychainService {
+  var save: (_ key: String, _ value: String) throws -> Void
+  var load: (_ key: String) throws -> String
+  var delete: (_ key: String) throws -> Void
+}
 
-    SecItemDelete(query as CFDictionary)
-    return SecItemAdd(query as CFDictionary, nil) == errSecSuccess
+extension KeychainService: TestDependencyKey {
+  static let previewValue = Self()
+
+  static let testValue = Self()
+}
+
+extension DependencyValues {
+  var keychainService: KeychainService {
+    get { self[KeychainService.self] }
+    set { self[KeychainService.self] = newValue }
   }
+}
 
-  static func load(key: String) -> String? {
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: key,
-      kSecReturnData as String: true,
-      kSecMatchLimit as String: kSecMatchLimitOne,
-    ]
+extension KeychainService: DependencyKey {
+  static let liveValue = KeychainService(
+    save: { key, value in
+      guard let data = value.data(using: .utf8) else {
+        throw KeychainError.stringEncodingFailed
+      }
 
-    var item: CFTypeRef?
-    guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
-          let data = item as? Data,
-          let result = String(data: data, encoding: .utf8)
-    else {
-      return nil
+      let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: key,
+        kSecValueData as String: data,
+      ]
+
+      SecItemDelete(query as CFDictionary)
+
+      guard SecItemAdd(query as CFDictionary, nil) == errSecSuccess else {
+        throw KeychainError.saveFailed
+      }
+    },
+    load: { key in
+      let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: key,
+        kSecReturnData as String: true,
+        kSecMatchLimit as String: kSecMatchLimitOne,
+      ]
+
+      var item: CFTypeRef?
+      guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
+            let data = item as? Data,
+            let result = String(data: data, encoding: .utf8)
+      else {
+        throw KeychainError.loadFailed
+      }
+
+      return result
+    },
+    delete: { key in
+      let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: key,
+      ]
+
+      let result = SecItemDelete(query as CFDictionary)
+      guard result == errSecSuccess || result == errSecItemNotFound else {
+        throw KeychainError.deleteFailed
+      }
     }
-
-    return result
-  }
-
-  static func delete(key: String) -> Bool {
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: key,
-    ]
-
-    let result = SecItemDelete(query as CFDictionary)
-    return result == errSecSuccess || result == errSecItemNotFound
-  }
+  )
 }

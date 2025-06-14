@@ -22,7 +22,8 @@ let project = Project(
           "UISupportedInterfaceOrientations": [
             "UIInterfaceOrientationPortrait"
           ],
-          "UIUserInterfaceStyle": "Dark"
+          "UIUserInterfaceStyle": "Dark",
+          "UILaunchStoryboardName": "LaunchScreen",
 				]
 			),
 			sources: ["Sources/**"],

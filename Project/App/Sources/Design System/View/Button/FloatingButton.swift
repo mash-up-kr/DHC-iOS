@@ -13,10 +13,10 @@ struct FloatingButton: View {
   @Environment(\.isEnabled) private var isEnabled
   
   private var foregroundColor: Color {
-    isEnabled ? ColorResource.Text.main.color : ColorResource.Neutral._400.color
+    isEnabled ? Style.enable.foregroundColor : Style.disable.foregroundColor
   }
   private var backgroundColor: Color {
-    isEnabled ? ColorResource.Violet._400.color : ColorResource.Neutral._500.color
+    isEnabled ? Style.enable.backgroundColor : Style.disable.backgroundColor
   }
 	
 	init(
@@ -43,6 +43,31 @@ struct FloatingButton: View {
 			}
 		)
 	}
+}
+
+extension FloatingButton {
+  enum Style {
+    case enable
+    case disable
+    
+    var foregroundColor: Color {
+      switch self {
+        case .enable:
+          return ColorResource.Text.main.color
+        case .disable:
+          return ColorResource.Neutral._400.color
+      }
+    }
+    
+    var backgroundColor: Color {
+      switch self {
+        case .enable:
+          return ColorResource.Violet._400.color
+        case .disable:
+          return ColorResource.Neutral._500.color
+      }
+    }
+  }
 }
 
 #Preview {

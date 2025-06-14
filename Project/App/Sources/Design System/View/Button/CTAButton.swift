@@ -1,5 +1,5 @@
 //
-//  DHCButton.swift
+//  CTAButton.swift
 //  ProductName
 //
 //  Created by hyerin on 6/9/25.
@@ -7,64 +7,75 @@
 
 import SwiftUI
 
-struct DHCButton: View {
+struct CTAButton: View {
   private let size: Size
   private let style: Style
 	private let title: String
 	private let action: () -> Void
+  
   @Environment(\.isEnabled) private var isEnabled
   
-	private var verticalOffset: CGFloat {
-		switch size {
-			case .large:
-				return 15
-			case .medium:
-				return 12
-		}
-	}
   private var foregroundColor: Color {
-    isEnabled ? style.foregroundColor : Self.DisabledStyle.disabledForegroundColor
+    isEnabled ? style.foregroundColor : style.disabledForegroundColor
   }
   private var backgroundColor: Color {
-    isEnabled ? style.backgroundColor : Self.DisabledStyle.disabledBackgroundColor
+    isEnabled ? style.backgroundColor : style.disabledBackgroundColor
   }
 	
 	init(
 		size: Size,
-		style: Style,
+    style: Style,
 		title: String,
-		action: @escaping () -> Void
+    action: @escaping () -> Void
 	) {
 		self.size = size
-		self.style = style
+    self.style = style
 		self.title = title
 		self.action = action
 	}
 	
 	var body: some View {
-		Button(
-			action: {
+    Button(
+      action: {
         action()
-			},
-			label: {
+      },
+      label: {
         Text(title)
-        .textStyle(.h5)
-        .foregroundStyle(foregroundColor)
-				.padding(.vertical, verticalOffset)
-        .frame(maxWidth: .infinity)
-				.background {
-					RoundedRectangle(cornerRadius: 8)
-            .foregroundStyle(backgroundColor)
-				}
-			}
-		)
+          .textStyle(size.font)
+          .foregroundStyle(foregroundColor)
+          .padding(.vertical, size.verticalOffset)
+          .frame(maxWidth: .infinity)
+          .background {
+            RoundedRectangle(cornerRadius: 8)
+              .foregroundStyle(backgroundColor)
+          }
+      }
+    )
 	}
 }
 
-extension DHCButton {
+extension CTAButton {
   enum Size {
+    case extraLarge
     case large
-    case medium
+    
+    var verticalOffset: CGFloat {
+      switch self {
+        case .extraLarge:
+          return 15
+        case .large:
+          return 12
+      }
+    }
+    
+    var font: Typography.TypographyStyle {
+      switch self {
+        case .extraLarge:
+          return Typography.Head.h5
+        case .large:
+          return Typography.Head.h7
+      }
+    }
   }
 
   enum Style {
@@ -91,38 +102,41 @@ extension DHCButton {
           return ColorResource.Neutral._300.color
       }
     }
-  }
-
-  enum DisabledStyle {
-    static let disabledForegroundColor: Color =  ColorResource.Neutral._200.color
-    static let disabledBackgroundColor: Color = ColorResource.Neutral._300.color
+    
+    var disabledForegroundColor: Color {
+      ColorResource.Neutral._200.color
+    }
+    
+    var disabledBackgroundColor: Color {
+      ColorResource.Neutral._300.color
+    }
   }
 }
 
 #Preview {
 	VStack {
-		DHCButton(
-			size: .large,
+    CTAButton(
+      size: .extraLarge,
 			style: .primary,
 			title: "금전운 확인하고 시작하기",
 			action: {}
 		)
 		
-		DHCButton(
-			size: .large,
+    CTAButton(
+			size: .extraLarge,
 			style: .secondary,
 			title: "금전운 확인하고 시작하기",
       action: {}
 		)
 		
-		DHCButton(
+    CTAButton(
 			size: .large,
 			style: .tertiary,
 			title: "금전운 확인하고 시작하기",
       action: {}
 		)
 		
-		DHCButton(
+    CTAButton(
 			size: .large,
       style: .primary,
 			title: "금전운 확인하고 시작하기",

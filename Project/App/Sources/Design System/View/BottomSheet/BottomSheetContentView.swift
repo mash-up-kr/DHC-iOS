@@ -8,8 +8,8 @@
 import SwiftUI
 
 enum BottomSheetConfiguration {
-  case single(title: String, description: String, primary: ButtonConfig)
-  case double(title: String, description: String, primary: ButtonConfig, secondary: ButtonConfig)
+  case oneButton(title: String, description: String, primaryButton: ButtonConfig)
+  case twoButtons(title: String, description: String, primaryButton: ButtonConfig, secondaryButton: ButtonConfig)
 
   struct ButtonConfig {
     let title: String
@@ -20,27 +20,27 @@ enum BottomSheetConfiguration {
 extension BottomSheetConfiguration {
   var title: String {
     switch self {
-    case .single(let title, _, _),
-         .double(let title, _, _, _):
+    case .oneButton(let title, _, _),
+         .twoButtons(let title, _, _, _):
       return title
     }
   }
 
   var description: String {
     switch self {
-    case .single(_, let description, _),
-         .double(_, let description, _, _):
+    case .oneButton(_, let description, _),
+         .twoButtons(_, let description, _, _):
       return description
     }
   }
 
   var showXMark: Bool {
-    if case .single = self { return true }
+    if case .oneButton = self { return true }
     return false
   }
 
   var interactiveDisabled: Bool {
-    if case .single = self { return true }
+    if case .oneButton = self { return true }
     return false
   }
 }
@@ -87,10 +87,10 @@ struct BottomSheetContentView: View {
   @ViewBuilder
   private func buttonView(for config: BottomSheetConfiguration) -> some View {
     switch config {
-    case .single(_, _, let primary):
+    case .oneButton(_, _, let primary):
       CTAButton(size: .extraLarge, style: .primary, title: primary.title, action: primary.action)
 
-    case .double(_, _, let primary, let secondary):
+    case .twoButtons(_, _, let primary, let secondary):
       VStack(spacing: 8) {
         CTAButton(size: .extraLarge, style: .primary, title: primary.title, action: primary.action)
         CTAButton(
@@ -104,23 +104,23 @@ struct BottomSheetContentView: View {
   }
 }
 
-#Preview("Single button") {
+#Preview("One Button") {
   BottomSheetContentView(
-    configuration: .single(
+    configuration: .oneButton(
       title: "알림 설정을\n허용해주세요",
       description: "서비스를 원활히 진행하기 위해서\n알림설정이 꼭 필요해요",
-      primary: .init(title: "금전운 확인하고 시작하기", action: {})
+      primaryButton: .init(title: "금전운 확인하고 시작하기", action: {})
     )
   )
 }
 
-#Preview("Double button") {
+#Preview("Two Buttons") {
   BottomSheetContentView(
-    configuration: .double(
+    configuration: .twoButtons(
       title: "오늘 미션을\n정말 마무리할까요?",
       description: "아직 한 개의 미션이 남아있어요!",
-      primary: .init(title: "금전운 확인하고 시작하기", action: {}),
-      secondary: .init(title: "금전운 확인하고 시작하기", action: {})
+      primaryButton: .init(title: "금전운 확인하고 시작하기", action: {}),
+      secondaryButton: .init(title: "금전운 확인하고 시작하기", action: {})
     )
   )
 }

@@ -8,15 +8,15 @@
 import SwiftUI
 
 enum Detents {
-  case single
-  case double
+  case oneButton
+  case twoButtons
 
   var height: CGFloat {
     switch self {
-    case .single:
-      return 296
-    case .double:
-      return 316
+    case .oneButton:
+      return 256
+    case .twoButtons:
+      return 264
     }
   }
 }

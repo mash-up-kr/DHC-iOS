@@ -14,7 +14,7 @@ struct MyPageView: View {
 
   var body: some View {
     ScrollView {
-      VStack(spacing: 1) {
+      VStack(spacing: 0) {
         // 내 사주 정보
         VStack(spacing: 16) {
           FortuneInfoCardView(
@@ -33,6 +33,7 @@ struct MyPageView: View {
           Text("선택한 소비 카테고리")
             .font(.body3)
             .foregroundColor(ColorResource.Neutral._50.color)
+            .padding(.horizontal, 20)
 
           ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 8) {
@@ -51,9 +52,9 @@ struct MyPageView: View {
               )
             }
           }
+          .contentMargins(.horizontal, 20)
         }
         .padding(.vertical, 24)
-        .padding(.horizontal, 20)
 
         Rectangle()
           .fill(ColorResource.Background.glassEffect.color)

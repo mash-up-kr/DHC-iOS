@@ -47,7 +47,7 @@ struct FortuneInfoCardView: View {
           )
       }
     }
-    .padding(24)
+    .padding(12)
     .frame(width: 180, height: 120)
     .background(content: {
       RoundedRectangle(cornerRadius: 12)

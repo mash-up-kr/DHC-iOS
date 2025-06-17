@@ -13,9 +13,13 @@ let packageSettings = PackageSettings(
 #endif
 
 let package = Package(
-	name: "DHC",
-	dependencies: [
-		.package(url: "https://github.com/Alamofire/Alamofire.git", exact: .init(stringLiteral: "5.10.2")),
-		.package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", exact: .init(stringLiteral: "1.19.1"))
-	]
+  name: "DHC",
+  dependencies: [
+    .package(url: "https://github.com/Alamofire/Alamofire.git", exact: .init(stringLiteral: "5.10.2")),
+    .package(
+      url: "https://github.com/pointfreeco/swift-composable-architecture.git",
+      exact: .init(stringLiteral: "1.19.1")
+    ),
+    .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", .upToNextMajor(from: "3.1.0")),
+  ]
 )

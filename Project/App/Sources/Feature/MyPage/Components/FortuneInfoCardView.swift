@@ -31,10 +31,10 @@ struct FortuneInfoCardView: View {
 
       VStack(spacing: 0) {
         Text("내 사주는")
-          .font(.body6)
+          .textStyle(.body6)
           .foregroundStyle(ColorResource.Neutral._200.color)
         Text(fortune)
-          .font(.head2)
+          .textStyle(.h2)
           .foregroundStyle(
             LinearGradient(
               colors: [

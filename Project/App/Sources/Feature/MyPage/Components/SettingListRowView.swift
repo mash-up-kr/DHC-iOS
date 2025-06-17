@@ -42,7 +42,7 @@ struct SettingListRowView: View {
         .frame(width: 20, height: 20)
 
       Text(title)
-        .font(.body3)
+        .textStyle(.body3)
         .foregroundStyle(ColorResource.Text.main.color)
 
       Spacer()

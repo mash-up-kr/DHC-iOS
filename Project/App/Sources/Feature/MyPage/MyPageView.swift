@@ -31,7 +31,7 @@ struct MyPageView: View {
         // 소비 카테고리
         VStack(alignment: .leading, spacing: 12) {
           Text("선택한 소비 카테고리")
-            .font(.body3)
+            .textStyle(.body3)
             .foregroundColor(ColorResource.Neutral._50.color)
             .padding(.horizontal, 20)
 
@@ -63,7 +63,7 @@ struct MyPageView: View {
         // 설정
         VStack(alignment: .leading, spacing: 12) {
           Text("설정")
-            .font(.body3)
+            .textStyle(.body3)
             .foregroundColor(ColorResource.Neutral._50.color)
 
           VStack {

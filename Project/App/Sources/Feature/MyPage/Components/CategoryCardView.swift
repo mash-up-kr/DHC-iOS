@@ -21,7 +21,7 @@ struct CategoryCardView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
       Text(title)
-        .font(.head5)
+        .textStyle(.h5)
         .foregroundStyle(ColorResource.Text.Body.primary.color)
 
       WebImage(url: imageURL) { image in

@@ -27,7 +27,7 @@ struct BirthdayInfoView: View {
 
       Text(time)
     }
-    .font(.body6)
+    .textStyle(.body6)
     .foregroundStyle(ColorResource.Text.Body.primary.color)
     .padding(.horizontal, 12)
     .padding(.vertical, 4)

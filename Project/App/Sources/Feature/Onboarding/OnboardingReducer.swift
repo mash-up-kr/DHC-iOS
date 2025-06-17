@@ -2,27 +2,36 @@
 //  OnboardingReducer.swift
 //  ProductName
 //
-//  Created by Aiden.lee on 6/8/25.
+//  Created by hyerin on 6/17/25.
 //
-
-import Foundation
 
 import ComposableArchitecture
 
 @Reducer
 struct OnboardingReducer {
-  @ObservableState
-  struct State: Equatable {}
+  init() {}
 
-  enum Action {
-    case moveToMainTab
+  @ObservableState
+  struct State: Equatable {
+
+    init() {
+    }
   }
 
-  var body: some ReducerOf<Self> {
-    Reduce { _, action in
+  enum Action {
+    // View Action
+    case nextButtonTapped
+    
+    // Internal Action
+    
+    // Route Action
+  }
+
+  var body: some Reducer<State, Action> {
+    Reduce { state, action in
       switch action {
-      case .moveToMainTab:
-        .none
+        case .nextButtonTapped:
+          return .none
       }
     }
   }

@@ -73,7 +73,7 @@ extension CTAButton {
         case .extraLarge:
           return Typography.Head.h5
         case .large:
-          return Typography.Head.h7
+          return Typography.Head.h6
       }
     }
   }

@@ -11,10 +11,10 @@ import SDWebImageSwiftUI
 
 struct FortuneInfoCardView: View {
 
-  private let imageURL: URL?
+  private let imageURL: URL
   private let fortune: String
 
-  init(imageURL: URL? = nil, fortune: String) {
+  init(imageURL: URL, fortune: String) {
     self.imageURL = imageURL
     self.fortune = fortune
   }

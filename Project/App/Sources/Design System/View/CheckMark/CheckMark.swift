@@ -21,15 +21,15 @@ struct CheckMark: View {
   }
   
   var body: some View {
-    checkImage
-      .resizable()
-      .renderingMode(.template)
-      .foregroundStyle(style.foregroundColor)
-      .frame(width: size.checkSize, height: size.checkSize)
-      .padding(size.inset)
-      .background {
-        Circle()
-          .foregroundStyle(style.backgroundColor)
+    Circle()
+      .frame(width: size.circleSize, height: size.circleSize)
+      .foregroundStyle(style.backgroundColor)
+      .overlay {
+        checkImage
+          .resizable()
+          .renderingMode(.template)
+          .foregroundStyle(style.foregroundColor)
+          .frame(width: size.checkSize, height: size.checkSize)
       }
   }
 }
@@ -39,19 +39,19 @@ extension CheckMark {
     case medium
     case small
     
-    var inset: CGFloat {
+    var circleSize: CGFloat {
       switch self {
         case .medium:
-          return 6
+          return 24
         case .small:
-          return 4
+          return 20
       }
     }
     
     var checkSize: CGFloat {
       switch self {
         case .medium:
-          return 16
+          return 14
         case .small:
           return 12
       }

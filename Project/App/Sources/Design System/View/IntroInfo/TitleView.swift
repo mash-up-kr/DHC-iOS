@@ -1,5 +1,5 @@
 //
-//  IntroInfoView.swift
+//  TitleView.swift
 //  ProductName
 //
 //  Created by hyerin on 6/13/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct IntroInfoView: View {
+struct TitleView: View {
   private let style: Style
   private let title: String
   private let description: String?
@@ -43,7 +43,7 @@ struct IntroInfoView: View {
   }
 }
 
-extension IntroInfoView {
+extension TitleView {
   enum Style {
     case intro
     case page
@@ -79,18 +79,18 @@ extension IntroInfoView {
 
 #Preview {
   VStack {
-    IntroInfoView(
+    TitleView(
       style: .intro,
       title: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요",
       description: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요"
     )
     
-    IntroInfoView(
+    TitleView(
       style: .intro,
       title: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요"
     )
     
-    IntroInfoView(
+    TitleView(
       style: .page,
       title: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요",
       description: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요"

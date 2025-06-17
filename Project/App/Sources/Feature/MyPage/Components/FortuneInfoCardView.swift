@@ -43,17 +43,7 @@ struct FortuneInfoCardView: View {
     .background {
       RoundedRectangle(cornerRadius: 12)
         .fill(ColorResource.Neutral._900.color)
-        .stroke(
-          LinearGradient(
-            colors: [
-              ColorResource.Violet._400.color,
-              ColorResource.Background.badgePrimary.color,
-            ],
-            startPoint: .top,
-            endPoint: .bottom
-          ),
-          lineWidth: 1
-        )
+        .stroke(LinearGradient(.cardBorder))
         .opacity(0.6)
     }
   }

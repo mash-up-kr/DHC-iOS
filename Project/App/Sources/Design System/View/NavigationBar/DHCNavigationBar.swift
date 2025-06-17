@@ -9,17 +9,18 @@ import SwiftUI
 
 struct DHCNavigationBar: View {
   private let type: NavigationType
-  private let isNeedBackbutton: Bool
-  private let backButtonAction: () -> Void
+  private let backButtonAction: (() -> Void)?
   private let stackHeight: CGFloat = 44
+  
+  private var isNeedBackButton: Bool {
+    backButtonAction != nil
+  }
   
   init(
     type: NavigationType,
-    isNeedBackbutton: Bool,
-    backButtonAction: @escaping () -> Void = {}
+    backButtonAction: (() -> Void)? = nil
   ) {
     self.type = type
-    self.isNeedBackbutton = isNeedBackbutton
     self.backButtonAction = backButtonAction
   }
   
@@ -36,12 +37,12 @@ struct DHCNavigationBar: View {
         progressView(
           currentProgress: currentProgress,
           totalProgress: totalProgress,
-          isNeedBackbutton: isNeedBackbutton
+          isNeedBackButton: isNeedBackButton
         )
       case .title(let title):
         titleView(
           title: title,
-          isNeedBackbutton: isNeedBackbutton
+          isNeedBackButton: isNeedBackButton
         )
     }
   }
@@ -49,7 +50,7 @@ struct DHCNavigationBar: View {
   private func progressView(
     currentProgress: Int,
     totalProgress: Int,
-    isNeedBackbutton: Bool
+    isNeedBackButton: Bool
   ) -> some View {
     HStack(spacing: 2) {
       Text(String(currentProgress))
@@ -63,7 +64,7 @@ struct DHCNavigationBar: View {
     .frame(width: stackHeight, height: stackHeight)
     .frame(maxWidth: .infinity, alignment: .trailing)
     .overlay(alignment: .bottomLeading) {
-      if isNeedBackbutton {
+      if isNeedBackButton {
         backButton
       }
     }
@@ -71,7 +72,7 @@ struct DHCNavigationBar: View {
   
   private func titleView(
     title: String,
-    isNeedBackbutton: Bool
+    isNeedBackButton: Bool
   ) -> some View {
     Text(title)
       .textStyle(.body2)
@@ -79,7 +80,7 @@ struct DHCNavigationBar: View {
       .frame(maxWidth: .infinity)
       .frame(height: stackHeight)
       .overlay(alignment: .bottomLeading) {
-        if isNeedBackbutton {
+        if isNeedBackButton {
           backButton
         }
       }
@@ -88,7 +89,7 @@ struct DHCNavigationBar: View {
   private var backButton: some View {
     Button(
       action: {
-        backButtonAction()
+        backButtonAction?()
       },
       label: {
         ImageResource.Chevron.left.image
@@ -109,22 +110,24 @@ extension DHCNavigationBar {
   VStack {
     DHCNavigationBar(
       type: .progress(currentProgress: 1, totalProgress: 4),
-      isNeedBackbutton: false
+      backButtonAction: {
+        print("didTapBackButton")
+      }
     )
     
     DHCNavigationBar(
-      type: .progress(currentProgress: 1, totalProgress: 4),
-      isNeedBackbutton: true
-    )
-    
-    DHCNavigationBar(
-      type: .title("화면명"),
-      isNeedBackbutton: false
+      type: .progress(currentProgress: 1, totalProgress: 4)
     )
     
     DHCNavigationBar(
       type: .title("화면명"),
-      isNeedBackbutton: true
+      backButtonAction: {
+        print("didTapBackButton")
+      }
+    )
+    
+    DHCNavigationBar(
+      type: .title("화면명")
     )
   }
 }

@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct SettingListRowView: View {
-  private let icon: String
+  private let iconName: String
   private let title: String
   private let toggleValue: Binding<Bool>?
   private let action: (() -> Void)?
 
   init(
     title: String,
-    icon: String,
+    iconName: String,
     toggleValue: Binding<Bool>? = nil,
     action: (() -> Void)? = nil
   ) {
     self.title = title
-    self.icon = icon
+    self.iconName = iconName
     self.toggleValue = toggleValue
     self.action = action
   }
@@ -37,7 +37,7 @@ struct SettingListRowView: View {
 
   var content: some View {
     HStack {
-      Image(icon)
+      Image(iconName)
         .resizable()
         .frame(width: 20, height: 20)
 

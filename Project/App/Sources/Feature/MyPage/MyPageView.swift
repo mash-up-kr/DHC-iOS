@@ -69,7 +69,7 @@ struct MyPageView: View {
           VStack {
             SettingListRowView(
               title: "앱 초기화",
-              icon: "icon/signOut",
+              iconName: "icon/signOut",
               action: {
                 print("앱 초기화 버튼 클릭")
               }
@@ -80,7 +80,7 @@ struct MyPageView: View {
 
             SettingListRowView(
               title: "알림 설정",
-              icon: "icon/signOut",
+              iconName: "icon/signOut",
               toggleValue: .constant(true)
             )
           }

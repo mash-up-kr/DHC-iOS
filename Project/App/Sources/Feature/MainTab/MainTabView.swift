@@ -46,12 +46,15 @@ struct MainTabView: View {
       }
 
       Tab(value: .myPage) {
-        MyPageView(
-          store: store.scope(
-            state: \.myPageTab,
-            action: \.myPageTab
+        NavigationStack {
+          MyPageView(
+            store: store.scope(
+              state: \.myPageTab,
+              action: \.myPageTab
+            )
           )
-        )
+          .navigationTitle(Text("마이페이지"))
+        }
       } label: {
         Image(.Icon.mypage)
           .renderingMode(.template)

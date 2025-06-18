@@ -30,14 +30,16 @@ let project = Project(
 			resources: ["Resources/**"],
 			dependencies: [
 				.external(externalDependency: .alamofire),
-				.external(externalDependency: .composableArchitecture)
+        .external(externalDependency: .composableArchitecture),
+        .external(externalDependency: .sdWebImageSwiftUI),
 			],
 			settings: .settings(
 				base: [
 					"DEVELOPMENT_TEAM": "MYR6MP3VKX",
 					"CODE_SIGN_STYLE": "Manual",
 					"PROVISIONING_PROFILE_SPECIFIER": "match Development com.mashup.DHC-iOS",
-					"CODE_SIGN_IDENTITY": "Apple Development: Hyerin Choe (QKKN56KGD9)"
+					"CODE_SIGN_IDENTITY": "Apple Development: Hyerin Choe (QKKN56KGD9)",
+          "OTHER_LDFLAGS": "$(inherited) -ObjC",
 				]
 			)
 		)

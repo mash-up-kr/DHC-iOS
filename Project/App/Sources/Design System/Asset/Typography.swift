@@ -99,7 +99,7 @@ extension Typography {
 }
 
 // MARK: - Extensions
-extension Text {
+extension View {
 	func textStyle(_ style: Typography.Head) -> some View {
 		self.font(style.font)
 			.lineSpacing(style.lineHeight - style.fontSize)

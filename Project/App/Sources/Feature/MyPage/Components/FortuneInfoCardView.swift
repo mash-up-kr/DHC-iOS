@@ -49,7 +49,7 @@ struct FortuneInfoCardView: View {
     }
     .padding(12)
     .frame(width: 180, height: 120)
-    .background(content: {
+    .background {
       RoundedRectangle(cornerRadius: 12)
         .fill(ColorResource.Neutral._900.color)
         .stroke(
@@ -64,6 +64,6 @@ struct FortuneInfoCardView: View {
           lineWidth: 1
         )
         .opacity(0.6)
-    })
+    }
   }
 }

@@ -43,8 +43,6 @@ struct SelectGenderReducer {
   }
 
   enum Action {
-    case binding(BindingAction<State>)
-    
     // View Action
     case genderButtonTapped(Gender)
     case bottomButtonTapped
@@ -58,9 +56,6 @@ struct SelectGenderReducer {
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
-        case .binding:
-          return .none
-          
         case .genderButtonTapped(let gender):
           state.gender = gender
           return .send(.genderSelected)

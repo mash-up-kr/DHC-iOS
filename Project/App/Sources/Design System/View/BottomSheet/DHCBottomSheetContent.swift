@@ -1,5 +1,5 @@
 //
-//  BottomSheetContentView.swift
+//  DHCBottomSheetContent.swift
 //  ProductName
 //
 //  Created by 김유빈 on 6/15/25.
@@ -45,7 +45,7 @@ extension BottomSheetConfiguration {
   }
 }
 
-struct BottomSheetContentView: View {
+struct DHCBottomSheetContent: View {
   let configuration: BottomSheetConfiguration
 
   var body: some View {
@@ -105,22 +105,22 @@ struct BottomSheetContentView: View {
 }
 
 #Preview("One Button") {
-  BottomSheetContentView(
+  DHCBottomSheetContent(
     configuration: .oneButton(
-      title: "알림 설정을\n허용해주세요",
-      description: "서비스를 원활히 진행하기 위해서\n알림설정이 꼭 필요해요",
-      primaryButton: .init(title: "금전운 확인하고 시작하기", action: {})
+      title: "DHCBottomSheet - One button case",
+      description: "Description\nDescription Description",
+      primaryButton: .init(title: "Primary Button", action: {})
     )
   )
 }
 
-#Preview("Two Buttons") {
-  BottomSheetContentView(
+#Preview("Two button") {
+  DHCBottomSheetContent(
     configuration: .twoButtons(
-      title: "오늘 미션을\n정말 마무리할까요?",
-      description: "아직 한 개의 미션이 남아있어요!",
-      primaryButton: .init(title: "금전운 확인하고 시작하기", action: {}),
-      secondaryButton: .init(title: "금전운 확인하고 시작하기", action: {})
+      title: "DHCBottomSheet - Two button case",
+      description: "Description\nDescription Description",
+      primaryButton: .init(title: "Primary Button", action: {}),
+      secondaryButton: .init(title: "Secondary Button", action: {})
     )
   )
 }

@@ -1,5 +1,5 @@
 //
-//  BottomSheet.swift
+//  DHCBottomSheet.swift
 //  ProductName
 //
 //  Created by 김유빈 on 6/16/25.

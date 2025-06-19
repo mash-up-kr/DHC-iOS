@@ -54,20 +54,21 @@ struct DHCBottomSheetContent: View {
         xMarkView()
       }
 
-      Text(configuration.title)
-        .font(.head2)
-        .foregroundStyle(ColorResource.Text.main.color)
-        .padding(.bottom, 12)
+      VStack(spacing: 12) {
+        Text(configuration.title)
+          .font(.head2)
+          .foregroundStyle(ColorResource.Text.main.color)
 
-      Text(configuration.description)
-        .font(.body3)
-        .foregroundStyle(ColorResource.Neutral._200.color)
-        .padding(.bottom, 32)
+        Text(configuration.description)
+          .font(.body3)
+          .foregroundStyle(ColorResource.Neutral._200.color)
 
-      buttonView(for: configuration)
+        buttonView(for: configuration)
+          .padding(20)
+      }
     }
     .multilineTextAlignment(.center)
-    .padding(.horizontal, 20)
+    .padding(.vertical, 20)
     .interactiveDismissDisabled(configuration.interactiveDisabled)
   }
 
@@ -81,7 +82,7 @@ struct DHCBottomSheetContent: View {
           .frame(width: 28, height: 28)
       }
     }
-    .padding(.top, 32)
+    .padding(.horizontal, 16)
   }
 
   @ViewBuilder

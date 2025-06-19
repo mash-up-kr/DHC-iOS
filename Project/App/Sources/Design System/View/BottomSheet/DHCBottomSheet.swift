@@ -14,9 +14,9 @@ enum Detents {
   var height: CGFloat {
     switch self {
     case .oneButton:
-      return 256
+      return 296
     case .twoButtons:
-      return 264
+      return 316
     }
   }
 }

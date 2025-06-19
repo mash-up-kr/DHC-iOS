@@ -1,5 +1,5 @@
 //
-//  BirthdayReducer.swift
+//  BirthdayInputReducer.swift
 //  ProductName
 //
 //  Created by hyerin on 6/13/25.
@@ -15,7 +15,7 @@ enum CalendarType {
 }
 
 @Reducer
-struct BirthdayReducer {
+struct BirthdayInputReducer {
   init() {}
 
   @ObservableState

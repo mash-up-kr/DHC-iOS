@@ -1,5 +1,5 @@
 //
-//  BirthTimeReducer.swift
+//  BirthTimeInputReducer.swift
 //  ProductName
 //
 //  Created by hyerin on 6/13/25.
@@ -10,7 +10,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct BirthTimeReducer {
+struct BirthTimeInputReducer {
   init() {}
 
   @ObservableState

@@ -1,5 +1,5 @@
 //
-//  BirthTimeView.swift
+//  BirthTimeInputView.swift
 //  ProductName
 //
 //  Created by hyerin on 6/13/25.
@@ -9,10 +9,10 @@ import SwiftUI
 
 import ComposableArchitecture
 
-struct BirthTimeView: View {
-  @Bindable var store: StoreOf<BirthTimeReducer>
+struct BirthTimeInputView: View {
+  @Bindable var store: StoreOf<BirthTimeInputReducer>
   
-  init(store: StoreOf<BirthTimeReducer>) {
+  init(store: StoreOf<BirthTimeInputReducer>) {
     self.store = store
   }
   
@@ -87,10 +87,10 @@ struct BirthTimeView: View {
 }
 
 #Preview {
-  BirthTimeView(
+  BirthTimeInputView(
     store: Store(
       initialState: .init(),
-      reducer: BirthTimeReducer.init
+      reducer: BirthTimeInputReducer.init
     )
   )
 }

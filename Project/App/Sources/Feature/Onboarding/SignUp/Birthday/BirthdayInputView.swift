@@ -1,5 +1,5 @@
 //
-//  BirthdayView.swift
+//  BirthdayInputView.swift
 //  ProductName
 //
 //  Created by hyerin on 6/13/25.
@@ -9,10 +9,10 @@ import SwiftUI
 
 import ComposableArchitecture
 
-struct BirthdayView: View {
-  @Bindable var store: StoreOf<BirthdayReducer>
+struct BirthdayInputView: View {
+  @Bindable var store: StoreOf<BirthdayInputReducer>
   
-  init(store: StoreOf<BirthdayReducer>) {
+  init(store: StoreOf<BirthdayInputReducer>) {
     self.store = store
   }
   
@@ -89,10 +89,10 @@ struct BirthdayView: View {
 }
 
 #Preview {
-  BirthdayView(
+  BirthdayInputView(
     store: Store(
       initialState: .init(),
-      reducer: BirthdayReducer.init
+      reducer: BirthdayInputReducer.init
     )
   )
 }

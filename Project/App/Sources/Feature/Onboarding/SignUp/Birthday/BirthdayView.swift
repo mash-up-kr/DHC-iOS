@@ -57,7 +57,7 @@ struct BirthdayView: View {
           title: "양력",
           size: .small,
           action: {
-            store.send(.dateTypeButtonTapped(.solar))
+            store.send(.calendarTypeButtonTapped(.solar))
           },
           isSelected: .constant(store.dateType == .solar)
         )
@@ -66,7 +66,7 @@ struct BirthdayView: View {
           title: "음력",
           size: .small,
           action: {
-            store.send(.dateTypeButtonTapped(.lunar))
+            store.send(.calendarTypeButtonTapped(.lunar))
           },
           isSelected: .constant(store.dateType == .lunar)
         )

@@ -9,7 +9,7 @@ import Foundation
 
 import ComposableArchitecture
 
-enum DateType {
+enum CalendarType {
   case lunar // 음력
   case solar // 양력
 }
@@ -20,11 +20,11 @@ struct BirthdayReducer {
 
   @ObservableState
   struct State: Equatable {
-    var dateType: DateType
+    var dateType: CalendarType
     var birthday: Date
 
     init(
-      dateType: DateType = .solar,
+      dateType: CalendarType = .solar,
       birthday: Date = Date(year: 2000, month: 1, day: 1)
     ) {
       self.dateType = dateType
@@ -34,7 +34,7 @@ struct BirthdayReducer {
 
   enum Action {
     // View Action
-    case dateTypeButtonTapped(DateType)
+    case calendarTypeButtonTapped(CalendarType)
     case birthdayChanged(Date)
     case nextButtonTapped
     case backButtonTapped
@@ -47,7 +47,7 @@ struct BirthdayReducer {
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
-        case .dateTypeButtonTapped(let type):
+        case .calendarTypeButtonTapped(let type):
           state.dateType = type
           return .none
           

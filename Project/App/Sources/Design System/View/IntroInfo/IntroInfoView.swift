@@ -10,7 +10,7 @@ import SwiftUI
 struct IntroInfoView: View {
   private let style: Style
   private let title: String
-  private let description: String
+  private let description: String?
   
   private let titleColor = ColorResource.Text.main.color
   private let descriptionColor = ColorResource.Neutral._300.color
@@ -18,7 +18,7 @@ struct IntroInfoView: View {
   init(
     style: Style,
     title: String,
-    description: String = ""
+    description: String? = nil
   ) {
     self.style = style
     self.title = title
@@ -31,7 +31,7 @@ struct IntroInfoView: View {
         .textStyle(style.titleFont)
         .foregroundStyle(titleColor)
       
-      if !description.isEmpty {
+      if let description {
         Text(description)
           .textStyle(.body3)
           .foregroundStyle(descriptionColor)

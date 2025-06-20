@@ -35,16 +35,7 @@ struct FortuneInfoCardView: View {
           .foregroundStyle(ColorResource.Neutral._200.color)
         Text(fortune)
           .textStyle(.h2)
-          .foregroundStyle(
-            LinearGradient(
-              colors: [
-                ColorResource.Text.Highlights.secondary.color,
-                ColorResource.Text.main.color,
-              ],
-              startPoint: .top,
-              endPoint: .bottom
-            )
-          )
+          .foregroundStyle(LinearGradient(.text02))
       }
     }
     .padding(12)

@@ -44,7 +44,8 @@ struct DHCBottomSheetContent: View {
       }
     }
     .multilineTextAlignment(.center)
-    .padding(.vertical, 20)
+    .padding(.top, configuration.showCloseButton ? 20 : 32)
+    .padding(.bottom, 20)
     .interactiveDismissDisabled(configuration.interactiveDisabled)
   }
 

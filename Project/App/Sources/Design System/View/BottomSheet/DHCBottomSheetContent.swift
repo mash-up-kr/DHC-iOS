@@ -7,41 +7,17 @@
 
 import SwiftUI
 
-enum BottomSheetConfiguration {
-  case oneButton(title: String, description: String, primaryButton: ButtonConfig)
-  case twoButtons(title: String, description: String, primaryButton: ButtonConfig, secondaryButton: ButtonConfig)
+struct BottomSheetConfiguration {
+  var title: String
+  var description: String
+  var showCloseButton: Bool
+  var interactiveDisabled: Bool
+  var firstButton: ButtonConfig?
+  var secondButton: ButtonConfig?
 
   struct ButtonConfig {
-    let title: String
-    let action: () -> Void
-  }
-}
-
-extension BottomSheetConfiguration {
-  var title: String {
-    switch self {
-    case .oneButton(let title, _, _),
-         .twoButtons(let title, _, _, _):
-      return title
-    }
-  }
-
-  var description: String {
-    switch self {
-    case .oneButton(_, let description, _),
-         .twoButtons(_, let description, _, _):
-      return description
-    }
-  }
-
-  var showXMark: Bool {
-    if case .oneButton = self { return true }
-    return false
-  }
-
-  var interactiveDisabled: Bool {
-    if case .oneButton = self { return true }
-    return false
+    var title: String
+    var action: () -> Void
   }
 }
 
@@ -49,9 +25,9 @@ struct DHCBottomSheetContent: View {
   let configuration: BottomSheetConfiguration
 
   var body: some View {
-    VStack(alignment: .center, spacing: 0) {
-      if configuration.showXMark {
-        xMarkView()
+    VStack(spacing: 0) {
+      if configuration.showCloseButton {
+        closeButtonView()
       }
 
       VStack(spacing: 12) {
@@ -63,7 +39,7 @@ struct DHCBottomSheetContent: View {
           .textStyle(.body3)
           .foregroundStyle(ColorResource.Neutral._200.color)
 
-        buttonView(for: configuration)
+        buttonView()
           .padding(20)
       }
     }
@@ -72,56 +48,79 @@ struct DHCBottomSheetContent: View {
     .interactiveDismissDisabled(configuration.interactiveDisabled)
   }
 
-  private func xMarkView() -> some View {
-    HStack {
-      Spacer()
-
-      Button {} label: {
-        Image("icon/cancel")
-          .resizable()
-          .frame(width: 28, height: 28)
-      }
+  private func closeButtonView() -> some View {
+    Button {
+      // TODO:
+    } label: {
+      Image("icon/cancel")
+        .resizable()
+        .frame(width: 28, height: 28)
     }
-    .padding(.horizontal, 16)
+    .frame(maxWidth: .infinity, alignment: .trailing)
   }
 
   @ViewBuilder
-  private func buttonView(for config: BottomSheetConfiguration) -> some View {
-    switch config {
-    case .oneButton(_, _, let primary):
-      CTAButton(size: .extraLarge, style: .primary, title: primary.title, action: primary.action)
-
-    case .twoButtons(_, _, let primary, let secondary):
+  private func buttonView() -> some View {
+    if let first = configuration.firstButton,
+       let second = configuration.secondButton {
       VStack(spacing: 8) {
-        CTAButton(size: .extraLarge, style: .primary, title: primary.title, action: primary.action)
+        CTAButton(
+          size: .extraLarge,
+          style: .primary,
+          title: first.title,
+          action: first.action
+        )
+        
         CTAButton(
           size: .extraLarge,
           style: .tertiary,
-          title: secondary.title,
-          action: secondary.action
+          title: second.title,
+          action: second.action
         )
       }
+    } else if let first = configuration.firstButton {
+      CTAButton(
+        size: .extraLarge,
+        style: .primary,
+        title: first.title,
+        action: first.action
+      )
+    } else {
+      EmptyView()
     }
   }
 }
 
 #Preview("One Button") {
   DHCBottomSheetContent(
-    configuration: .oneButton(
-      title: "DHCBottomSheet - One button case",
-      description: "Description\nDescription Description",
-      primaryButton: .init(title: "Primary Button", action: {})
+    configuration: BottomSheetConfiguration(
+      title: "알림 설정을\n허용해주세요",
+      description: "서비스를 원활히 진행하기 위해서\n알림설정이 꼭 필요해요",
+      showCloseButton: true,
+      interactiveDisabled: true,
+      firstButton: .init(
+        title: "금전운 확인하고 시작하기",
+        action: {}
+      )
     )
   )
 }
 
-#Preview("Two button") {
+#Preview("Two Buttons") {
   DHCBottomSheetContent(
-    configuration: .twoButtons(
-      title: "DHCBottomSheet - Two button case",
-      description: "Description\nDescription Description",
-      primaryButton: .init(title: "Primary Button", action: {}),
-      secondaryButton: .init(title: "Secondary Button", action: {})
+    configuration: BottomSheetConfiguration(
+      title: "오늘의 미션을\n정말 마무리할까요?",
+      description: "아직 한 개의 미션이 남아 있어요!",
+      showCloseButton: false,
+      interactiveDisabled: false,
+      firstButton: .init(
+        title: "금전운 확인하고 시작하기",
+        action: {}
+      ),
+      secondButton: .init(
+        title: "금전운 확인하고 시작하기",
+        action: {}
+      )
     )
   )
 }

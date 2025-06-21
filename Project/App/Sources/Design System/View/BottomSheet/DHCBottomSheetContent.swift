@@ -56,11 +56,11 @@ struct DHCBottomSheetContent: View {
 
       VStack(spacing: 12) {
         Text(configuration.title)
-          .font(.head2)
+          .textStyle(.h2)
           .foregroundStyle(ColorResource.Text.main.color)
 
         Text(configuration.description)
-          .font(.body3)
+          .textStyle(.body3)
           .foregroundStyle(ColorResource.Neutral._200.color)
 
         buttonView(for: configuration)

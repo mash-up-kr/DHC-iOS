@@ -22,7 +22,6 @@ enum Detents {
 }
 
 extension View {
-  @ViewBuilder
   func bottomSheet(
     isPresented: Binding<Bool>,
     detent: Detents,

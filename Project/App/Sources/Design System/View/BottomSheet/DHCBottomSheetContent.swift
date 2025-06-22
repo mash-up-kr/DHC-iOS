@@ -58,6 +58,7 @@ struct DHCBottomSheetContent: View {
         .frame(width: 28, height: 28)
     }
     .frame(maxWidth: .infinity, alignment: .trailing)
+    .padding(.horizontal, 16)
   }
 
   @ViewBuilder

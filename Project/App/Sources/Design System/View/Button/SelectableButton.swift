@@ -38,14 +38,27 @@ struct SelectableButton: View {
         action()
       },
       label: {
-        Text(title)
-        .textStyle(.h7)
-        .foregroundStyle(foregroundColor)
-        .padding(.vertical, size.verticalOffset)
-        .padding(.horizontal, size.horizontalOffset)
-        .background {
-          RoundedRectangle(cornerRadius: size.cornerRadius)
-            .foregroundStyle(backgroundColor)
+        switch size {
+          case .medium:
+            Text(title)
+            .textStyle(.h7)
+            .foregroundStyle(foregroundColor)
+            .padding(.vertical, size.verticalOffset)
+            .frame(maxWidth: .infinity)
+            .background {
+              RoundedRectangle(cornerRadius: size.cornerRadius)
+                .foregroundStyle(backgroundColor)
+            }
+          case .small:
+            Text(title)
+            .textStyle(.h7)
+            .foregroundStyle(foregroundColor)
+            .padding(.vertical, size.verticalOffset)
+            .padding(.horizontal, 27)
+            .background {
+              RoundedRectangle(cornerRadius: size.cornerRadius)
+                .foregroundStyle(backgroundColor)
+            }
         }
       }
     )
@@ -63,15 +76,6 @@ extension SelectableButton {
           return 12
         case .small:
           return 8
-      }
-    }
-    
-    var horizontalOffset: CGFloat {
-      switch self {
-        case .medium:
-          return 63.5
-        case .small:
-          return 21.5
       }
     }
     

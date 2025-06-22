@@ -20,7 +20,7 @@ extension ColorResource {
 				case .glassEffect:
 					return ColorResource.Neutral._300.color.opacity(0.15)
 				case .badgePrimary:
-					return ColorResource.Violet._100.color.opacity(0.2)
+					return ColorResource.Violet._400.color.opacity(0.2)
 			}
 		}
 	}

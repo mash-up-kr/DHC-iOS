@@ -49,12 +49,7 @@ extension TitleView {
     case page
     
     var titleFont: Typography.TypographyStyle {
-      switch self {
-        case .intro:
-          return Typography.Head.h2
-        case .page:
-          return Typography.Head.h1
-      }
+      Typography.Head.h2
     }
     
     var textAlignment: TextAlignment {

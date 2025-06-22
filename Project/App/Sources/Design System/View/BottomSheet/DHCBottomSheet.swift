@@ -29,7 +29,7 @@ extension View {
     @ViewBuilder content: @escaping () -> some View
   ) -> some View {
     self
-      .sheet(isPresented: isPresented) {} content: {
+      .sheet(isPresented: isPresented) {
         content()
           .presentationDetents([.height(detent.height)])
           .presentationCornerRadius(sheetCornerRadius)

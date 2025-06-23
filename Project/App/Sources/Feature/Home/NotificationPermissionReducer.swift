@@ -40,12 +40,12 @@ struct NotificationPermissionReducer {
 
       case .authorizationResponse(let isNotificationAuthorized):
         state.isNotificationAuthorized = isNotificationAuthorized
-
         return .none
 
       case .authorizationFailed(let error):
+        #if DEBUG
         print("Push Notification Authorization failed with error: \(error)")
-
+        #endif
         return .none
       }
     }

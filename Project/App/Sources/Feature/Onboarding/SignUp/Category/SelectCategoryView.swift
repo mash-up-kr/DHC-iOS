@@ -69,6 +69,7 @@ struct SelectCategoryView: View {
         }
       )
     }
+    .scrollBounceBehavior(.basedOnSize)
     .scrollIndicators(.hidden)
     .padding(.horizontal, 20)
     .padding(.vertical, 36)

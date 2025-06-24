@@ -30,7 +30,7 @@ struct RootReducer {
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case .destination(.presented(.onboarding(.moveToMainTab))):
+        case .destination(.presented(.onboarding(.nextButtonTapped))):
         state.destination = .mainTab(MainTabReducer.State())
         return .none
 

@@ -18,7 +18,7 @@ struct ServiceExplanationView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      TitleView(
+      IntroTitleView(
         style: .intro,
         title: "서비스명(우리 서비스)는\n이런식으로 작동해요"
       )

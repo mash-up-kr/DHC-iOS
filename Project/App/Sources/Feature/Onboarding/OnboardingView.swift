@@ -18,7 +18,7 @@ struct OnboardingView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      TitleView(
+      IntroTitleView(
         style: .intro,
         title: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요",
         description: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요"

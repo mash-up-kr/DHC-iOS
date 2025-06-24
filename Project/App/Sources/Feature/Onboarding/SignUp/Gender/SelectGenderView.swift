@@ -22,7 +22,7 @@ struct SelectGenderView: View {
         type: .progress(currentProgress: 1, totalProgress: 4)
       )
       
-      TitleView(
+      IntroTitleView(
         style: .page,
         title: "성별은\n어떻게 되시나요?",
         description: "성별에 따라 대운의\n흐름이 달라져요."

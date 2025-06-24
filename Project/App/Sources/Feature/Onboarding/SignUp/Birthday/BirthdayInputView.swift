@@ -25,7 +25,7 @@ struct BirthdayInputView: View {
         }
       )
       
-      TitleView(
+      IntroTitleView(
         style: .page,
         title: "생년월일을\n알려주세요",
         description: "생년월일이 정확할수록\n더 적합한 정보를 제공해 드릴 수 있어요"

@@ -56,6 +56,7 @@ struct FortuneView: View {
             scaleEffectY: 1.6
           )
       }
+      .padding(.bottom, 20)
     }
   }
 }

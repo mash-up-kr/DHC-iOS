@@ -58,7 +58,7 @@ struct SelectCategoryView: View {
         content: {
           ForEach(store.categoryInfos, id: \.id) { categoryInfo in
             CategoryCardView(
-              imageURL: URL(string: categoryInfo.url)!,
+              imageURL: categoryInfo.url,
               title: categoryInfo.title,
               isSelected: store.selectedCategoryID.contains(categoryInfo.id),
               action: {

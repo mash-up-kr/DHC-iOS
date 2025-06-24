@@ -9,7 +9,7 @@ import Foundation
 
 struct CategoryInfo: Equatable, Hashable {
   let title: String
-  let url: String
+  let url: URL
   let id: Int
   
 #if DEV

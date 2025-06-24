@@ -12,6 +12,7 @@ struct CategoryInfo: Equatable, Hashable {
   let url: String
   let id: Int
   
+#if DEV
   static let mock: [CategoryInfo] = [
     .init(
       title: "식음료",
@@ -44,4 +45,5 @@ struct CategoryInfo: Equatable, Hashable {
       id: 5
     )
   ]
+#endif
 }

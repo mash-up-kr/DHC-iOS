@@ -13,7 +13,7 @@ struct SelectCategoryReducer {
 
   @ObservableState
   struct State: Equatable {
-    var categoryInfos = CategoryInfo.mock // TODO: 추후 API 연결 시 수정
+    var categoryInfos: [CategoryInfo] = [] // TODO: 추후 API 연결 시 수정
     var selectedCategoryID: Set<Int> = []
     var isNextButtonDisabled: Bool {
       selectedCategoryID.count < 3

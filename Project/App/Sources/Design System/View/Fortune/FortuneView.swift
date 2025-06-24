@@ -48,12 +48,13 @@ struct FortuneView: View {
         fortune: cardFortune
       )
       .if(needsGradientBackground) { cardView in
-        cardView.radialGradientBackground(
-          color: ColorResource.Text.Highlights.primary.color.opacity(0.6),
-          endRadiusMultiplier: 0.4,
-          scaleEffectX: 2.2,
-          scaleEffectY: 1.6
-        )
+        cardView
+          .radialGradientBackground(
+            type: .backgroundGradient01,
+            endRadiusMultiplier: 0.4,
+            scaleEffectX: 2.5,
+            scaleEffectY: 1.6
+          )
       }
     }
   }

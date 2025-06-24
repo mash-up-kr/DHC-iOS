@@ -48,9 +48,9 @@ struct FortunePickExampleView: View {
       )
       .rotationEffect(.degrees(-4))
       .radialGradientBackground(
-        color: ColorResource.Text.Highlights.primary.color.opacity(0.6),
+        type: .backgroundGradient01,
         endRadiusMultiplier: 0.4,
-        scaleEffectX: 2.2,
+        scaleEffectX: 2.5,
         scaleEffectY: 1.6
       )
       .onTapGesture {

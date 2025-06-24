@@ -26,7 +26,7 @@ struct SelectCategoryView: View {
         }
       )
       
-      IntroInfoView(
+      IntroTitleView(
         style: .page,
         title: "개선하고 싶은 소비습관\n카테고리를 선택해 주세요.",
         description: "최소 3개이상 선택해야 해요."

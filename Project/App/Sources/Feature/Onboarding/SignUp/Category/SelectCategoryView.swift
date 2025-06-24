@@ -62,7 +62,7 @@ struct SelectCategoryView: View {
               title: categoryInfo.title,
               isSelected: store.selectedCategoryID.contains(categoryInfo.id),
               action: {
-                store.send(.categoryButtonTapped(categoryId: categoryInfo.id))
+                store.send(.categoryButtonTapped(categoryID: categoryInfo.id))
               }
             )
           }

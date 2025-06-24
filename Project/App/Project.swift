@@ -5,10 +5,10 @@ let project = Project(
 	name: "App",
 	targets: [
 		.target(
-			name: "ProductName",
+			name: "Flifin",
       destinations: [.iPhone],
 			product: .app,
-			productName: "ProductName",
+			productName: "Flifin",
 			bundleId: "com.mashup.DHC-iOS",
 			deploymentTargets: .iOS("18.0"),
 			infoPlist: .extendingDefault(

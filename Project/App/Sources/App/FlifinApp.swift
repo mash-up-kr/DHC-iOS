@@ -1,6 +1,6 @@
 //
-//  DHC_iOSApp.swift
-//  DHC-iOS
+//  FlifinApp.swift
+//  Flifin
 //
 //  Created by 최혜린 on 4/14/25.
 //
@@ -10,7 +10,7 @@ import SwiftUI
 import ComposableArchitecture
 
 @main
-struct DHC_iOSApp: App {
+struct FlifinApp: App {
 	var body: some Scene {
 		WindowGroup {
       RootView(

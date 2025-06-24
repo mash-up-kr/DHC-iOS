@@ -1,6 +1,6 @@
 //
 //  NotificationPermissionReducer.swift
-//  ProductName
+//  Flifin
 //
 //  Created by 김유빈 on 6/17/25.
 //

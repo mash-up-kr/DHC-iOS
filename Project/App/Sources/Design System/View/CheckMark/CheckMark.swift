@@ -1,6 +1,6 @@
 //
 //  CheckMark.swift
-//  ProductName
+//  Flifin
 //
 //  Created by hyerin on 6/12/25.
 //

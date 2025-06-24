@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  DHC-iOS
+//  Flifin
 //
 //  Created by hyerin on 6/2/25.
 //

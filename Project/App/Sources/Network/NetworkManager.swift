@@ -1,6 +1,6 @@
 //
 //  NetworkManager.swift
-//  DHC-iOS
+//  Flifin
 //
 //  Created by 김유빈 on 5/6/25.
 //

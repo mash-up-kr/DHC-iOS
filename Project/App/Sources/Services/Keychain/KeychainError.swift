@@ -1,6 +1,6 @@
 //
 //  KeychainError.swift
-//  ProductName
+//  Flifin
 //
 //  Created by 김유빈 on 6/12/25.
 //

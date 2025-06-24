@@ -1,6 +1,6 @@
 //
 //  IntroInfoView.swift
-//  ProductName
+//  Flifin
 //
 //  Created by hyerin on 6/17/25.
 //

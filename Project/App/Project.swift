@@ -5,10 +5,10 @@ let project = Project(
 	name: "App",
 	targets: [
 		.target(
-			name: "ProductName",
+			name: "Flifin",
       destinations: [.iPhone],
 			product: .app,
-			productName: "ProductName",
+			productName: "Flifin",
 			bundleId: "com.mashup.DHC-iOS",
 			deploymentTargets: .iOS("18.0"),
 			infoPlist: .extendingDefault(
@@ -39,7 +39,7 @@ let project = Project(
 					"CODE_SIGN_STYLE": "Manual",
 					"PROVISIONING_PROFILE_SPECIFIER": "match Development com.mashup.DHC-iOS",
 					"CODE_SIGN_IDENTITY": "Apple Development: Hyerin Choe (QKKN56KGD9)",
-          "OTHER_LDFLAGS": "$(inherited) -ObjC",
+          "OTHER_LDFLAGS": "$(inherited) -ObjC -all_load",
 				]
 			)
 		)

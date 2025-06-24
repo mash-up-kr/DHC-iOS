@@ -1,6 +1,6 @@
 //
 //  NotificationPermissionView.swift
-//  ProductName
+//  Flifin
 //
 //  Created by 김유빈 on 6/17/25.
 //
@@ -17,6 +17,7 @@ struct NotificationPermissionView: View {
   }
 
   var body: some View {
+    EmptyView()
     // TODO: [IOS-25] BottomSheet 컴포넌트 PR 머지되면 주석 해제하기
 //    DHCBottomSheetContent(
 //      configuration: BottomSheetConfiguration(

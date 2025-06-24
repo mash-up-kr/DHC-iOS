@@ -1,6 +1,6 @@
 //
 //  DeviceIDManager.swift
-//  ProductName
+//  Flifin
 //
 //  Created by 김유빈 on 6/13/25.
 //

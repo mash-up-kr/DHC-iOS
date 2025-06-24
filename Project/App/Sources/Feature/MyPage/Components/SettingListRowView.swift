@@ -1,6 +1,6 @@
 //
 //  SettingListRowView.swift
-//  ProductName
+//  Flifin
 //
 //  Created by Aiden.lee on 6/14/25.
 //

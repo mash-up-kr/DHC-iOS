@@ -16,3 +16,15 @@ extension ColorResource {
     UIColor(resource: self)
   }
 }
+
+extension Color {
+  var uiColor: UIColor {
+    UIColor(self)
+  }
+}
+
+extension UIColor {
+  var color: Color {
+    Color(self)
+  }
+}

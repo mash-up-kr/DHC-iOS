@@ -57,13 +57,17 @@ struct SelectCategoryView: View {
         spacing: 15,
         content: {
           ForEach(store.categoryInfos, id: \.id) { categoryInfo in
-            CategoryCardView(
+            CategoryCardButton(
               imageURL: categoryInfo.url,
               title: categoryInfo.title,
-              isSelected: store.selectedCategoryID.contains(categoryInfo.id),
-              action: {
-                store.send(.categoryButtonTapped(categoryID: categoryInfo.id))
-              }
+              isSelected: Binding(
+                get: {
+                  store.selectedCategoryID.contains(categoryInfo.id)
+                },
+                set: { isSelected in
+                  store.send(.categoryButtonTapped(categoryID: categoryInfo.id, isSelected: isSelected))
+                }
+              )
             )
           }
         }

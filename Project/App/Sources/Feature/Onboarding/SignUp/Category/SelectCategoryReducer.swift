@@ -30,7 +30,7 @@ struct SelectCategoryReducer {
     // View Action
     case backButtonTapped
     case nextButtonTapped
-    case categoryButtonTapped(categoryID: Int)
+    case categoryButtonTapped(categoryID: Int, isSelected: Bool)
     
     // Internal Action
     
@@ -46,12 +46,11 @@ struct SelectCategoryReducer {
         case .nextButtonTapped:
           return .none
           
-        case .categoryButtonTapped(let categoryID):
-          let isCategorySelected = state.selectedCategoryID.contains(categoryID)
-          if isCategorySelected {
-            state.selectedCategoryID.remove(categoryID)
-          } else {
+        case .categoryButtonTapped(let categoryID, let isSelected):
+          if isSelected {
             state.selectedCategoryID.insert(categoryID)
+          } else {
+            state.selectedCategoryID.remove(categoryID)
           }
           
           return .none

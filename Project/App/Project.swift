@@ -17,7 +17,7 @@ let project = Project(
 						"WantedSans-Bold.otf",
 						"WantedSans-SemiBold.otf",
 						"WantedSans-Medium.otf",
-						"WantedSans-regular.otf"
+						"WantedSans-Regular.otf"
 					],
           "UISupportedInterfaceOrientations": [
             "UIInterfaceOrientationPortrait"

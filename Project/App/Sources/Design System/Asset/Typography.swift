@@ -5,56 +5,64 @@
 //  Created by hyerin on 6/4/25.
 //
 
+import UIKit.UIFont
 import SwiftUI
 
 enum Typography {
 	protocol TypographyStyle {
-		var font: Font { get }
-		var fontSize: CGFloat { get }
+    var uiFont: UIFont { get }
 		var lineHeight: CGFloat { get }
 		var letterSpacing: CGFloat { get }
+    var font: Font { get }
 	}
 }
 
 // MARK: - Head Styles
 extension Typography {
 	enum Head: CaseIterable, TypographyStyle {
-		case h0, h1, h2, h3, h4, h5, h6, h7, h8
+		case h0, h1, h2, h2_1, h3, h4, h4_1, h5, h5_1, h6, h7, h8
 		
-		var font: Font {
+    var uiFont: UIFont {
 			switch self {
-				case .h0: return Font.head0
-				case .h1: return Font.head1
-				case .h2: return Font.head2
-				case .h3: return Font.head3
-				case .h4: return Font.head4
-				case .h5: return Font.head5
-				case .h6: return Font.head6
-				case .h7: return Font.head7
-				case .h8: return Font.head8
+      case .h0: return UIFont.head0
+      case .h1: return UIFont.head1
+      case .h2: return UIFont.head2
+      case .h2_1: return UIFont.head2_1
+      case .h3: return UIFont.head3
+      case .h4: return UIFont.head4
+      case .h4_1: return UIFont.head4_1
+      case .h5: return UIFont.head5
+      case .h5_1: return UIFont.head5_1
+      case .h6: return UIFont.head6
+      case .h7: return UIFont.head7
+      case .h8: return UIFont.head8
 			}
 		}
-		
-		var fontSize: CGFloat {
-			switch self {
-				case .h0: return 32
-				case .h1: return 28
-				case .h2: return 24
-				case .h3: return 20
-				case .h4: return 18
-				case .h5: return 16
-				case .h6: return 15
-				case .h7: return 14
-				case .h8: return 13
-			}
-		}
+    
+    var font: Font {
+      Font(uiFont)
+    }
 		
 		var lineHeight: CGFloat {
-			return fontSize * 1.35
+			switch self {
+				case .h0: return 44
+				case .h1: return 38
+        case .h2, .h2_1: return 32
+				case .h3: return 28
+        case .h4, .h4_1: return 24
+        case .h5, .h5_1: return 22
+        case .h6, .h7: return 20
+				case .h8: return 18
+			}
 		}
 		
 		var letterSpacing: CGFloat {
-			return fontSize * -0.01
+      switch self {
+        case .h0, .h1: return -0.4
+        case .h2, .h2_1, .h3: return -0.2
+        case .h4, .h4_1, .h5, .h5_1: return -0.1
+        case .h6, .h7, .h8: return 0
+      }
 		}
 	}
 }
@@ -62,38 +70,43 @@ extension Typography {
 // MARK: - Body Styles
 extension Typography {
 	enum Body: CaseIterable, TypographyStyle {
-		case body0, body1, body2, body3, body4, body5, body6
+		case body0, body1, body2, body3, body4, body5, body6, body7
 		
-		var font: Font {
+    var uiFont: UIFont {
 			switch self {
-				case .body0: return Font.body0
-				case .body1: return Font.body1
-				case .body2: return Font.body2
-				case .body3: return Font.body3
-				case .body4: return Font.body4
-				case .body5: return Font.body5
-				case .body6: return Font.body6
+      case .body0: return UIFont.body0
+      case .body1: return UIFont.body1
+      case .body2: return UIFont.body2
+      case .body3: return UIFont.body3
+      case .body4: return UIFont.body4
+      case .body5: return UIFont.body5
+      case .body6: return UIFont.body6
+      case .body7: return UIFont.body7
 			}
 		}
-		
-		var fontSize: CGFloat {
-			switch self {
-				case .body0: return 28
-				case .body1: return 20
-				case .body2: return 18
-				case .body3: return 16
-				case .body4: return 15
-				case .body5: return 14
-				case .body6: return 13
-			}
-		}
-		
+    
+    var font: Font {
+      Font(uiFont)
+    }
+
 		var lineHeight: CGFloat {
-			return fontSize * 1.45 // 145%
+      switch self {
+        case .body0: return 40
+        case .body1: return 28
+        case .body2: return 26
+        case .body3: return 24
+        case .body4: return 22
+        case .body5, .body6: return 20
+        case .body7: return 18
+      }
 		}
 
 		var letterSpacing: CGFloat {
-			fontSize * -0.005
+      switch self {
+        case .body0, .body1, .body2: return -0.2
+        case .body3: return -0.1
+        case .body4, .body5, .body6, .body7: return 0
+      }
 		}
 	}
 }
@@ -101,20 +114,26 @@ extension Typography {
 // MARK: - Extensions
 extension View {
 	func textStyle(_ style: Typography.Head) -> some View {
-		self.font(style.font)
-			.lineSpacing(style.lineHeight - style.fontSize)
+		self
+      .font(style.font)
+      .lineSpacing(style.lineHeight - style.uiFont.lineHeight)
+      .padding(.vertical, (style.lineHeight  - style.uiFont.lineHeight) / 2)
 			.kerning(style.letterSpacing)
 	}
 	
 	func textStyle(_ style: Typography.Body) -> some View {
-		self.font(style.font)
-			.lineSpacing(style.lineHeight - style.fontSize)
-			.kerning(style.letterSpacing)
+    self
+      .font(style.font)
+      .lineSpacing(style.lineHeight - style.uiFont.lineHeight)
+      .padding(.vertical, (style.lineHeight  - style.uiFont.lineHeight) / 2)
+      .kerning(style.letterSpacing)
 	}
   
   func textStyle(_ style: Typography.TypographyStyle) -> some View {
-    self.font(style.font)
-      .lineSpacing(style.lineHeight - style.fontSize)
+    self
+      .font(style.font)
+      .lineSpacing(style.lineHeight - style.uiFont.lineHeight)
+      .padding(.vertical, (style.lineHeight  - style.uiFont.lineHeight) / 2)
       .kerning(style.letterSpacing)
   }
 }

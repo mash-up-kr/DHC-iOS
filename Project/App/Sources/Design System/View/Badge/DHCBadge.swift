@@ -46,7 +46,7 @@ extension DHCBadge {
     }
   }
 
-  enum MissionLevel: String, CaseIterable {
+  enum MissionLevel {
     case easy
     case medium
     case hard
@@ -73,7 +73,6 @@ extension DHCBadge {
       }
     }
   }
-
 }
 
 struct DHCBadge: View {

@@ -33,12 +33,15 @@ struct MainTabView: View {
       }
 
       Tab(value: .missionStatus) {
-        MissionStatusView(
-          store: store.scope(
-            state: \.missionStatusTab,
-            action: \.missionStatusTab
+        NavigationStack {
+          MissionStatusView(
+            store: store.scope(
+              state: \.missionStatusTab,
+              action: \.missionStatusTab
+            )
           )
-        )
+          .navigationTitle(Text("통계"))
+        }
       } label: {
         Image(.Icon.status)
           .renderingMode(.template)

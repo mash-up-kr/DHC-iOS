@@ -14,7 +14,7 @@ struct MissionStatusView: View {
 
   var body: some View {
     ScrollView {
-      VStack {
+      VStack(spacing: 0) {
         VStack(alignment: .leading, spacing: 12) {
           Text("소비 분석")
             .textStyle(.h5)

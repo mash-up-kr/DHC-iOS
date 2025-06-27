@@ -31,7 +31,7 @@ struct MissionSummaryView: View {
           .frame(width: 26, height: 26)
       }
 
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 0) {
         Text(title)
           .foregroundStyle(ColorResource.Text.Body.primary.color)
           .textStyle(.body3)

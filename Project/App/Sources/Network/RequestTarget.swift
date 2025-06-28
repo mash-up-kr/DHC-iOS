@@ -21,6 +21,10 @@ protocol RequestTarget {
 }
 
 extension RequestTarget {
+  var baseURL: URL {
+    DHCEnvironment.baseURL
+  }
+
   func asURLRequest() throws -> URLRequest {
     var url = baseURL.appendingPathComponent(path)
 

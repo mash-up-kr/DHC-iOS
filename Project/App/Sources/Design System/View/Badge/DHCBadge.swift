@@ -7,6 +7,20 @@
 
 import SwiftUI
 
+struct DHCBadge: View {
+  let badgeTitle: String
+  let badgeStyle: BadgeStyle
+
+  var body: some View {
+    Badge(
+      badgeTitle: badgeTitle,
+      textStyle: badgeStyle.textStyle,
+      textColor: badgeStyle.textColor,
+      backgroundColor: badgeStyle.backgroundColor
+    )
+  }
+}
+
 extension DHCBadge {
   enum BadgeStyle {
     case spendType
@@ -72,20 +86,6 @@ extension DHCBadge {
         return ColorResource.levelHard.color
       }
     }
-  }
-}
-
-struct DHCBadge: View {
-  let badgeTitle: String
-  let badgeStyle: BadgeStyle
-
-  var body: some View {
-    Badge(
-      badgeTitle: badgeTitle,
-      textStyle: badgeStyle.textStyle,
-      textColor: badgeStyle.textColor,
-      backgroundColor: badgeStyle.backgroundColor
-    )
   }
 }
 

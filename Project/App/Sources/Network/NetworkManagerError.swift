@@ -11,5 +11,6 @@ enum NetworkManagerError: Error {
   case decodingFailed
   case emptyResponse
   case userIDNotFound
+  case emptyData
   case unknown
 }

@@ -18,10 +18,14 @@ struct DHCNetworkResponse {
 extension DHCNetworkResponse {
   func map<T: Decodable>(to type: T.Type) throws -> T {
     guard let data else {
-      throw NetworkManagerError.decodingFailed
+      throw NetworkManagerError.emptyData
     }
 
-    return try JSONDecoder().decode(type, from: data)
+    do {
+      return try JSONDecoder().decode(type, from: data)
+    } catch {
+      throw NetworkManagerError.decodingFailed
+    }
   }
 }
 

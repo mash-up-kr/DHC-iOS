@@ -1,6 +1,6 @@
 //
 //  DotView.swift
-//  ProductName
+//  Flifin
 //
 //  Created by 최혜린 on 6/22/25.
 //

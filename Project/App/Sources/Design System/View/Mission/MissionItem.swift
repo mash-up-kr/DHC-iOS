@@ -60,7 +60,7 @@ struct MissionItem<V>: View where V: View {
 
 #Preview {
   VStack(spacing: 24) {
-    FixedMissionItemView(
+    PinnedMissionItemView(
       missionTitle: "가까운 거리 걸어가기",
       remainingDays: 3,
       isMissionCompleted: .constant(true)

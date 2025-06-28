@@ -39,7 +39,7 @@ fileprivate struct CategoryCardContentView: View {
       }
       placeholder: {
         Rectangle()
-          .background(Color.clear)
+          .fill(ColorResource.Neutral._600.color)
       }
       .resizable()
       .frame(width: 36, height: 36)

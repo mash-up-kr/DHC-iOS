@@ -25,6 +25,7 @@ struct FortuneInfoCardView: View {
         image
       } placeholder: {
         Rectangle()
+          .fill(ColorResource.Neutral._600.color)
       }
       .resizable()
       .frame(width: 36, height: 36)

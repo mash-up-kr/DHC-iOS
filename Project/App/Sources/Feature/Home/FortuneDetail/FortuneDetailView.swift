@@ -89,6 +89,9 @@ struct FortuneDetailView: View {
         )
         .background(ColorResource.Background.main.color)
     }
+    .onAppear {
+      store.send(.onAppear)
+    }
   }
   
   var detailFortuneView: some View {

@@ -14,7 +14,7 @@ struct FortuneView: View {
   private let cardBackgroundImageURL: URL
   private let cardTitle: String
   private let cardFortune: String
-  private let isNeedGradientBackground: Bool
+  private let needsGradientBackground: Bool
   
   init(
     date: String,
@@ -23,7 +23,7 @@ struct FortuneView: View {
     cardBackgroundImageURL: URL,
     cardTitle: String,
     cardFortune: String,
-    isNeedGradientBackground: Bool = false
+    needsGradientBackground: Bool = false
   ) {
     self.date = date
     self.score = score
@@ -31,7 +31,7 @@ struct FortuneView: View {
     self.cardBackgroundImageURL = cardBackgroundImageURL
     self.cardTitle = cardTitle
     self.cardFortune = cardFortune
-    self.isNeedGradientBackground = isNeedGradientBackground
+    self.needsGradientBackground = needsGradientBackground
   }
   
   var body: some View {
@@ -47,7 +47,7 @@ struct FortuneView: View {
         title: cardTitle,
         fortune: cardFortune
       )
-      .if(isNeedGradientBackground) { cardView in
+      .if(needsGradientBackground) { cardView in
         cardView.radialGradientBackground(
           color: ColorResource.Text.Highlights.primary.color.opacity(0.6),
           endRadiusMultiplier: 0.4,

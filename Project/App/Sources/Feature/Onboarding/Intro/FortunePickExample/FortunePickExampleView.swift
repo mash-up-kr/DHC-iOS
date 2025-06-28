@@ -74,7 +74,7 @@ struct FortunePickExampleView: View {
         cardBackgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
         cardTitle: "최고의 날",
         cardFortune: "네잎클로버",
-        isNeedGradientBackground: true
+        needsGradientBackground: true
       )
       .frame(maxHeight: .infinity)
       

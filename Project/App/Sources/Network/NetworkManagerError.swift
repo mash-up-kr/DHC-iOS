@@ -8,7 +8,7 @@
 enum NetworkManagerError: Error {
   case invalidURL
   case requestFailed(underlying: Error)
-  case decodingFailed(underlying: Error)
+  case decodingFailed
   case emptyResponse
   case userIDNotFound
   case unknown

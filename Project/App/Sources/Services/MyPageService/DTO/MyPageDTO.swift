@@ -12,7 +12,6 @@ struct MyPageDTO: Decodable {
   let birthDate: BirthDateInfo
   let birthTime: String
   let preferredMissionCategoryList: [MissionCategoryInfo]
-  let alarm: Bool
 }
 
 extension MyPageDTO {

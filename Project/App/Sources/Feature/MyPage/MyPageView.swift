@@ -19,13 +19,13 @@ struct MyPageView: View {
         // 내 사주 정보
         VStack(spacing: 16) {
           FortuneInfoCardView(
-            imageURL: store.myPageInfo?.animalCard.cardImageURL,
-            fortune: store.myPageInfo?.animalCard.name ?? ""
+            imageURL: store.myPageInfo.animalCard.cardImageURL,
+            fortune: store.myPageInfo.animalCard.name
           )
 
           BirthdayInfoView(
-            date: store.myPageInfo?.birthDate.date ?? "",
-            time: store.myPageInfo?.birthDate.birthTime ?? ""
+            date: store.myPageInfo.birthDate.date,
+            time: store.myPageInfo.birthDate.birthTime
           )
         }
         .frame(maxWidth: .infinity)
@@ -45,7 +45,7 @@ struct MyPageView: View {
 
           ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 8) {
-              ForEach(store.myPageInfo?.preferredMissionCategoryList ?? [], id: \.self) { item in
+              ForEach(store.myPageInfo.preferredMissionCategoryList, id: \.self) { item in
                 CategoryCardView(
                   imageURL: item.imageURL,
                   title: item.displayName
@@ -88,6 +88,7 @@ struct MyPageView: View {
     .onAppear {
       store.send(.onAppear)
     }
+    .redacted(reason: store.isRedacted ? .placeholder : [])
     .resetAlert(
       isPresented: $showResetAlert,
       onReset: {

@@ -16,8 +16,9 @@ struct MyPageReducer {
 
   @ObservableState
   struct State: Equatable {
-    var myPageInfo: MyPageInfo?
+    var myPageInfo: MyPageInfo
     var isLoading = false
+    var isRedacted = false
   }
 
   enum Action {
@@ -38,7 +39,7 @@ struct MyPageReducer {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        guard state.myPageInfo == nil, !state.isLoading else {
+        guard !state.isLoading else {
           return .none
         }
 
@@ -46,6 +47,7 @@ struct MyPageReducer {
 
       case .fetchMyPageData:
         state.isLoading = true
+        state.isRedacted = true
 
         return .run { send in
           do {
@@ -58,6 +60,7 @@ struct MyPageReducer {
 
       case .myPageDataResponse(let myPageInfo):
         state.isLoading = false
+        state.isRedacted = false
         state.myPageInfo = transform(myPageInfo: myPageInfo)
         return .none
 

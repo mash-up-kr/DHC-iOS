@@ -33,3 +33,18 @@ extension MyPageInfo {
     let imageURL: URL?
   }
 }
+
+extension MyPageInfo {
+  static let sample = MyPageInfo(
+    animalCard: .init(
+      name: "가을의 흰말",
+      cardImageURL: nil
+    ),
+    birthDate: .init(date: "2000-01-01", birthTime: "09:30:00"),
+    preferredMissionCategoryList: [
+      .init(displayName: "식음료", imageURL: nil),
+      .init(displayName: "디지털·구독", imageURL: nil),
+      .init(displayName: "사교·모임", imageURL: nil),
+    ]
+  )
+}

@@ -28,17 +28,7 @@ extension MyPageClient: DependencyKey {
 
   static let previewValue = MyPageClient(
     fetchMyPageInfo: {
-      .init(
-        animalCard: .init(
-          name: "가을의 흰말",
-          cardImageURL: URL(string: "https://picsum.photos/id/7/200/200")
-        ),
-        birthDate: .init(date: "2000-01-01", birthTime: "09:30:00"),
-        preferredMissionCategoryList: [
-          .init(displayName: "식음료", imageURL: URL(string: "https://picsum.photos/id/8/200/200")),
-          .init(displayName: "이동/교통", imageURL: URL(string: "https://picsum.photos/id/9/200/200")),
-        ]
-      )
+      .sample
     }
   )
   static let testValue = Self()

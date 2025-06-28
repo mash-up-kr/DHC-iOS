@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 struct MyPageView: View {
   @Bindable var store: StoreOf<MyPageReducer>
+  @State private var showResetAlert = false
 
   var body: some View {
     ScrollView {
@@ -75,20 +76,10 @@ struct MyPageView: View {
               title: "앱 초기화",
               iconName: "icon/signOut",
               action: {
-                print("앱 초기화 버튼 클릭")
+                showResetAlert = true
               }
             )
-
-            Divider()
-              .background(ColorResource.Background.glassEffect.color)
-
-            SettingListRowView(
-              title: "알림 설정",
-              iconName: "icon/signOut",
-              toggleValue: .constant(true)
-            )
           }
-          .padding(.vertical, 12)
           .padding(.horizontal, 16)
           .frame(maxWidth: .infinity)
           .background(ColorResource.Neutral._700.color)
@@ -98,5 +89,17 @@ struct MyPageView: View {
         .padding(.horizontal, 20)
       }
     }
+    .resetAlert(
+      isPresented: $showResetAlert,
+      onReset: {
+        // TODO: 실제 초기화 로직 구현
+        print("앱 초기화 실행")
+        showResetAlert = false
+      },
+      onCancel: {
+        print("초기화 취소")
+        showResetAlert = false
+      }
+    )
   }
 }

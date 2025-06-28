@@ -85,5 +85,10 @@ struct MissionStatusView: View {
         .padding(.bottom, 20)
       }
     }
+    .radialGradientBackground(
+      type: .backgroundGradient02,
+      endRadiusMultiplier: 1.2,
+      scaleEffectX: 1.8
+    )
   }
 }

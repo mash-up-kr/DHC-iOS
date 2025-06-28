@@ -28,7 +28,7 @@ extension DHCBadge {
       case .spendType:
         return ColorResource.Text.Highlights.secondary.color
       case .dDay:
-        return ColorResource.Text.Highlights.primary.color
+        return ColorResource.Violet._200.color
       case .today:
         return ColorResource.Text.Body.primary.color
       case .missionLevel(let level):
@@ -67,7 +67,7 @@ extension DHCBadge {
       case .easy:
         return ColorResource.levelEasy.color
       case .medium:
-        return ColorResource.levelMedium.color
+        return ColorResource.Text.Highlights.secondary.color
       case .hard:
         return ColorResource.levelHard.color
       }
@@ -95,27 +95,27 @@ struct DHCBadge: View {
       badgeTitle: "식음료",
       badgeStyle: .spendType
     )
-    
+
     DHCBadge(
       badgeTitle: "2025년 5월 20일",
       badgeStyle: .today
     )
-    
+
     DHCBadge(
       badgeTitle: "D-12",
       badgeStyle: .dDay
     )
-    
+
     DHCBadge(
       badgeTitle: "Easy",
       badgeStyle: .missionLevel(.easy)
     )
-    
+
     DHCBadge(
       badgeTitle: "Medium",
       badgeStyle: .missionLevel(.medium)
     )
-    
+
     DHCBadge(
       badgeTitle: "Hard",
       badgeStyle: .missionLevel(.hard)

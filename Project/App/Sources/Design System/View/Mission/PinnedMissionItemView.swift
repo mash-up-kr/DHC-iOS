@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// TODO: 디자인팀 답변 오면, 고정 미션 끝나는 당일 표현 방식 적용하기 (D-day? D-0?)
 struct PinnedMissionItemView: View {
   let missionTitle: String
   let remainingDays: Int

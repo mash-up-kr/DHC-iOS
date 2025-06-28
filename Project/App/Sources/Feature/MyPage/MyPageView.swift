@@ -26,7 +26,11 @@ struct MyPageView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(20)
-        .radialGradientBackground(endRadiusMultiplier: 0.4, scaleEffectX: 2.0)
+        .radialGradientBackground(
+          type: .backgroundGradient01,
+          endRadiusMultiplier: 0.4,
+          scaleEffectX: 2.5
+        )
 
         // 소비 카테고리
         VStack(alignment: .leading, spacing: 12) {

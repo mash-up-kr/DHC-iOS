@@ -1,13 +1,13 @@
 //
-//  BadgeComponent.swift
-//  ProductName
+//  Badge.swift
+//  Flifin
 //
 //  Created by 김유빈 on 6/24/25.
 //
 
 import SwiftUI
 
-struct BadgeComponent: View {
+struct Badge: View {
   let badgeTitle: String
   let textStyle: Typography.TypographyStyle
   let textColor: Color
@@ -28,7 +28,7 @@ struct BadgeComponent: View {
 }
 
 #Preview {
-  BadgeComponent(
+  Badge(
     badgeTitle: "식음료",
     textStyle: Typography.Head.h8,
     textColor: ColorResource.Text.Highlights.secondary.color,

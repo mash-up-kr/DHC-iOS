@@ -80,7 +80,7 @@ struct DHCBadge: View {
   let badgeStyle: BadgeStyle
 
   var body: some View {
-    BadgeComponent(
+    Badge(
       badgeTitle: badgeTitle,
       textStyle: badgeStyle.textStyle,
       textColor: badgeStyle.textColor,

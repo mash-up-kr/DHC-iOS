@@ -20,10 +20,14 @@ struct PinnedMissionItemView: View {
       isMissionCompleted: $isMissionCompleted
     ) {
       DHCBadge(
-        badgeTitle: "D-\(remainingDays)",
+        badgeTitle: badgeTitle,
         badgeStyle: .spendCategory
       )
     }
+  }
+  
+  private var badgeTitle: String {
+    remainingDays == 0 ? "D-day" : "D-\(remainingDays)"
   }
 }
 

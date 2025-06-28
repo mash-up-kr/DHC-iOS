@@ -30,6 +30,8 @@ struct MissionStatusView: View {
 
   var body: some View {
     ScrollView {
+      LargeNavigationTitleView(title: "통계")
+
       VStack(spacing: 0) {
         VStack(alignment: .leading, spacing: 12) {
           Text("소비 분석")

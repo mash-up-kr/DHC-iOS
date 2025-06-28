@@ -15,6 +15,8 @@ struct MyPageView: View {
 
   var body: some View {
     ScrollView {
+      LargeNavigationTitleView(title: "마이페이지")
+
       VStack(spacing: 0) {
         // 내 사주 정보
         VStack(spacing: 16) {

@@ -7,36 +7,6 @@
 
 import SwiftUI
 
-extension DailyMissionItemView {
-  enum MissionLevel {
-    case easy
-    case medium
-    case hard
-
-    var displayName: String {
-      switch self {
-      case .easy:
-        return "Easy"
-      case .medium:
-        return "Medium"
-      case .hard:
-        return "Hard"
-      }
-    }
-
-    var textColor: Color {
-      switch self {
-      case .easy:
-        return ColorResource.levelEasy.color
-      case .medium:
-        return ColorResource.levelMedium.color
-      case .hard:
-        return ColorResource.levelHard.color
-      }
-    }
-  }
-}
-
 struct DailyMissionItemView: View {
   let missionTitle: String
   let missionLevel: DHCBadge.MissionLevel

@@ -17,11 +17,11 @@ struct AppResetAlertView: View {
         .ignoresSafeArea()
 
       VStack(spacing: 12) {
-        HStack {
-          Button(action: onCancel) {
-            Image(ImageResource.Icon.cancel)
-              .foregroundColor(.gray)
-          }
+        Button(action: onCancel) {
+          Image(ImageResource.Icon.cancel)
+            .resizable()
+            .frame(width: 28, height: 28)
+            .foregroundColor(ColorResource.Neutral._300.color)
         }
         .padding(.horizontal, 12)
         .frame(maxWidth: .infinity, alignment: .trailing)

@@ -11,6 +11,22 @@ import ComposableArchitecture
 
 struct MissionStatusView: View {
   @Bindable var store: StoreOf<MissionStatusReducer>
+  @State private var currentPage: Date = Date()
+
+  private let dates = [
+    Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
+    Calendar.current.date(byAdding: .day, value: 5, to: Date())!,
+    Calendar.current.date(byAdding: .day, value: 10, to: Date())!,
+  ]
+
+  private var dateModels: [CalendarDateModel] {
+    dates.map {
+      CalendarDateModel(
+        date: $0,
+        backgroundColor: ColorResource.Text.Highlights.primary.color
+      )
+    }
+  }
 
   var body: some View {
     ScrollView {
@@ -45,6 +61,22 @@ struct MissionStatusView: View {
             imageResource: .moneyWithWings,
             title: "5월달",
             description: "미션 평균 성공률 82%"
+          )
+
+          CalendarCardView(
+            dateModels: [
+              .init(
+                date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
+                backgroundColor: ColorResource.Text.Highlights.primary.color
+              ),
+              .init(
+                date: Calendar.current.date(byAdding: .day, value: 2, to: Date())!,
+                backgroundColor: ColorResource.Text.Highlights.primary.color
+              ), .init(
+                date: Calendar.current.date(byAdding: .day, value: 4, to: Date())!,
+                backgroundColor: ColorResource.Text.Highlights.primary.color
+              ),
+            ]
           )
         }
         .padding(.horizontal, 20)

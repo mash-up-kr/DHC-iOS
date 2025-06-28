@@ -85,6 +85,7 @@ struct MissionStatusView: View {
         .padding(.bottom, 20)
       }
     }
+    .contentMargins(.bottom, 46)
     .radialGradientBackground(
       type: .backgroundGradient02,
       endRadiusMultiplier: 1.2,

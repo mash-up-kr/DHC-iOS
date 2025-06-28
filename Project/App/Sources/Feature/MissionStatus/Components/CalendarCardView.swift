@@ -100,6 +100,7 @@ struct CalendarCardView: View {
     HStack {
       Button(action: moveToPreviousMonth) {
         Image(ImageResource.Chevron.left)
+          .resizable()
           .foregroundColor(ColorResource.Text.main.color)
           .frame(width: 32, height: 32)
       }
@@ -114,6 +115,7 @@ struct CalendarCardView: View {
 
       Button(action: moveToNextMonth) {
         Image(ImageResource.Chevron.right)
+          .resizable()
           .foregroundColor(ColorResource.Text.main.color)
           .frame(width: 32, height: 32)
       }

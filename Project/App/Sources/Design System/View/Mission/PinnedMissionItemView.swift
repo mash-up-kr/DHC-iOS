@@ -21,7 +21,7 @@ struct PinnedMissionItemView: View {
     ) {
       DHCBadge(
         badgeTitle: "D-\(remainingDays)",
-        badgeStyle: .spendType
+        badgeStyle: .spendCategory
       )
     }
   }

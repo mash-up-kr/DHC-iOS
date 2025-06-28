@@ -23,14 +23,14 @@ struct DHCBadge: View {
 
 extension DHCBadge {
   enum BadgeStyle {
-    case spendType
+    case spendCategory
     case dDay
     case today
     case missionLevel(MissionLevel)
 
     var textStyle: Typography.TypographyStyle {
       switch self {
-      case .spendType:
+      case .spendCategory:
         return Typography.Head.h8
       case .dDay, .today, .missionLevel:
         return Typography.Body.body6
@@ -39,7 +39,7 @@ extension DHCBadge {
 
     var textColor: Color {
       switch self {
-      case .spendType:
+      case .spendCategory:
         return ColorResource.Text.Highlights.secondary.color
       case .dDay:
         return ColorResource.Violet._200.color
@@ -52,7 +52,7 @@ extension DHCBadge {
 
     var backgroundColor: Color {
       switch self {
-      case .spendType, .today:
+      case .spendCategory, .today:
         return ColorResource.Background.glassEffect.color
       case .dDay, .missionLevel:
         return ColorResource.Background.badgePrimary.color
@@ -93,7 +93,7 @@ extension DHCBadge {
   VStack(spacing: 8) {
     DHCBadge(
       badgeTitle: "식음료",
-      badgeStyle: .spendType
+      badgeStyle: .spendCategory
     )
 
     DHCBadge(

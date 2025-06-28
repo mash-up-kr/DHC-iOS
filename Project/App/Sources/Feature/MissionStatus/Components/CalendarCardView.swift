@@ -69,9 +69,9 @@ struct CalendarCardView: View {
             .onEnded { value in
               let threshold: CGFloat = 100
               if value.translation.width > threshold {
-                previousMonth()
+                moveToPreviousMonth()
               } else if value.translation.width < -threshold {
-                nextMonth()
+                moveToNextMonth()
               }
             }
         )
@@ -98,7 +98,7 @@ struct CalendarCardView: View {
 
   private var calendarHeader: some View {
     HStack {
-      Button(action: previousMonth) {
+      Button(action: moveToPreviousMonth) {
         Image(ImageResource.Chevron.left)
           .foregroundColor(ColorResource.Text.main.color)
           .frame(width: 32, height: 32)
@@ -112,7 +112,7 @@ struct CalendarCardView: View {
 
       Spacer()
 
-      Button(action: nextMonth) {
+      Button(action: moveToNextMonth) {
         Image(ImageResource.Chevron.right)
           .foregroundColor(ColorResource.Text.main.color)
           .frame(width: 32, height: 32)
@@ -184,7 +184,7 @@ struct CalendarCardView: View {
     return allCells
   }
 
-  private func previousMonth() {
+  private func moveToPreviousMonth() {
     displayedMonth = Calendar.current.date(
       byAdding: .month,
       value: -1,
@@ -192,7 +192,7 @@ struct CalendarCardView: View {
     ) ?? displayedMonth
   }
 
-  private func nextMonth() {
+  private func moveToNextMonth() {
     displayedMonth = Calendar.current.date(
       byAdding: .month,
       value: 1,

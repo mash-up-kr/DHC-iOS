@@ -29,11 +29,12 @@ struct AppResetAlertView: View {
         VStack(spacing: 16) {
           RoundedRectangle(cornerRadius: 12)
             .fill(ColorResource.Neutral._500.color)
-            .frame(width: 280, height: 100)
+            .frame(height: 100)
             .overlay(
               Text("그래픽 들어갈 자리")
                 .foregroundColor(.white)
             )
+            .padding(.horizontal, 16)
 
           VStack(spacing: 4) {
             Text("정말 앱을 초기화 하시겠어요?")
@@ -44,9 +45,9 @@ struct AppResetAlertView: View {
               .textStyle(.body3)
               .foregroundColor(ColorResource.Neutral._300.color)
           }
+          .padding(.horizontal, 20)
           .multilineTextAlignment(.center)
         }
-        .padding(.horizontal, 20)
 
         VStack(spacing: 4) {
           CTAButton(

@@ -68,7 +68,7 @@ struct AppResetAlertView: View {
       }
       .padding(.vertical, 16)
       .background(ColorResource.Neutral._700.color)
-      .cornerRadius(12)
+      .clipShape(.rect(cornerRadius: 12))
       .padding(.horizontal, 32)
     }
   }

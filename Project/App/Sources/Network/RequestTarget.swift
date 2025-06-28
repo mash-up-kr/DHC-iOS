@@ -25,6 +25,10 @@ extension RequestTarget {
     DHCEnvironment.baseURL
   }
 
+  var headers: HTTPHeaders? {
+    return nil
+  }
+
   func asURLRequest() throws -> URLRequest {
     var url = baseURL.appendingPathComponent(path)
 

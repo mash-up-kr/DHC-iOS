@@ -15,6 +15,20 @@ struct DHCNetworkResponse {
   let response: HTTPURLResponse?
 }
 
+extension DHCNetworkResponse {
+  func map<T: Decodable>(to type: T.Type) throws -> T {
+    guard let data else {
+      throw NetworkManagerError.emptyData
+    }
+
+    do {
+      return try JSONDecoder().decode(type, from: data)
+    } catch {
+      throw NetworkManagerError.decodingFailed
+    }
+  }
+}
+
 struct DHCResponseSerializer: ResponseSerializer {
   func serialize(
     request: URLRequest?,

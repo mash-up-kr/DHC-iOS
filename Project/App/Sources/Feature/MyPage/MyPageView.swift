@@ -19,11 +19,14 @@ struct MyPageView: View {
         // 내 사주 정보
         VStack(spacing: 16) {
           FortuneInfoCardView(
-            imageURL: URL(string: "https://picsum.photos/id/6/200/200")!,
-            fortune: "가을의 흰말"
+            imageURL: store.myPageInfo.animalCard.cardImageURL,
+            fortune: store.myPageInfo.animalCard.name
           )
 
-          BirthdayInfoView(date: "2000년 1월 1일", time: "오후 1시 30분")
+          BirthdayInfoView(
+            date: store.myPageInfo.birthDate.date,
+            time: store.myPageInfo.birthDate.birthTime
+          )
         }
         .frame(maxWidth: .infinity)
         .padding(20)
@@ -42,19 +45,12 @@ struct MyPageView: View {
 
           ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 8) {
-              // 상태 구성 후 ForEach 구문으로 변경
-              CategoryCardView(
-                imageURL: URL(string: "https://picsum.photos/id/7/200/200")!,
-                title: "이동·교통"
-              )
-              CategoryCardView(
-                imageURL: URL(string: "https://picsum.photos/id/8/200/200")!,
-                title: "디지털·구독"
-              )
-              CategoryCardView(
-                imageURL: URL(string: "https://picsum.photos/id/9/200/200")!,
-                title: "사교·모임"
-              )
+              ForEach(store.myPageInfo.preferredMissionCategoryList, id: \.self) { item in
+                CategoryCardView(
+                  imageURL: item.imageURL,
+                  title: item.displayName
+                )
+              }
             }
           }
           .contentMargins(.horizontal, 20)
@@ -89,15 +85,17 @@ struct MyPageView: View {
         .padding(.horizontal, 20)
       }
     }
+    .onAppear {
+      store.send(.onAppear)
+    }
+    .redacted(reason: store.isRedacted ? .placeholder : [])
     .resetAlert(
       isPresented: $showResetAlert,
       onReset: {
-        // TODO: 실제 초기화 로직 구현
-        print("앱 초기화 실행")
+        store.send(.resetAppConfirmed)
         showResetAlert = false
       },
       onCancel: {
-        print("초기화 취소")
         showResetAlert = false
       }
     )

@@ -11,10 +11,10 @@ import SDWebImageSwiftUI
 
 struct FortuneInfoCardView: View {
 
-  private let imageURL: URL
+  private let imageURL: URL?
   private let fortune: String
 
-  init(imageURL: URL, fortune: String) {
+  init(imageURL: URL?, fortune: String) {
     self.imageURL = imageURL
     self.fortune = fortune
   }
@@ -25,6 +25,7 @@ struct FortuneInfoCardView: View {
         image
       } placeholder: {
         Rectangle()
+          .fill(ColorResource.Neutral._600.color)
       }
       .resizable()
       .frame(width: 36, height: 36)

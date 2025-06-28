@@ -15,7 +15,7 @@ struct MainTabReducer {
   struct State: Equatable {
     var homeTab = HomeReducer.State()
     var missionStatusTab = MissionStatusReducer.State()
-    var myPageTab = MyPageReducer.State()
+    var myPageTab = MyPageReducer.State(myPageInfo: .sample)
     var selectedTab = TabKind.home
   }
 

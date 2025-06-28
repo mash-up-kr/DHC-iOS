@@ -64,16 +64,26 @@ struct MissionItem<V>: View where V: View {
 
 #Preview {
   VStack(spacing: 24) {
-    PinnedMissionItemView(
+    MissionItem(
       missionTitle: "가까운 거리 걸어가기",
-      remainingDays: 3,
+      isPinned: true,
       isMissionCompleted: .constant(true)
-    )
-    
-    DailyMissionItemView(
-      missionTitle: "커피 안 마시기",
-      missionLevel: .easy,
-      isMissionCompleted: .constant(true)
-    )
+    ) {
+      DHCBadge(
+        badgeTitle: "D-3",
+        badgeStyle: .dDay
+      )
+    }
+
+    MissionItem(
+      missionTitle: "가까운 거리 걸어가기",
+      isPinned: true,
+      isMissionCompleted: .constant(false)
+    ) {
+      DHCBadge(
+        badgeTitle: "D-3",
+        badgeStyle: .dDay
+      )
+    }
   }
 }

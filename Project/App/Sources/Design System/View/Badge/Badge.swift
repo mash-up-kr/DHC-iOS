@@ -20,7 +20,7 @@ struct Badge: View {
       .padding(.horizontal, 12)
       .padding(.vertical, 4.5)
       .background {
-        RoundedRectangle(cornerRadius: 99.9)
+        RoundedRectangle(cornerRadius: .infinity)
           .foregroundStyle(backgroundColor)
       }
       .fixedSize(horizontal: true, vertical: true)

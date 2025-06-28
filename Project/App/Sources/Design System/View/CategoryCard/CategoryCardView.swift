@@ -10,7 +10,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 fileprivate struct CategoryCardContentView: View {
-  private let imageURL: URL
+  private let imageURL: URL?
   private let title: String
   @Binding private var isSelected: Bool
   
@@ -19,7 +19,7 @@ fileprivate struct CategoryCardContentView: View {
   }
   
   init(
-    imageURL: URL,
+    imageURL: URL?,
     title: String,
     isSelected: Binding<Bool>
   ) {
@@ -49,11 +49,11 @@ fileprivate struct CategoryCardContentView: View {
 }
 
 struct CategoryCardView: View {
-  private let imageURL: URL
+  private let imageURL: URL?
   private let title: String
 
   init(
-    imageURL: URL,
+    imageURL: URL?,
     title: String
   ) {
     self.imageURL = imageURL

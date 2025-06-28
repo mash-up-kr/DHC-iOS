@@ -10,5 +10,6 @@ enum NetworkManagerError: Error {
   case requestFailed(underlying: Error)
   case decodingFailed(underlying: Error)
   case emptyResponse
+  case userIDNotFound
   case unknown
 }

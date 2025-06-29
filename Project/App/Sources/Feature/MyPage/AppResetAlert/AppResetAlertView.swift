@@ -73,6 +73,7 @@ struct AppResetAlertView: View {
       .background(ColorResource.Neutral._700.color)
       .clipShape(.rect(cornerRadius: 12))
       .padding(.horizontal, 32)
+      .loadingOverlay(isLoading: store.isLoading)
     }
   }
 }

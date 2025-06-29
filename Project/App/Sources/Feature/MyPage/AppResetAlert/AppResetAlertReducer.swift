@@ -17,6 +17,7 @@ struct AppResetAlertReducer {
 
   @ObservableState
   struct State: Equatable {
+    var isLoading = false
   }
 
   enum Action {
@@ -36,6 +37,7 @@ struct AppResetAlertReducer {
     Reduce { state, action in
       switch action {
       case .confirmButtonTapped:
+        state.isLoading = true
         return .run { send in
           try await myPageClient.resetApp()
           userManager.deleteUserID()
@@ -45,6 +47,7 @@ struct AppResetAlertReducer {
       case .cancelButtonTapped:
         return .send(.delegate(.cancel))
       case .delegate:
+        state.isLoading = false
         return .none
       }
     }

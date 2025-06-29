@@ -11,6 +11,7 @@ import Alamofire
 
 enum MyPageAPI {
   case myPage
+  case resetApp
 }
 
 extension MyPageAPI: RequestTarget {
@@ -18,6 +19,8 @@ extension MyPageAPI: RequestTarget {
     switch self {
     case .myPage:
       "/view/users/{userID}/myPage"
+    case .resetApp:
+      "/api/users/{userID}"
     }
   }
 
@@ -25,19 +28,21 @@ extension MyPageAPI: RequestTarget {
     switch self {
     case .myPage:
       .get
+    case .resetApp:
+      .delete
     }
   }
 
   var queryParameters: Parameters? {
     switch self {
-    case .myPage:
+    case .myPage, .resetApp:
       nil
     }
   }
 
   var bodyParameters: Parameters? {
     switch self {
-    case .myPage:
+    case .myPage, .resetApp:
       nil
     }
   }

@@ -9,6 +9,10 @@ import ComposableArchitecture
 
 @Reducer
 struct AppResetAlertReducer {
+  @Dependency(\.userManager) var userManager
+  @Dependency(\.deviceIDManager) var deviceIDManager
+  @Dependency(\.myPageClient) var myPageClient
+
   init() {}
 
   @ObservableState
@@ -20,19 +24,27 @@ struct AppResetAlertReducer {
     case confirmButtonTapped
     case cancelButtonTapped
 
-    // Internal Action
-
     // Route Action
+    case delegate(Delegate)
+    enum Delegate {
+      case cancel
+      case resetCompleted
+    }
   }
 
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
       case .confirmButtonTapped:
-        print("초기화 버튼 탭")
-        return .none
+        return .run { send in
+          try await myPageClient.resetApp()
+          userManager.deleteUserID()
+          try? deviceIDManager.deleteDeviceID()
+          await send(.delegate(.resetCompleted))
+        }
       case .cancelButtonTapped:
-        print("취소 버튼 탭")
+        return .send(.delegate(.cancel))
+      case .delegate:
         return .none
       }
     }

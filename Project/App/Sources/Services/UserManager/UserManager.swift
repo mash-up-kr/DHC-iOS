@@ -22,7 +22,8 @@ extension UserManager: DependencyKey {
     @Shared(.appStorage("userID")) var userID: String?
     return UserManager(
       getUserID: {
-        userID
+        debugPrint("✅ getUserID: \(String(describing: userID))")
+        return userID
       },
       setUserID: { newID in
         $userID.withLock { userID in

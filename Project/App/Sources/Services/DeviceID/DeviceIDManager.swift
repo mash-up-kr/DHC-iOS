@@ -32,8 +32,10 @@ extension DeviceIDManager: DependencyKey {
       loadDeviceID: {
         let uuidString = try keychainClient.load(key)
         guard let uuid = UUID(uuidString: uuidString) else {
+          debugPrint("🚨 loadDeviceID Failed")
           throw KeychainError.loadFailed
         }
+        debugPrint("✅ loadDeviceID: \(uuid)")
         return uuid
       },
       deleteDeviceID: {

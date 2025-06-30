@@ -34,6 +34,7 @@ struct HomeToolTipView: View {
       .multilineTextAlignment(.center)
       .foregroundStyle(ColorResource.Text.main.color)
       .padding(.horizontal, 2)
+      .fixedSize(horizontal: true, vertical: true)
   }
   
   private var bottomArrowView: some View {

@@ -74,12 +74,12 @@ struct CategoryCardView: View {
 
 
 struct CategoryCardButton: View {
-  private let imageURL: URL
+  private let imageURL: URL?
   private let title: String
   @Binding private var isSelected: Bool
 
   init(
-    imageURL: URL,
+    imageURL: URL?,
     title: String,
     isSelected: Binding<Bool>
   ) {
@@ -98,13 +98,13 @@ struct CategoryCardButton: View {
 }
 
 struct CategoryCardToggleStyle: ToggleStyle {
-  private let imageURL: URL
+  private let imageURL: URL?
   private let title: String
   private func backgroundColor(isSelected: Bool) -> Color {
     isSelected ? ColorResource.Background.badgePrimary.color : ColorResource.Neutral._700.color
   }
   
-  init(imageURL: URL, title: String) {
+  init(imageURL: URL?, title: String) {
     self.imageURL = imageURL
     self.title = title
   }

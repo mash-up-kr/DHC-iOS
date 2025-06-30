@@ -19,10 +19,10 @@ struct SelectCategoryReducer {
     let calendarType: CalendarType
     let birthday: Date
     let birthTime: Date?
-    var categoryInfos: [CategoryInfo] = [] // TODO: 추후 API 연결 시 수정
-    var selectedCategoryID: Set<Int> = []
+    var missionCategories: [MissionCategory] = []
+    var selectedCategories: Set<String> = []
     var isNextButtonDisabled: Bool {
-      selectedCategoryID.count < 3
+      selectedCategories.count < 3
     }
 
     init(
@@ -30,25 +30,29 @@ struct SelectCategoryReducer {
       calendarType: CalendarType,
       birthday: Date,
       birthTime: Date?,
-      categoryInfos: [CategoryInfo] = [],
-      selectedCategoryID: Set<Int> = []
+      missionCategories: [MissionCategory] = [],
+      selectedCategories: Set<String> = []
     ) {
       self.gender = gender
       self.calendarType = calendarType
       self.birthday = birthday
       self.birthTime = birthTime
-      self.categoryInfos = categoryInfos
-      self.selectedCategoryID = selectedCategoryID
+      self.missionCategories = missionCategories
+      self.selectedCategories = selectedCategories
     }
   }
+  
+  @Dependency(\.signUpClient) var signUpClient
 
   enum Action {
     // View Action
+    case onAppear
     case backButtonTapped
     case nextButtonTapped
-    case categoryButtonTapped(categoryID: Int, isSelected: Bool)
+    case categoryButtonTapped(categoryName: String, isSelected: Bool)
     
     // Internal Action
+    case fetchMissionCategories([MissionCategory])
     
     // Route Action
   }
@@ -56,19 +60,30 @@ struct SelectCategoryReducer {
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
+        case .onAppear:
+          return .run { send in
+            await send(.fetchMissionCategories(
+              try await signUpClient.fetchMissionCategories()
+            ))
+          }
+          
         case .backButtonTapped:
           return .none
           
         case .nextButtonTapped:
           return .none
           
-        case .categoryButtonTapped(let categoryID, let isSelected):
+        case .categoryButtonTapped(let categoryName, let isSelected):
           if isSelected {
-            state.selectedCategoryID.insert(categoryID)
+            state.selectedCategories.insert(categoryName)
           } else {
-            state.selectedCategoryID.remove(categoryID)
+            state.selectedCategories.remove(categoryName)
           }
           
+          return .none
+          
+        case .fetchMissionCategories(let missionCategories):
+          state.missionCategories = missionCategories
           return .none
       }
     }

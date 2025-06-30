@@ -49,6 +49,9 @@ struct SelectCategoryView: View {
     }
     .background(ColorResource.Background.main.color)
     .navigationBarBackButtonHidden()
+    .onAppear {
+      store.send(.onAppear)
+    }
   }
   
   private var categoryGridView: some View {
@@ -57,16 +60,16 @@ struct SelectCategoryView: View {
         columns: columns,
         spacing: 15,
         content: {
-          ForEach(store.categoryInfos, id: \.id) { categoryInfo in
+          ForEach(store.missionCategories, id: \.name) { category in
             CategoryCardButton(
-              imageURL: categoryInfo.url,
-              title: categoryInfo.title,
+              imageURL: category.imageURL,
+              title: category.displayName,
               isSelected: Binding(
                 get: {
-                  store.selectedCategoryID.contains(categoryInfo.id)
+                  store.selectedCategories.contains(category.name)
                 },
                 set: { isSelected in
-                  store.send(.categoryButtonTapped(categoryID: categoryInfo.id, isSelected: isSelected))
+                  store.send(.categoryButtonTapped(categoryName: category.name, isSelected: isSelected))
                 }
               )
             )

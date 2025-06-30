@@ -24,6 +24,11 @@ struct RootView: View {
         if let store = store.scope(state: \.destination?.mainTab, action: \.destination.mainTab) {
           MainTabView(store: store)
         }
+        
+      case .selectGender:
+        if let store = store.scope(state: \.destination?.selectGender, action: \.destination.selectGender) {
+          SelectGenderView(store: store)
+        }
       }
     }
     .onAppear {

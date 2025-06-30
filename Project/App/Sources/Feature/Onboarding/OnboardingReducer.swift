@@ -33,6 +33,7 @@ struct OnboardingReducer {
     
     case delegate(Delegate)
     enum Delegate {
+      case moveToSelectGenderView
       case moveToMainTabView
     }
   }
@@ -67,9 +68,8 @@ struct OnboardingReducer {
           return .none
           
         case .element(id: _, action: .missionExample(.nextButtonTapped)):
-          // TODO: 개인정보 입력으로 이동
-          return .none
-          
+          return .send(.delegate(.moveToSelectGenderView))
+            
         default:
           return .none
         }

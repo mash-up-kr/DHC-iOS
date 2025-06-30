@@ -20,14 +20,17 @@ struct BirthdayInputReducer {
 
   @ObservableState
   struct State: Equatable {
-    var dateType: CalendarType
+    let gender: Gender
+    var calendarType: CalendarType
     var birthday: Date
 
     init(
-      dateType: CalendarType = .solar,
+      gender: Gender,
+      calendarType: CalendarType = .solar,
       birthday: Date = Date(year: 2000, month: 1, day: 1)
     ) {
-      self.dateType = dateType
+      self.gender = gender
+      self.calendarType = calendarType
       self.birthday = birthday
     }
   }
@@ -42,13 +45,14 @@ struct BirthdayInputReducer {
     // Internal Action
     
     // Route Action
+    case moveToBirthTimeInputView(Gender, CalendarType, Date)
   }
 
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
         case .calendarTypeButtonTapped(let type):
-          state.dateType = type
+          state.calendarType = type
           return .none
           
         case .birthdayChanged(let birthday):
@@ -56,10 +60,13 @@ struct BirthdayInputReducer {
           return .none
           
         case .nextButtonTapped:
-          return .none
+          return .send(.moveToBirthTimeInputView(state.gender, state.calendarType, state.birthday))
           
         case .backButtonTapped:
           return .none
+        
+      case .moveToBirthTimeInputView:
+        return .none
       }
     }
   }

@@ -15,6 +15,7 @@ struct RootReducer {
   enum Destination {
     case onboarding(OnboardingReducer)
     case mainTab(MainTabReducer)
+    case selectGender(SelectGenderReducer)
   }
 
   @ObservableState
@@ -32,6 +33,10 @@ struct RootReducer {
       switch action {
       case .destination(.presented(.onboarding(.delegate(.moveToMainTabView)))):
         state.destination = .mainTab(MainTabReducer.State())
+        return .none
+        
+      case .destination(.presented(.onboarding(.delegate(.moveToSelectGenderView)))):
+        state.destination = .selectGender(SelectGenderReducer.State())
         return .none
 
       case .destination:

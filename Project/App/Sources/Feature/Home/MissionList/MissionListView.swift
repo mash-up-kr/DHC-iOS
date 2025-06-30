@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct MissionListView: View {
-    var body: some View {
-      VStack(spacing: 24) {
-        pinnedMissionSection
+  @State private var isTooltipVisible = false
 
-        dailyMissionSection
-      }
-      .padding(.horizontal, 20)
+  var body: some View {
+    VStack(spacing: 24) {
+      pinnedMissionSection
+
+      dailyMissionSection
     }
-  
+    .padding(.horizontal, 20)
+  }
+
   private var pinnedMissionSection: some View {
     VStack(spacing: 4) {
       HStack(spacing: 12) {
@@ -26,23 +28,31 @@ struct MissionListView: View {
             .foregroundStyle(ColorResource.Text.Body.primary.color)
 
           Button {
-            // TODO: 툴팁 띄우기
+            isTooltipVisible.toggle()
           } label: {
             Image(ImageResource.Icon.info)
               .renderingMode(.template)
               .foregroundStyle(ColorResource.Neutral._400.color)
               .frame(width: 24, height: 24)
           }
+          .overlay {
+            if isTooltipVisible {
+              HomeToolTipView(
+                message: "좋은 금융 습관 형성을 위해\n2주간 매일 진행하는 미션이에요!"
+              )
+              .offset(y: -50)
+            }
+          }
         }
 
-        Text("Category") // TODO: 소비 카테고리 -> Badge 컴포넌트로 대체하기 / 카테고리 연결
+        Text("식음료") // TODO: 소비 카테고리 -> Badge 컴포넌트로 대체하기 + 카테고리 연결
       }
       .frame(maxWidth: .infinity, alignment: .leading)
 
       // TODO: PinnedMissionItemView 넣기
     }
   }
-  
+
   private var dailyMissionSection: some View {
     VStack(spacing: 16) {
       Text("금전운 기반 일일 미션")
@@ -56,5 +66,5 @@ struct MissionListView: View {
 }
 
 #Preview {
-    MissionListView()
+  MissionListView()
 }

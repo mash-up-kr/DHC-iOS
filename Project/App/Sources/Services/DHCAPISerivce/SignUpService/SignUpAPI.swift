@@ -12,6 +12,7 @@ import Alamofire
 enum SignUpAPI {
   case searchUser(deviceToken: String)
   case missionCategories
+  case registerUser(RegisterUserRequest)
 }
 
 extension SignUpAPI: RequestTarget {
@@ -21,6 +22,8 @@ extension SignUpAPI: RequestTarget {
         "/api/users"
       case .missionCategories:
         "/api/mission-categories"
+      case .registerUser:
+        "/api/users/register"
     }
   }
   
@@ -28,17 +31,19 @@ extension SignUpAPI: RequestTarget {
     switch self {
       case .searchUser, .missionCategories:
         .get
+      case .registerUser:
+        .post
     }
   }
   
   var queryParameters: Parameters? {
     switch self {
-    case .missionCategories:
-      nil
       case .searchUser(let deviceToken):
         [
           "userToken": deviceToken
         ]
+      case .missionCategories, .registerUser:
+        nil
     }
   }
   
@@ -46,6 +51,8 @@ extension SignUpAPI: RequestTarget {
     switch self {
       case .searchUser, .missionCategories:
         nil
+      case .registerUser(let request):
+        request
     }
   }
 }

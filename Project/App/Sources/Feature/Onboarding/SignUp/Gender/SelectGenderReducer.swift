@@ -7,20 +7,6 @@
 
 import ComposableArchitecture
 
-enum Gender {
-  case male
-  case female
-  
-  var title: String {
-    switch self {
-      case .male:
-        return "남성"
-      case .female:
-        return "여성"
-    }
-  }
-}
-
 @Reducer
 struct SelectGenderReducer {
   init() {}

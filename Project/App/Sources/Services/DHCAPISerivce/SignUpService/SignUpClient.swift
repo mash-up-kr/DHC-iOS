@@ -5,12 +5,22 @@
 //  Created by hyerin on 6/30/25.
 //
 
+import Foundation
+
 import ComposableArchitecture
 
 @DependencyClient
 struct SignUpClient: Sendable {
   var searchUser: (UUID) async throws -> String
   var fetchMissionCategories: () async throws -> [MissionCategory]
+  var registerUser: (
+    _ deviceID: String,
+    _ gender: Gender,
+    _ birthday: Date,
+    _ calendarType: CalendarType,
+    _ birthTime: Date?,
+    _ missionCategoryList: [String]
+  ) async throws -> String
 }
 
 extension SignUpClient: DependencyKey {
@@ -32,6 +42,32 @@ extension SignUpClient: DependencyKey {
         return try await networkManager
           .request(endpoint)
           .map(to: MissionCategoryDTO.self)
+          .toDomain
+      },
+      registerUser: { deviceID, gender, birthday, calendarType, birthTime, missionCategoryList in
+        @Dependency(\.dateFormatterCache) var dateFormatterCache
+        
+        let birthdayString = dateFormatterCache.formatter(for: "yyyy-MM-dd").string(from: birthday)
+        var birthTimeString = ""
+        if let birthTime {
+          birthTimeString = dateFormatterCache.formatter(for: "HH:mm:ss").string(from: birthTime)
+        }
+        
+        let request = RegisterUserRequest(
+          userToken: deviceID,
+          gender: gender,
+          birthDate: .init(
+            date: birthdayString,
+            calendarType: calendarType
+          ),
+          birthTime: birthTimeString,
+          preferredMissionCategoryList: missionCategoryList
+        )
+        let endpoint = SignUpAPI.registerUser(request)
+        
+        return try await networkManager
+          .request(endpoint)
+          .map(to: UserIDDTO.self)
           .toDomain
       }
     )

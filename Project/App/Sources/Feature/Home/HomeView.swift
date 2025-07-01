@@ -72,7 +72,8 @@ struct HomeView: View {
           .renderingMode(.template)
           .frame(width: 20, height: 20)
       }
-      .padding(.horizontal, 8)
+      .padding(.leading, 12)
+      .padding(.trailing, 8)
       .padding(.vertical, 4)
       .foregroundStyle(ColorResource.Neutral._300.color)
       .background {

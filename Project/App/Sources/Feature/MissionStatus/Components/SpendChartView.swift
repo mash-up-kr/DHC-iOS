@@ -8,10 +8,10 @@
 import Charts
 import SwiftUI
 
-struct SpendChartData: Identifiable {
+struct SpendChartData: Identifiable, Equatable {
   let id = UUID()
   let category: String
-  let amount: Int
+  let amount: Double
   let isHighlighted: Bool
 
   /// 금액 포맷팅 (예: 52000 -> "52,000원")

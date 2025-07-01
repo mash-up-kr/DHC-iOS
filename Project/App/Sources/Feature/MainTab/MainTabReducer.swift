@@ -14,7 +14,7 @@ struct MainTabReducer {
   @ObservableState
   struct State: Equatable {
     var homeTab = HomeReducer.State()
-    var reportTab = ReportReducer.State()
+    var reportTab = ReportReducer.State(reportInfo: .sample, spendChart: nil)
     var myPageTab = MyPageReducer.State(myPageInfo: .sample)
     var selectedTab = TabKind.home
   }

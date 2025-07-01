@@ -40,7 +40,15 @@ struct OnboardingView: View {
         )
         .padding(20)
       }
-      .background(ColorResource.Background.main.color)
+      .background {
+        VStack(spacing: 0) {
+          Spacer()
+          LoopingVideoPlayer(videoURL: Bundle.main.url(forResource: "onboardingVideo", withExtension: "mp4")!)
+            .ignoresSafeArea()
+            .disabled(true)
+            .scaledToFill()
+        }
+      }
     } destination: { store in
       switch store.case {
       case .serviceExplanation(let store):

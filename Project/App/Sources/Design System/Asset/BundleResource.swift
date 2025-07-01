@@ -11,6 +11,10 @@ extension URL {
   enum Resource {
     case fortuneCardFrontDefaultView
     case fortuneCardBackView
+    case clover
+    case knife
+    case greenFace
+    case redFace
     case splashLottie
     case onboardingVideo
   }
@@ -25,6 +29,14 @@ extension URL {
       return Bundle.main.url(forResource: "splash", withExtension: "json")
     case .onboardingVideo:
       return Bundle.main.url(forResource: "onboardingVideo", withExtension: "mp4")
+    case .clover:
+      return Bundle.main.url(forResource: "clover", withExtension: "png")
+    case .knife:
+      return Bundle.main.url(forResource: "knife", withExtension: "png")
+    case .greenFace:
+      return Bundle.main.url(forResource: "greenFace", withExtension: "png")
+    case .redFace:
+      return Bundle.main.url(forResource: "redFace", withExtension: "png")
     }
   }
 }

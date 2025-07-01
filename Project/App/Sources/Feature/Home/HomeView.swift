@@ -51,10 +51,8 @@ struct HomeView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
-        Button {
+        FortuneCoreView(score: 35) { // TODO: 점수 연결
           // TODO: '오늘의 금전운' 화면으로 이동하기
-        } label: {
-          FortuneCoreView(score: 35) // TODO: 점수 연결
         }
       }
     }

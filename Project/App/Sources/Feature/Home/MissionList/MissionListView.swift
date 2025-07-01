@@ -13,12 +13,13 @@ struct MissionListView: View {
   @Bindable var store: StoreOf<MissionListReducer>
 
   var body: some View {
-    VStack(spacing: 24) {
+    VStack(alignment: .leading, spacing: 24) {
       pinnedMissionSection
 
       dailyMissionSection
     }
     .padding(.horizontal, 20)
+    .frame(maxWidth: .infinity, alignment: .leading)
   }
 
   private var pinnedMissionSection: some View {
@@ -49,8 +50,7 @@ struct MissionListView: View {
 
         Text("식음료") // TODO: 소비 카테고리 -> Badge 컴포넌트로 대체하기 + 카테고리 연결
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
-
+      
       // TODO: PinnedMissionItemView 넣기
     }
   }
@@ -63,7 +63,6 @@ struct MissionListView: View {
 
       // TODO: DailyMissionItemView 넣기
     }
-    .frame(maxWidth: .infinity, alignment: .leading)
   }
 }
 

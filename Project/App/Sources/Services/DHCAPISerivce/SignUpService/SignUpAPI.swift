@@ -36,6 +36,17 @@ extension SignUpAPI: RequestTarget {
     }
   }
   
+  var headers: HTTPHeaders? {
+    switch self {
+    case .searchUser, .missionCategories:
+      nil
+    case .registerUser:
+      [
+        "Content-Type": "application/json"
+      ]
+    }
+  }
+  
   var queryParameters: Parameters? {
     switch self {
       case .searchUser(let deviceToken):

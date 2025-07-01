@@ -43,6 +43,8 @@ struct SelectCategoryReducer {
   }
   
   @Dependency(\.signUpClient) var signUpClient
+  @Dependency(\.deviceIDManager) var deviceIDManager
+  @Dependency(\.userManager) var userManager
 
   enum Action {
     // View Action
@@ -55,10 +57,16 @@ struct SelectCategoryReducer {
     case fetchMissionCategories([MissionCategory])
     
     // Route Action
+    case delegate(Delegate)
+    enum Delegate {
+      case registerUserCompleted
+    }
   }
 
   var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce {
+      state,
+      action in
       switch action {
         case .onAppear:
           return .run { send in
@@ -71,7 +79,20 @@ struct SelectCategoryReducer {
           return .none
           
         case .nextButtonTapped:
-          return .none
+          return .run { [state] send in
+            do {
+              let userID = try await signUpClient.registerUser(
+                deviceID: deviceIDManager.loadDeviceID().uuidString,
+                gender: state.gender,
+                birthday: state.birthday,
+                calendarType: state.calendarType,
+                birthTime: state.birthTime,
+                missionCategoryList: Array(state.selectedCategories)
+              )
+              userManager.setUserID(userID)
+              await send(.delegate(.registerUserCompleted))
+            } catch {}
+          }
           
         case .categoryButtonTapped(let categoryName, let isSelected):
           if isSelected {
@@ -84,6 +105,9 @@ struct SelectCategoryReducer {
           
         case .fetchMissionCategories(let missionCategories):
           state.missionCategories = missionCategories
+          return .none
+          
+        case .delegate:
           return .none
       }
     }

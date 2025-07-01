@@ -53,6 +53,11 @@ struct RootReducer {
       case .destination(.presented(.onboarding(.delegate(.moveToSelectGenderView)))):
         state.destination = .selectGender(SelectGenderReducer.State())
         return .none
+        
+      case .destination(.presented(.selectGender(.delegate(.registerCompleted)))):
+        // TODO: 홈에서 로직 처리 필요
+        state.destination = .mainTab(MainTabReducer.State())
+        return .none
 
       case .destination(.presented(.mainTab(.myPageTab(.delegate(.moveToOnboarding))))):
         state.destination = .onboarding(OnboardingReducer.State())

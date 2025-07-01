@@ -37,6 +37,10 @@ struct SelectGenderReducer {
     // Route Action
     case path(StackActionOf<Path>)
     case moveToBirthdayInputView
+    case delegate(Delegate)
+    enum Delegate {
+      case registerCompleted
+    }
   }
   
   @Reducer
@@ -61,35 +65,46 @@ struct SelectGenderReducer {
         
       case .nextButtonTapped:
           return .send(.moveToBirthdayInputView)
-        
-      case .genderSelected:
-        state.isBottomButtonDisabled = false
-        return .none
-        
-      case .path(let action):
-        switch action {
-          case .element(id: _, action: .birthdayInput(.moveToBirthTimeInputView(let gender, let calendarType, let birthday))):
-            state.path.append(.birthTimeInput(.init(gender: gender, calendarType: calendarType, birthday: birthday)))
-            return .none
-          case .element(id: _, action: .birthTimeInput(.moveToSelectCategoryView(let gender, let calendarType, let birthday, let birthTime))):
-            state.path.append(.selectCategory(.init(gender: gender, calendarType: calendarType, birthday: birthday, birthTime: birthTime)))
-            return .none
-          case .element(let id, action: .birthdayInput(.backButtonTapped)):
-            state.path.pop(from: id)
-            return .none
-          case .element(let id, action: .birthTimeInput(.backButtonTapped)):
-            state.path.pop(from: id)
-            return .none
-          case .element(let id, action: .selectCategory(.backButtonTapped)):
-            state.path.pop(from: id)
-            return .none
-          default:
-            return .none
-        }
-        
-      case .moveToBirthdayInputView:
-        state.path.append(.birthdayInput(.init(gender: state.gender ?? .male)))
-        return .none
+          
+        case .genderSelected:
+          state.isBottomButtonDisabled = false
+          return .none
+          
+        case .path(let action):
+          switch action {
+            case .element(id: _, action: .birthdayInput(.moveToBirthTimeInputView(let gender, let calendarType, let birthday))):
+              state.path.append(.birthTimeInput(.init(gender: gender, calendarType: calendarType, birthday: birthday)))
+              return .none
+              
+            case .element(id: _, action: .birthTimeInput(.moveToSelectCategoryView(let gender, let calendarType, let birthday, let birthTime))):
+              state.path.append(.selectCategory(.init(gender: gender, calendarType: calendarType, birthday: birthday, birthTime: birthTime)))
+              return .none
+              
+            case .element(id: _, action: .selectCategory(.delegate(.registerUserCompleted))):
+              return .send(.delegate(.registerCompleted))
+              
+            case .element(let id, action: .birthdayInput(.backButtonTapped)):
+              state.path.pop(from: id)
+              return .none
+              
+            case .element(let id, action: .birthTimeInput(.backButtonTapped)):
+              state.path.pop(from: id)
+              return .none
+              
+            case .element(let id, action: .selectCategory(.backButtonTapped)):
+              state.path.pop(from: id)
+              return .none
+              
+            default:
+              return .none
+          }
+          
+        case .moveToBirthdayInputView:
+          state.path.append(.birthdayInput(.init(gender: state.gender ?? .male)))
+          return .none
+          
+        case .delegate:
+          return .none
       }
     }
     .forEach(\.path, action: \.path)

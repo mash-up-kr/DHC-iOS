@@ -42,10 +42,24 @@ struct FortunePickExampleView: View {
         .foregroundStyle(ColorResource.Text.Body.primary.color)
         .multilineTextAlignment(.center)
       
-      FortuneCardView(
-        backgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
-        title: "최고의 날",
-        fortune: "네잎클로버"
+      FlippableCard(
+        frontContent: {
+          FortuneCardView(
+            backgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
+            title: "최고의 날",
+            fortune: "네잎클로버"
+          )
+        },
+        backContent: {
+          FortuneCardView(
+            backgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
+            title: "최고의 날",
+            fortune: "네잎클로버"
+          )
+        },
+        flipCompletion: {
+          store.send(.cardFlipped)
+        }
       )
       .rotationEffect(.degrees(-4))
       .radialGradientBackground(
@@ -54,12 +68,9 @@ struct FortunePickExampleView: View {
         scaleEffectX: 2.5,
         scaleEffectY: 1.6
       )
-      .onTapGesture {
-        store.send(.cardFlipped)
-      }
       .overlay(alignment: .top) {
         OnboardingTooltipView(message: "Click!")
-          .padding(.top, -60)
+          .padding(.top, -12)
           .padding(.trailing, 10)
       }
     }

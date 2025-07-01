@@ -9,10 +9,11 @@ import SwiftUI
 
 struct FortuneCoreView: View {
   let score: Int
+  private var fortuneScore: FortuneScore {
+    FortuneScore(score: score)
+  }
 
   var body: some View {
-    let fortuneScore = FortuneScore(score: score)
-
     VStack(spacing: 0) {
       Text("금전운")
         .textStyle(.body6)

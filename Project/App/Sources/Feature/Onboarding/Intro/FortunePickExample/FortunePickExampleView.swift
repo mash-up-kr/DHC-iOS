@@ -78,6 +78,7 @@ struct FortunePickExampleView: View {
         date: "2025년 5월 20일",
         score: 35,
         summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요.",
+        gradientType: .text02,
         cardBackgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
         cardTitle: "최고의 날",
         cardFortune: "네잎클로버",

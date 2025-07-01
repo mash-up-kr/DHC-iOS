@@ -19,7 +19,8 @@ extension FortuneDetailInfo {
     scoreInfo: .init(
       date: "2025년 5월 20일",
       score: 35,
-      summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요."
+      summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요.",
+      gradientType: .text02
     ),
     cardInfo: .init(
       backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
@@ -60,6 +61,7 @@ struct FortuneScoreInfo: Equatable {
   let date: String
   let score: Int
   let summary: String
+  let gradientType: LinearGradient.LinearType
 }
 struct FortuneCardInfo: Equatable {
   let backgroundImageURL: URL?

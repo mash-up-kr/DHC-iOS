@@ -11,15 +11,18 @@ struct FortuneScoreView: View {
   private let date: String
   private let score: Int
   private let summary: String
+  private let gradientType: LinearGradient.LinearType
   
   init(
     date: String,
     score: Int,
-    summary: String
+    summary: String,
+    gradientType: LinearGradient.LinearType
   ) {
     self.date = date
     self.score = score
     self.summary = summary
+    self.gradientType = gradientType
   }
   
   var body: some View {
@@ -32,7 +35,7 @@ struct FortuneScoreView: View {
       
       Text("\(score)점")
         .textStyle(.h0)
-        .foregroundStyle(LinearGradient(.text02))
+        .foregroundStyle(LinearGradient(gradientType))
       
       Text(summary)
         .textStyle(.body3)
@@ -40,12 +43,4 @@ struct FortuneScoreView: View {
         .multilineTextAlignment(.center)
     }
   }
-}
-
-#Preview {
-  FortuneScoreView(
-    date: "2025년 5월 20일",
-    score: 35,
-    summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요."
-  )
 }

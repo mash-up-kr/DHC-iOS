@@ -15,7 +15,7 @@ protocol RequestTarget {
   var method: HTTPMethod { get }
   var headers: HTTPHeaders? { get }
   var queryParameters: Parameters? { get }
-  var bodyParameters: Parameters? { get }
+  var bodyParameters: (any Encodable)? { get }
 
   func asURLRequest() throws -> URLRequest
 }
@@ -44,7 +44,9 @@ extension RequestTarget {
     if let headers { request.headers = headers }
 
     if let bodyParameters {
-      request.httpBody = try JSONSerialization.data(withJSONObject: bodyParameters)
+      do {
+        request.httpBody = try JSONEncoder().encode(bodyParameters)
+      }
     }
 
     return request

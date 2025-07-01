@@ -41,8 +41,8 @@ extension SignUpAPI: RequestTarget {
         ]
     }
   }
-
-  var bodyParameters: Parameters? {
+  
+  var bodyParameters: (any Encodable)? {
     switch self {
       case .searchUser, .missionCategories:
         nil

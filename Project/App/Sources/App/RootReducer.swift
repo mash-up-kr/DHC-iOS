@@ -34,6 +34,10 @@ struct RootReducer {
         state.destination = .mainTab(MainTabReducer.State())
         return .none
 
+      case .destination(.presented(.mainTab(.myPageTab(.delegate(.moveToOnboarding))))):
+        state.destination = .onboarding(OnboardingReducer.State())
+        return .none
+
       case .destination:
         return .none
 

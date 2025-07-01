@@ -11,11 +11,11 @@ import ComposableArchitecture
 
 struct MyPageView: View {
   @Bindable var store: StoreOf<MyPageReducer>
-  @State private var showResetAlert = false
 
   var body: some View {
     ScrollView {
       LargeNavigationTitleView(title: "마이페이지")
+        .unredacted()
 
       VStack(spacing: 0) {
         // 내 사주 정보
@@ -74,7 +74,7 @@ struct MyPageView: View {
               title: "앱 초기화",
               iconName: "icon/signOut",
               action: {
-                showResetAlert = true
+                store.send(.resetAppButtonTapped)
               }
             )
           }
@@ -92,14 +92,7 @@ struct MyPageView: View {
     }
     .redacted(reason: store.isRedacted ? .placeholder : [])
     .resetAlert(
-      isPresented: $showResetAlert,
-      onReset: {
-        store.send(.resetAppConfirmed)
-        showResetAlert = false
-      },
-      onCancel: {
-        showResetAlert = false
-      }
+      item: $store.scope(state: \.appResetAlert, action: \.appResetAlert)
     )
   }
 }

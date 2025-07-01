@@ -12,24 +12,30 @@ import ComposableArchitecture
 @DependencyClient
 struct MyPageClient {
   var fetchMyPageInfo: () async throws -> MyPageInfo
+  var resetApp: () async throws -> Void
 }
 
 extension MyPageClient: DependencyKey {
   static let liveValue: Self = {
     let networkManager = NetworkManager()
 
-    return MyPageClient(fetchMyPageInfo: {
-      try await networkManager
-        .request(MyPageAPI.myPage)
-        .map(to: MyPageDTO.self)
-        .toDomain()
-    })
+    return MyPageClient(
+      fetchMyPageInfo: {
+        try await networkManager
+          .request(MyPageAPI.myPage)
+          .map(to: MyPageDTO.self)
+          .toDomain()
+      },
+      resetApp: {
+        _ = try await networkManager
+          .request(MyPageAPI.resetApp)
+      }
+    )
   }()
 
   static let previewValue = MyPageClient(
-    fetchMyPageInfo: {
-      .sample
-    }
+    fetchMyPageInfo: { .sample },
+    resetApp: {}
   )
   static let testValue = Self()
 }

@@ -19,6 +19,7 @@ struct MyPageReducer {
     var myPageInfo: MyPageInfo
     var isLoading = false
     var isRedacted = false
+    @Presents var appResetAlert: AppResetAlertReducer.State?
   }
 
   enum Action {
@@ -32,7 +33,11 @@ struct MyPageReducer {
     case myPageDataFailed(Error)
 
     /// Navigation Actions
-    case resetAppConfirmed
+    case appResetAlert(PresentationAction<AppResetAlertReducer.Action>)
+    case delegate(Delegate)
+    enum Delegate {
+      case moveToOnboarding
+    }
   }
 
   var body: some ReducerOf<Self> {
@@ -69,13 +74,26 @@ struct MyPageReducer {
         return .none
 
       case .resetAppButtonTapped:
-        return .none // Alert 표시는 현재 View에서 처리
+        state.appResetAlert = .init()
+        return .none
 
-      case .resetAppConfirmed:
-        // TODO: 실제 앱 초기화 로직 구현
-        // UserDefaults 클리어, Keychain 클리어 등
+      case .appResetAlert(.presented(.delegate(.cancel))):
+        state.appResetAlert = nil
+        return .none
+
+      case .appResetAlert(.presented(.delegate(.resetCompleted))):
+        state.appResetAlert = nil
+        return .send(.delegate(.moveToOnboarding))
+
+      case .appResetAlert:
+        return .none
+
+      case .delegate:
         return .none
       }
+    }
+    .ifLet(\.$appResetAlert, action: \.appResetAlert) {
+      AppResetAlertReducer()
     }
   }
 

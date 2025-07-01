@@ -7,9 +7,10 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 struct AppResetAlertView: View {
-  let onReset: () -> Void
-  let onCancel: () -> Void
+  @Bindable var store: StoreOf<AppResetAlertReducer>
 
   var body: some View {
     ZStack {
@@ -17,7 +18,9 @@ struct AppResetAlertView: View {
         .ignoresSafeArea()
 
       VStack(spacing: 12) {
-        Button(action: onCancel) {
+        Button {
+          store.send(.cancelButtonTapped)
+        } label: {
           Image(ImageResource.Icon.cancel)
             .resizable()
             .frame(width: 28, height: 28)
@@ -54,14 +57,14 @@ struct AppResetAlertView: View {
             size: .large,
             style: .primary,
             title: "이전으로 돌아가기",
-            action: onCancel
+            action: { store.send(.cancelButtonTapped) }
           )
 
           CTAButton(
             size: .large,
             style: .tertiary,
             title: "초기화",
-            action: onReset
+            action: { store.send(.confirmButtonTapped) }
           )
         }
         .padding(.horizontal, 20)
@@ -77,18 +80,13 @@ struct AppResetAlertView: View {
 // MARK: - Reset Alert Modifier
 
 struct AppResetAlertModifier: ViewModifier {
-  @Binding var isPresented: Bool
-  let onReset: () -> Void
-  let onCancel: () -> Void
+  let item: Binding<StoreOf<AppResetAlertReducer>?>
 
   func body(content: Content) -> some View {
     content
-      .fullScreenCover(isPresented: $isPresented) {
-        AppResetAlertView(
-          onReset: onReset,
-          onCancel: onCancel
-        )
-        .presentationBackground(.clear)
+      .fullScreenCover(item: item) { store in
+        AppResetAlertView(store: store)
+          .presentationBackground(.clear)
       }
       .transaction { transaction in
         transaction.disablesAnimations = true
@@ -98,23 +96,17 @@ struct AppResetAlertModifier: ViewModifier {
 
 extension View {
   func resetAlert(
-    isPresented: Binding<Bool>,
-    onReset: @escaping () -> Void,
-    onCancel: @escaping () -> Void = {}
+    item: Binding<StoreOf<AppResetAlertReducer>?>
   ) -> some View {
-    modifier(
-      AppResetAlertModifier(
-        isPresented: isPresented,
-        onReset: onReset,
-        onCancel: onCancel
-      )
-    )
+    modifier(AppResetAlertModifier(item: item))
   }
 }
 
 #Preview {
   AppResetAlertView(
-    onReset: { print("Reset tapped") },
-    onCancel: { print("Cancel tapped") }
+    store: .init(
+      initialState: AppResetAlertReducer.State(),
+      reducer: AppResetAlertReducer.init
+    )
   )
 }

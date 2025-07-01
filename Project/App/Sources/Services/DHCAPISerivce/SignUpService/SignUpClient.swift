@@ -9,6 +9,7 @@ import ComposableArchitecture
 
 @DependencyClient
 struct SignUpClient: Sendable {
+  var searchUser: (UUID) async throws -> String
   var fetchMissionCategories: () async throws -> [MissionCategory]
 }
 
@@ -16,6 +17,15 @@ extension SignUpClient: DependencyKey {
   static var liveValue: SignUpClient {
     let networkManager = NetworkManager()
     return SignUpClient(
+      searchUser: { deviceToken in
+        let deviceTokenString = deviceToken.uuidString
+        let endpoint = SignUpAPI.searchUser(deviceToken: deviceTokenString)
+        
+        return try await networkManager
+          .request(endpoint)
+          .map(to: UserIDDTO.self)
+          .toDomain
+      },
       fetchMissionCategories: {
         let endpoint = SignUpAPI.missionCategories
         

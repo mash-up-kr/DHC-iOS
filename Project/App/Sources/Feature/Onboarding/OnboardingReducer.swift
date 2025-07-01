@@ -26,6 +26,7 @@ struct OnboardingReducer {
     case nextButtonTapped
     
     // Internal Action
+    case searchUser(deviceID: UUID)
     
     // Route Action
     case path(StackActionOf<Path>)
@@ -46,37 +47,60 @@ struct OnboardingReducer {
     case missionExample(MissionExampleReducer)
   }
   
+  @Dependency(\.deviceIDManager) var deviceIDManager
+  @Dependency(\.signUpClient) var signUpClient
+  @Dependency(\.userManager) var userManager
+  
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
-      case .nextButtonTapped:
-        // TODO: 온보딩으로 갈지 메인탭으로 갈지 확인 후 이동해야함
-        return .send(.moveToServiceExplanationView)
-        
-      case let .path(action):
-        switch action {
-        case .element(id: _, action: .serviceExplanation(.nextButtonTapped)):
-          state.path.append(.fortunePickExample(FortunePickExampleReducer.State()))
-          return .none
+        case .nextButtonTapped:
+          var deviceID: UUID
           
-        case .element(id: _, action: .fortunePickExample(.nextButtonTapped)):
-          state.path.append(.fortuneDetail(FortuneDetailReducer.State(type: .intro)))
-          return .none
+          do {
+            deviceID = try deviceIDManager.loadDeviceID()
+          } catch {
+            deviceID = deviceIDManager.generateDeviceID()
+            try? deviceIDManager.saveDeviceID(uuid: deviceID)
+          }
           
-        case .element(id: _, action: .fortuneDetail(.nextButtonTapped)):
-          state.path.append(.missionExample(MissionExampleReducer.State()))
-          return .none
+          return .send(.searchUser(deviceID: deviceID))
           
-        case .element(id: _, action: .missionExample(.nextButtonTapped)):
-          return .send(.delegate(.moveToSelectGenderView))
-            
-        default:
+        case .searchUser(let deviceID):
+          return .run { send in
+            do {
+              let userID = try await signUpClient.searchUser(deviceID)
+              userManager.setUserID(userID)
+              await send(.delegate(.moveToMainTabView))
+            } catch {
+              await send(.moveToServiceExplanationView)
+            }
+          }
+          
+        case let .path(action):
+          switch action {
+            case .element(id: _, action: .serviceExplanation(.nextButtonTapped)):
+              state.path.append(.fortunePickExample(FortunePickExampleReducer.State()))
+              return .none
+              
+            case .element(id: _, action: .fortunePickExample(.nextButtonTapped)):
+              state.path.append(.fortuneDetail(FortuneDetailReducer.State(type: .intro)))
+              return .none
+              
+            case .element(id: _, action: .fortuneDetail(.nextButtonTapped)):
+              state.path.append(.missionExample(MissionExampleReducer.State()))
+              return .none
+              
+            case .element(id: _, action: .missionExample(.nextButtonTapped)):
+            return .send(.delegate(.moveToSelectGenderView))
+              
+            default:
+              return .none
+          }
+          
+        case .moveToServiceExplanationView:
+          state.path.append(.serviceExplanation(ServiceExplanationReducer.State()))
           return .none
-        }
-        
-      case .moveToServiceExplanationView:
-        state.path.append(.serviceExplanation(ServiceExplanationReducer.State()))
-        return .none
 
       case .delegate:
         return .none

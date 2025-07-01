@@ -10,35 +10,42 @@ import Foundation
 import Alamofire
 
 enum SignUpAPI {
+  case searchUser(deviceToken: String)
   case missionCategories
 }
 
 extension SignUpAPI: RequestTarget {
   var path: String {
     switch self {
-    case .missionCategories:
-      "/api/mission-categories"
+      case .searchUser:
+        "/api/users"
+      case .missionCategories:
+        "/api/mission-categories"
     }
   }
-
+  
   var method: HTTPMethod {
     switch self {
-    case .missionCategories:
-      .get
+      case .searchUser, .missionCategories:
+        .get
     }
   }
-
+  
   var queryParameters: Parameters? {
     switch self {
     case .missionCategories:
       nil
+      case .searchUser(let deviceToken):
+        [
+          "userToken": deviceToken
+        ]
     }
   }
 
   var bodyParameters: Parameters? {
     switch self {
-    case .missionCategories:
-      nil
+      case .searchUser, .missionCategories:
+        nil
     }
   }
 }

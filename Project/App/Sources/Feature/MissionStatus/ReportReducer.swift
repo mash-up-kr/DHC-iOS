@@ -1,5 +1,5 @@
 //
-//  MissionStatusReducer.swift
+//  ReportReducer.swift
 //  Flifin
 //
 //  Created by Aiden.lee on 6/8/25.
@@ -10,7 +10,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct MissionStatusReducer {
+struct ReportReducer {
   @ObservableState
   struct State: Equatable {}
 

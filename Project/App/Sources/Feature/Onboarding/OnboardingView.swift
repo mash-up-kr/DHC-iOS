@@ -30,15 +30,7 @@ struct OnboardingView: View {
         
         Spacer()
         
-        CTAButton(
-          size: .extraLarge,
-          style: .secondary,
-          title: "다음",
-          action: {
-            store.send(.nextButtonTapped)
-          }
-        )
-        .padding(20)
+        onboardingCTAButton
       }
       .background {
         VStack(spacing: 0) {
@@ -61,6 +53,26 @@ struct OnboardingView: View {
         MissionExampleView(store: store)
       }
     }
+  }
+  
+  private var onboardingCTAButton: some View {
+    Button(
+      action: {
+        store.send(.nextButtonTapped)
+      },
+      label: {
+        Text("다음")
+          .textStyle(Typography.Head.h5)
+          .foregroundStyle(ColorResource.Text.main.color)
+          .padding(.vertical, 15)
+          .frame(maxWidth: .infinity)
+          .background {
+            RoundedRectangle(cornerRadius: 8)
+              .foregroundStyle(ColorResource.Neutral._700.color)
+          }
+      }
+    )
+    .padding(20)
   }
 }
 

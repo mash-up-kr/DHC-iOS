@@ -7,8 +7,10 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 struct MissionListView: View {
-  @State private var isTooltipVisible = false
+  @Bindable var store: StoreOf<MissionListReducer>
 
   var body: some View {
     VStack(spacing: 24) {
@@ -28,7 +30,7 @@ struct MissionListView: View {
             .foregroundStyle(ColorResource.Text.Body.primary.color)
 
           Button {
-            isTooltipVisible.toggle()
+            store.send(.tooltipTapped)
           } label: {
             Image(ImageResource.Icon.info)
               .renderingMode(.template)
@@ -36,7 +38,7 @@ struct MissionListView: View {
               .frame(width: 24, height: 24)
           }
           .overlay {
-            if isTooltipVisible {
+            if store.isTooltipVisible {
               HomeToolTipView(
                 message: "좋은 금융 습관 형성을 위해\n2주간 매일 진행하는 미션이에요!"
               )
@@ -66,5 +68,10 @@ struct MissionListView: View {
 }
 
 #Preview {
-  MissionListView()
+  MissionListView(
+    store: Store(
+      initialState: MissionListReducer.State(),
+      reducer: MissionListReducer.init
+    )
+  )
 }

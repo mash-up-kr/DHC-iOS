@@ -23,7 +23,12 @@ struct HomeView: View {
           .padding([.horizontal, .top], 20)
           .padding(.bottom, 60)
 
-        MissionListView()
+        MissionListView(
+          store: store.scope(
+            state: \.missionList,
+            action: \.missionList
+          )
+        )
       }
     }
     .radialGradientBackground(type: .backgroundGradient02)

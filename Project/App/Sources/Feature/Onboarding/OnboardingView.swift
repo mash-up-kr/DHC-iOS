@@ -23,8 +23,8 @@ struct OnboardingView: View {
       VStack(spacing: 0) {
         IntroTitleView(
           style: .intro,
-          title: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요",
-          description: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요"
+          title: "매일 카드를 넘기면,\n오늘의 금전운을 볼 수 있어요.",
+          description: "금전운에 따라 당신만의 절약 미션이 도착해요."
         )
         .padding(.top, 24)
         

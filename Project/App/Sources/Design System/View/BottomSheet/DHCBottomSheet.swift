@@ -7,33 +7,77 @@
 
 import SwiftUI
 
-enum Detents {
-  case oneButton
-  case twoButtons
-
-  var height: CGFloat {
-    switch self {
-    case .oneButton:
-      return 296
-    case .twoButtons:
-      return 316
-    }
+extension View {
+  func adaptiveBottomSheet(
+    isPresented: Binding<Bool>,
+    cornerRadius: CGFloat,
+    backgroundColor: Color,
+    @ViewBuilder content: @escaping () -> some View
+  ) -> some View {
+    modifier(
+      AdaptiveBottomSheetModifier(
+        isPresented: isPresented,
+        cornerRadius: cornerRadius,
+        backgroundColor: backgroundColor,
+        content: content
+      )
+    )
+  }
+  
+  func measureHeight(_ height: Binding<CGFloat>) -> some View {
+    self.modifier(AdaptableHeightModifier(currentHeight: height))
   }
 }
 
-extension View {
-  func bottomSheet(
-    isPresented: Binding<Bool>,
-    detent: Detents,
-    sheetCornerRadius: CGFloat = 32,
-    @ViewBuilder content: @escaping () -> some View
-  ) -> some View {
-    self
-      .sheet(isPresented: isPresented) {
-        content()
-          .presentationDetents([.height(detent.height)])
-          .presentationCornerRadius(sheetCornerRadius)
-          .presentationBackground(ColorResource.Neutral._700.color)
+private struct AdaptiveBottomSheetModifier<SheetContent: View>: ViewModifier {
+  @Binding var isPresented: Bool
+  let cornerRadius: CGFloat
+  let backgroundColor: Color
+  let content: () -> SheetContent
+
+  @State private var contentHeight: CGFloat = 300
+
+  func body(content: Content) -> some View {
+    content
+      .sheet(isPresented: $isPresented) {
+        self.content()
+          .measureHeight($contentHeight)
+          .presentationDetents([.height(contentHeight)])
+          .presentationCornerRadius(cornerRadius)
+          .presentationBackground(backgroundColor)
+          .presentationDragIndicator(.visible)
+      }
+  }
+}
+
+struct AdaptableHeightPreferenceKey: PreferenceKey {
+  static var defaultValue: CGFloat?
+
+  static func reduce(value: inout CGFloat?, nextValue: () -> CGFloat?) {
+    guard let nextValue = nextValue() else { return }
+    value = nextValue
+  }
+}
+
+struct AdaptableHeightModifier: ViewModifier {
+  @Binding var currentHeight: CGFloat
+
+  private var sizeView: some View {
+    GeometryReader { geometry in
+      Color.clear
+        .preference(key: AdaptableHeightPreferenceKey.self, value: geometry.size.height)
+    }
+  }
+
+  func body(content: Content) -> some View {
+    content
+      .background {
+        sizeView
+      }
+      .onPreferenceChange(AdaptableHeightPreferenceKey.self) { height in
+        if let height {
+          currentHeight = height
+        }
       }
   }
 }

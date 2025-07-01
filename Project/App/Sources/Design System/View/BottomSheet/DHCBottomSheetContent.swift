@@ -47,6 +47,7 @@ struct DHCBottomSheetContent: View {
     .padding(.top, configuration.showCloseButton ? 20 : 32)
     .padding(.bottom, 20)
     .interactiveDismissDisabled(configuration.interactiveDisabled)
+    .fixedSize(horizontal: false, vertical: true)
   }
 
   private func closeButtonView() -> some View {

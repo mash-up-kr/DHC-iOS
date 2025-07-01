@@ -10,34 +10,49 @@ import SwiftUI
 import ComposableArchitecture
 
 struct OnboardingView: View {
-  let store: StoreOf<OnboardingReducer>
+  @Bindable var store: StoreOf<OnboardingReducer>
   
   init(store: StoreOf<OnboardingReducer>) {
     self.store = store
   }
   
   var body: some View {
-    VStack(spacing: 0) {
-      IntroTitleView(
-        style: .intro,
-        title: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요",
-        description: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요"
-      )
-      .padding(.top, 24)
-      
-      Spacer()
-      
-      CTAButton(
-        size: .extraLarge,
-        style: .secondary,
-        title: "금전운 확인하고 시작하기",
-        action: {
-          store.send(.nextButtonTapped)
-        }
-      )
-      .padding(20)
+    NavigationStack(
+      path: $store.scope(state: \.path, action: \.path)
+    ) {
+      VStack(spacing: 0) {
+        IntroTitleView(
+          style: .intro,
+          title: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요",
+          description: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요"
+        )
+        .padding(.top, 24)
+        
+        Spacer()
+        
+        CTAButton(
+          size: .extraLarge,
+          style: .secondary,
+          title: "다음",
+          action: {
+            store.send(.nextButtonTapped)
+          }
+        )
+        .padding(20)
+      }
+      .background(ColorResource.Background.main.color)
+    } destination: { store in
+      switch store.case {
+      case .serviceExplanation(let store):
+        ServiceExplanationView(store: store)
+      case .fortunePickExample(let store):
+        FortunePickExampleView(store: store)
+      case .fortuneDetail(let store):
+        FortuneDetailView(store: store)
+      case .missionExample(let store):
+        MissionExampleView(store: store)
+      }
     }
-    .background(ColorResource.Background.main.color)
   }
 }
 

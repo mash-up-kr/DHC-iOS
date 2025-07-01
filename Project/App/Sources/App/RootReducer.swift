@@ -15,6 +15,7 @@ struct RootReducer {
   enum Destination {
     case onboarding(OnboardingReducer)
     case mainTab(MainTabReducer)
+    case selectGender(SelectGenderReducer)
   }
 
   @ObservableState
@@ -30,8 +31,12 @@ struct RootReducer {
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-        case .destination(.presented(.onboarding(.nextButtonTapped))):
+      case .destination(.presented(.onboarding(.delegate(.moveToMainTabView)))):
         state.destination = .mainTab(MainTabReducer.State())
+        return .none
+        
+      case .destination(.presented(.onboarding(.delegate(.moveToSelectGenderView)))):
+        state.destination = .selectGender(SelectGenderReducer.State())
         return .none
 
       case .destination(.presented(.mainTab(.myPageTab(.delegate(.moveToOnboarding))))):
@@ -42,6 +47,7 @@ struct RootReducer {
         return .none
 
       case .onAppear:
+        // TODO: 온보딩으로 갈지 메인탭으로 갈지 확인 후 이동해야함
         state.destination = .onboarding(OnboardingReducer.State())
         return .none
       }

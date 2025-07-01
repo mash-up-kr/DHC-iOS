@@ -32,7 +32,7 @@ struct ServiceExplanationView: View {
       CTAButton(
         size: .extraLarge,
         style: .secondary,
-        title: "금전운 확인하고 시작하기",
+        title: "다음",
         action: {
           store.send(.nextButtonTapped)
         }
@@ -40,6 +40,7 @@ struct ServiceExplanationView: View {
       .padding(20)
     }
     .background(ColorResource.Background.main.color)
+    .navigationBarBackButtonHidden()
   }
   
   var infoView: some View {

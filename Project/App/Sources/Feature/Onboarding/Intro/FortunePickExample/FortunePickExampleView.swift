@@ -32,6 +32,7 @@ struct FortunePickExampleView: View {
     }
     .frame(maxWidth: .infinity)
     .background(ColorResource.Background.main.color)
+    .navigationBarBackButtonHidden()
   }
   
   var defaultView: some View {

@@ -5,6 +5,8 @@
 //  Created by hyerin on 6/17/25.
 //
 
+import Foundation
+
 import ComposableArchitecture
 
 @Reducer
@@ -13,16 +15,30 @@ struct SelectCategoryReducer {
 
   @ObservableState
   struct State: Equatable {
+    let gender: Gender
+    let calendarType: CalendarType
+    let birthday: Date
+    let birthTime: Date?
     var categoryInfos: [CategoryInfo] = [] // TODO: 추후 API 연결 시 수정
     var selectedCategoryID: Set<Int> = []
     var isNextButtonDisabled: Bool {
       selectedCategoryID.count < 3
     }
-    var nextButtonTitle: String {
-      isNextButtonDisabled ? "다음" : "금전운 확인하고 시작하기"
-    }
 
-    init() {
+    init(
+      gender: Gender,
+      calendarType: CalendarType,
+      birthday: Date,
+      birthTime: Date?,
+      categoryInfos: [CategoryInfo] = [],
+      selectedCategoryID: Set<Int> = []
+    ) {
+      self.gender = gender
+      self.calendarType = calendarType
+      self.birthday = birthday
+      self.birthTime = birthTime
+      self.categoryInfos = categoryInfos
+      self.selectedCategoryID = selectedCategoryID
     }
   }
 

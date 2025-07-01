@@ -92,6 +92,7 @@ struct FortuneDetailView: View {
     .onAppear {
       store.send(.onAppear)
     }
+    .navigationBarBackButtonHidden()
   }
   
   var detailFortuneView: some View {

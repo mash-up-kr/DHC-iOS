@@ -39,7 +39,7 @@ struct SelectCategoryView: View {
       CTAButton(
         size: .extraLarge,
         style: .secondary,
-        title: store.nextButtonTitle,
+        title: "개인정보 기입완료",
         action: {
           store.send(.nextButtonTapped)
         }
@@ -48,6 +48,7 @@ struct SelectCategoryView: View {
       .padding(20)
     }
     .background(ColorResource.Background.main.color)
+    .navigationBarBackButtonHidden()
   }
   
   private var categoryGridView: some View {
@@ -83,7 +84,7 @@ struct SelectCategoryView: View {
 #Preview {
   SelectCategoryView(
     store: Store(
-      initialState: .init(),
+      initialState: .init(gender: .male, calendarType: .lunar, birthday: Date(), birthTime: Date()),
       reducer: SelectCategoryReducer.init
     )
   )

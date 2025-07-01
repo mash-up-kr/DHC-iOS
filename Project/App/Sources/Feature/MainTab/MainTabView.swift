@@ -40,7 +40,6 @@ struct MainTabView: View {
               action: \.missionStatusTab
             )
           )
-          .navigationTitle(Text("통계"))
         }
       } label: {
         Image(.Icon.status)
@@ -56,7 +55,6 @@ struct MainTabView: View {
               action: \.myPageTab
             )
           )
-          .navigationTitle(Text("마이페이지"))
         }
       } label: {
         Image(.Icon.mypage)

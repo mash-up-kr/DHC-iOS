@@ -30,6 +30,8 @@ struct MissionStatusView: View {
 
   var body: some View {
     ScrollView {
+      LargeNavigationTitleView(title: "통계")
+
       VStack(spacing: 0) {
         VStack(alignment: .leading, spacing: 12) {
           Text("소비 분석")
@@ -83,5 +85,11 @@ struct MissionStatusView: View {
         .padding(.bottom, 20)
       }
     }
+    .contentMargins(.bottom, 46)
+    .radialGradientBackground(
+      type: .backgroundGradient02,
+      endRadiusMultiplier: 1.2,
+      scaleEffectX: 1.8
+    )
   }
 }

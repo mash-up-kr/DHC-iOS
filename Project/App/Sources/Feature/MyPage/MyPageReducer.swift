@@ -36,7 +36,7 @@ struct MyPageReducer {
     case appResetAlert(PresentationAction<AppResetAlertReducer.Action>)
     case delegate(Delegate)
     enum Delegate {
-      case moveToOnboarding
+      case moveToRootView
     }
   }
 
@@ -83,7 +83,7 @@ struct MyPageReducer {
 
       case .appResetAlert(.presented(.delegate(.resetCompleted))):
         state.appResetAlert = nil
-        return .send(.delegate(.moveToOnboarding))
+        return .send(.delegate(.moveToRootView))
 
       case .appResetAlert:
         return .none

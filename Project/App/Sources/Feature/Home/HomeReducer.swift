@@ -12,17 +12,23 @@ import ComposableArchitecture
 @Reducer
 struct HomeReducer {
   @ObservableState
-  struct State: Equatable {}
+  struct State: Equatable {
+    var missionList = MissionListReducer.State()
+  }
 
   enum Action {
-    case sampleAction
+    case missionList(MissionListReducer.Action)
   }
 
   var body: some ReducerOf<Self> {
+    Scope(state: \.missionList, action: \.missionList) {
+      MissionListReducer()
+    }
+
     Reduce { _, action in
       switch action {
-      case .sampleAction:
-        .none
+      case .missionList:
+        return .none
       }
     }
   }

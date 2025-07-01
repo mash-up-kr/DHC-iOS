@@ -36,7 +36,7 @@ struct FortunePickExampleView: View {
   }
   
   var defaultView: some View {
-    VStack(spacing: 86) {
+    VStack(spacing: 80) {
       Text("오늘의 운세 카드를\n뒤집어보세요!")
         .textStyle(.h3)
         .foregroundStyle(ColorResource.Text.Body.primary.color)
@@ -44,15 +44,11 @@ struct FortunePickExampleView: View {
       
       FlippableCard(
         frontContent: {
-          FortuneCardView(
-            backgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
-            title: "최고의 날",
-            fortune: "네잎클로버"
-          )
+          FortuneCardBackView(backgroundImageURL: .urlForResource(.fortuneCardBackView))
         },
         backContent: {
-          FortuneCardView(
-            backgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
+          FortuneCardFrontView(
+            backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
             title: "최고의 날",
             fortune: "네잎클로버"
           )
@@ -70,7 +66,6 @@ struct FortunePickExampleView: View {
       )
       .overlay(alignment: .top) {
         OnboardingTooltipView(message: "Click!")
-          .padding(.top, -12)
           .padding(.trailing, 10)
       }
     }
@@ -83,7 +78,7 @@ struct FortunePickExampleView: View {
         date: "2025년 5월 20일",
         score: 35,
         summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요.",
-        cardBackgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
+        cardBackgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
         cardTitle: "최고의 날",
         cardFortune: "네잎클로버",
         needsGradientBackground: true

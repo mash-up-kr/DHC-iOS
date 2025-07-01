@@ -11,7 +11,7 @@ struct FortuneView: View {
   private let date: String
   private let score: Int
   private let summary: String
-  private let cardBackgroundImageURL: URL
+  private let cardBackgroundImageURL: URL?
   private let cardTitle: String
   private let cardFortune: String
   private let needsGradientBackground: Bool
@@ -20,7 +20,7 @@ struct FortuneView: View {
     date: String,
     score: Int,
     summary: String,
-    cardBackgroundImageURL: URL,
+    cardBackgroundImageURL: URL?,
     cardTitle: String,
     cardFortune: String,
     needsGradientBackground: Bool = false
@@ -42,7 +42,7 @@ struct FortuneView: View {
         summary: summary
       )
       
-      FortuneCardView(
+      FortuneCardFrontView(
         backgroundImageURL: cardBackgroundImageURL,
         title: cardTitle,
         fortune: cardFortune

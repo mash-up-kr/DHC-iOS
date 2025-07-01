@@ -24,6 +24,7 @@ struct DHCToast: View {
       textStyle: Typography.Body.body4,
       textColor: ColorResource.Text.main.color
     )
+    .padding(.horizontal, 20)
   }
 }
 

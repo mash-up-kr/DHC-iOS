@@ -43,8 +43,7 @@ struct RootReducer {
     Reduce { state, action in
       switch action {
       case .destination(.presented(.splash(.delegate(.splashFinished)))):
-        state.destination = .onboarding(OnboardingReducer.State())
-        return .none
+        return .send(.checkDeviceID)
         
       case .destination(.presented(.onboarding(.delegate(.moveToMainTabView)))):
         state.destination = .mainTab(MainTabReducer.State())

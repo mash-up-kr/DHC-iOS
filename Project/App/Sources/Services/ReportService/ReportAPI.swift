@@ -11,6 +11,8 @@ import Alamofire
 
 enum ReportAPI {
   case analysis
+  /// yearMonth는 "yyyy-MM" 포맷
+  case calendar(yearMonth: String)
 }
 
 extension ReportAPI: RequestTarget {
@@ -18,12 +20,14 @@ extension ReportAPI: RequestTarget {
     switch self {
     case .analysis:
       "/view/users/{userID}/analysis"
+    case .calendar:
+      "/view/users/{userID}/calendar"
     }
   }
 
   var method: HTTPMethod {
     switch self {
-    case .analysis:
+    case .analysis, .calendar:
       .get
     }
   }
@@ -32,12 +36,14 @@ extension ReportAPI: RequestTarget {
     switch self {
     case .analysis:
       nil
+    case .calendar(let yearMonth):
+      ["yearMonth": yearMonth]
     }
   }
 
   var bodyParameters: Parameters? {
     switch self {
-    case .analysis:
+    case .analysis, .calendar:
       nil
     }
   }

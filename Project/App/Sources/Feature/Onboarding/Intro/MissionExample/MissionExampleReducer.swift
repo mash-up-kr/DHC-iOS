@@ -13,7 +13,8 @@ struct MissionExampleReducer {
 
   @ObservableState
   struct State: Equatable {
-
+    var missionList = MissionListReducer.State()
+    
     init() {
     }
   }
@@ -23,6 +24,7 @@ struct MissionExampleReducer {
     case nextButtonTapped
     
     // Internal Action
+    case missionList(MissionListReducer.Action)
     
     // Route Action
   }
@@ -31,6 +33,9 @@ struct MissionExampleReducer {
     Reduce { state, action in
       switch action {
       case .nextButtonTapped:
+        return .none
+        
+      case .missionList:
         return .none
       }
     }

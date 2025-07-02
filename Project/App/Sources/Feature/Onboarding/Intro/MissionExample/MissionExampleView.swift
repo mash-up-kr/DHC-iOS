@@ -28,14 +28,19 @@ struct MissionExampleView: View {
       .padding(.bottom, 45)
       
       ScrollView {
-        // TODO: 추후 미션 목록 추가
-        EmptyView()
+        MissionListView(
+          store: store.scope(
+            state: \.missionList,
+            action: \.missionList
+          )
+        )
       }
       .padding(.bottom, bottomVStackHeight)
       
       Spacer()
     }
     .frame(maxWidth: .infinity, alignment: .leading)
+    .background(ColorResource.Background.main.color)
     .overlay(alignment: .bottom) {
       VStack(spacing: 0) {
         BottomGradientView()

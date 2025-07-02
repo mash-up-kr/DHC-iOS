@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct HomeResponseDTO: Decodable {
+struct HomeDTO: Decodable {
   let longTermMission: MissionInfo
   let todayDailyMissionList: [MissionInfo]
   let todayDailyFortune: DailyFortuneInfo
   let todayDone: Bool
 }
 
-extension HomeResponseDTO {
+extension HomeDTO {
   struct MissionInfo: Decodable {
     let missionId: String
     let category: String
@@ -28,7 +28,7 @@ extension HomeResponseDTO {
   }
 }
 
-extension HomeResponseDTO {
+extension HomeDTO {
   struct DailyFortuneInfo: Decodable {
     let date: String
     let fortuneTitle: String
@@ -45,7 +45,7 @@ extension HomeResponseDTO {
   }
 }
 
-extension HomeResponseDTO {
+extension HomeDTO {
   func toDomain() -> HomeInfo {
     HomeInfo(
       longTermMission: .init(

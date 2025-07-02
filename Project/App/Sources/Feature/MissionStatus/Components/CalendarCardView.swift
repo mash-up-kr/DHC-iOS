@@ -35,7 +35,7 @@ struct CalendarCellData: Identifiable {
 // MARK: - Calendar Card View
 
 struct CalendarCardView: View {
-  @State private var displayedMonth = Date()
+  @Binding private var displayedMonth: Date
   @State private var calendarCells: [CalendarCellData] = []
 
   private static let dateFormatter: DateFormatter = {
@@ -48,8 +48,9 @@ struct CalendarCardView: View {
   private let weekdays = ["월", "화", "수", "목", "금", "토", "일"]
   private var dateModels: [String: CalendarDateModel] = [:]
 
-  init(dateModels: [CalendarDateModel]) {
-    self.displayedMonth = displayedMonth
+
+  init(displayedMonth: Binding<Date>, dateModels: [CalendarDateModel]) {
+    self._displayedMonth = displayedMonth
     self.dateModels = Dictionary(
       uniqueKeysWithValues: dateModels.map {
         ($0.id, $0)
@@ -241,6 +242,7 @@ struct CalendarCellView: View {
 
 #Preview {
   CalendarCardView(
+    displayedMonth: .constant(.now),
     dateModels: [
       .init(
         date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,

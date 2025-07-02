@@ -16,7 +16,13 @@ protocol NetworkRequestable {
 final class NetworkManager: NetworkRequestable {
   private let responseSerializer = DHCResponseSerializer()
   private let interceptor = NetworkRequestInterceptor()
-
+  private let eventLogger = APIEventLogger()
+  
+  private lazy var session = Session(
+      configuration: URLSessionConfiguration.af.default,
+      eventMonitors: [APIEventLogger()]
+  )
+  
   func request(_ target: RequestTarget) async throws -> DHCNetworkResponse {
     let request: URLRequest
     do {
@@ -25,7 +31,8 @@ final class NetworkManager: NetworkRequestable {
       throw NetworkManagerError.invalidURL
     }
 
-    let response = await AF.request(request, interceptor: interceptor)
+    let response = await session
+      .request(request, interceptor: interceptor)
       .validate()
       .serializingResponse(using: responseSerializer)
       .response

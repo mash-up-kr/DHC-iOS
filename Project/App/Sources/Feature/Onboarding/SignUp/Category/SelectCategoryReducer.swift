@@ -19,10 +19,10 @@ struct SelectCategoryReducer {
     let calendarType: CalendarType
     let birthday: Date
     let birthTime: Date?
-    var categoryInfos: [CategoryInfo] = [] // TODO: 추후 API 연결 시 수정
-    var selectedCategoryID: Set<Int> = []
+    var missionCategories: [MissionCategory] = []
+    var selectedCategories: Set<String> = []
     var isNextButtonDisabled: Bool {
-      selectedCategoryID.count < 3
+      selectedCategories.count < 3
     }
 
     init(
@@ -30,45 +30,84 @@ struct SelectCategoryReducer {
       calendarType: CalendarType,
       birthday: Date,
       birthTime: Date?,
-      categoryInfos: [CategoryInfo] = [],
-      selectedCategoryID: Set<Int> = []
+      missionCategories: [MissionCategory] = [],
+      selectedCategories: Set<String> = []
     ) {
       self.gender = gender
       self.calendarType = calendarType
       self.birthday = birthday
       self.birthTime = birthTime
-      self.categoryInfos = categoryInfos
-      self.selectedCategoryID = selectedCategoryID
+      self.missionCategories = missionCategories
+      self.selectedCategories = selectedCategories
     }
   }
+  
+  @Dependency(\.signUpClient) var signUpClient
+  @Dependency(\.deviceIDManager) var deviceIDManager
+  @Dependency(\.userManager) var userManager
 
   enum Action {
     // View Action
+    case onAppear
     case backButtonTapped
     case nextButtonTapped
-    case categoryButtonTapped(categoryID: Int, isSelected: Bool)
+    case categoryButtonTapped(categoryName: String, isSelected: Bool)
     
     // Internal Action
+    case fetchMissionCategories([MissionCategory])
     
     // Route Action
+    case delegate(Delegate)
+    enum Delegate {
+      case registerUserCompleted
+    }
   }
 
   var body: some Reducer<State, Action> {
-    Reduce { state, action in
+    Reduce {
+      state,
+      action in
       switch action {
+        case .onAppear:
+          return .run { send in
+            await send(.fetchMissionCategories(
+              try await signUpClient.fetchMissionCategories()
+            ))
+          }
+          
         case .backButtonTapped:
           return .none
           
         case .nextButtonTapped:
-          return .none
-          
-        case .categoryButtonTapped(let categoryID, let isSelected):
-          if isSelected {
-            state.selectedCategoryID.insert(categoryID)
-          } else {
-            state.selectedCategoryID.remove(categoryID)
+          return .run { [state] send in
+            do {
+              let userID = try await signUpClient.registerUser(
+                deviceID: deviceIDManager.loadDeviceID().uuidString,
+                gender: state.gender,
+                birthday: state.birthday,
+                calendarType: state.calendarType,
+                birthTime: state.birthTime,
+                missionCategoryList: Array(state.selectedCategories)
+              )
+              userManager.setUserID(userID)
+              await send(.delegate(.registerUserCompleted))
+            } catch {}
           }
           
+        case .categoryButtonTapped(let categoryName, let isSelected):
+          if isSelected {
+            state.selectedCategories.insert(categoryName)
+          } else {
+            state.selectedCategories.remove(categoryName)
+          }
+          
+          return .none
+          
+        case .fetchMissionCategories(let missionCategories):
+          state.missionCategories = missionCategories
+          return .none
+          
+        case .delegate:
           return .none
       }
     }

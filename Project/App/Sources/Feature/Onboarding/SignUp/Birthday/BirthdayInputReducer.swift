@@ -9,11 +9,6 @@ import Foundation
 
 import ComposableArchitecture
 
-enum CalendarType {
-  case lunar // 음력
-  case solar // 양력
-}
-
 @Reducer
 struct BirthdayInputReducer {
   init() {}

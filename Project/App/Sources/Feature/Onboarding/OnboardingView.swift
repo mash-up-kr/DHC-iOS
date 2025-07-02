@@ -37,7 +37,7 @@ struct OnboardingView: View {
           Spacer()
           LoopingVideoPlayer(videoURL: .urlForResource(.onboardingVideo)!)
             .ignoresSafeArea()
-            .disabled(true)
+            .allowsHitTesting(false)
             .scaledToFill()
         }
       }

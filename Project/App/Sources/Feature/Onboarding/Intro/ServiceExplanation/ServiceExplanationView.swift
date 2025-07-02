@@ -20,7 +20,8 @@ struct ServiceExplanationView: View {
     VStack(spacing: 0) {
       IntroTitleView(
         style: .intro,
-        title: "서비스명(우리 서비스)는\n이런식으로 작동해요"
+        title: "Flifin 은 \n이런식으로 작동해요",
+        description: "매일매일 금전운 미션을 통해\n소비습관을 개선해보세요"
       )
       .padding(.top, 24)
       .padding(.bottom, 120)

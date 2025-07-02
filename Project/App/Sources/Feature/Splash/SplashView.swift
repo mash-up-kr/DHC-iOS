@@ -18,17 +18,19 @@ struct SplashView: View {
   }
   
   var body: some View {
-    LottieView(animation: .named("splash"))
-      .playing()
-      .ignoresSafeArea()
-      .task {
-        do {
-          try await Task.sleep(for: .seconds(3))
-          _ = withAnimation { @MainActor in
-            store.send(.delegate(.splashFinished))
-          }
-        } catch {}
+    LottieView {
+      await LottieAnimation.loadedFrom(url: .urlForResource(.splashLottie)!)
+    } placeholder: {
+      ImageResource.splashThumbnail.image
+        .ignoresSafeArea()
+    }
+    .animationDidFinish { _ in
+      _ = withAnimation {
+        store.send(.delegate(.splashFinished))
       }
+    }
+    .playing()
+    .ignoresSafeArea()
   }
 }
 

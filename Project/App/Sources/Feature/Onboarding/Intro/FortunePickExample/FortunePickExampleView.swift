@@ -54,7 +54,9 @@ struct FortunePickExampleView: View {
           )
         },
         flipCompletion: {
-          store.send(.cardFlipped)
+          _ = withAnimation {
+            store.send(.cardFlipped)
+          }
         }
       )
       .rotationEffect(.degrees(-4))

@@ -18,6 +18,7 @@ struct ReportClient {
 extension ReportClient: DependencyKey {
   static let liveValue: Self = {
     let networkManager = NetworkManager()
+    nonisolated(unsafe) let cache = MutexLock<[String: MissionHistoryCalendar]>([:])
 
     return ReportClient(fetchReport: {
       try await networkManager
@@ -25,10 +26,24 @@ extension ReportClient: DependencyKey {
         .map(to: ReportDTO.self)
         .toDomain()
     }, fetchMissionHistoryCalendar: { yearMonth in
-      try await networkManager
+      let cachedResult = cache.withLock {
+        $0[yearMonth]
+      }
+
+      if let cachedResult {
+        return cachedResult
+      }
+
+      let result = try await networkManager
         .request(ReportAPI.calendar(yearMonth: yearMonth))
         .map(to: MissionHistoryCalendarDTO.self)
         .toDomain()
+
+      cache.withLock {
+        $0[yearMonth] = result
+      }
+
+      return result
     })
   }()
 

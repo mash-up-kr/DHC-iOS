@@ -35,7 +35,7 @@ struct OnboardingView: View {
       .background {
         VStack(spacing: 0) {
           Spacer()
-          LoopingVideoPlayer(videoURL: Bundle.main.url(forResource: "onboardingVideo", withExtension: "mp4")!)
+          LoopingVideoPlayer(videoURL: .urlForResource(.onboardingVideo)!)
             .ignoresSafeArea()
             .disabled(true)
             .scaledToFill()

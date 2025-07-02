@@ -13,6 +13,7 @@ import ComposableArchitecture
 struct RootReducer {
   @Reducer
   enum Destination {
+    case splash(SplashReducer)
     case onboarding(OnboardingReducer)
     case mainTab(MainTabReducer)
     case selectGender(SelectGenderReducer)
@@ -31,6 +32,10 @@ struct RootReducer {
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
+      case .destination(.presented(.splash(.delegate(.splashFinished)))):
+        state.destination = .onboarding(OnboardingReducer.State())
+        return .none
+        
       case .destination(.presented(.onboarding(.delegate(.moveToMainTabView)))):
         state.destination = .mainTab(MainTabReducer.State())
         return .none
@@ -47,8 +52,7 @@ struct RootReducer {
         return .none
 
       case .onAppear:
-        // TODO: 온보딩으로 갈지 메인탭으로 갈지 확인 후 이동해야함
-        state.destination = .onboarding(OnboardingReducer.State())
+        state.destination = .splash(SplashReducer.State())
         return .none
       }
     }

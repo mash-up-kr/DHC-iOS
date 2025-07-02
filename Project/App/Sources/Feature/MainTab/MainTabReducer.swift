@@ -13,7 +13,7 @@ import ComposableArchitecture
 struct MainTabReducer {
   @ObservableState
   struct State: Equatable {
-    var homeTab = HomeReducer.State()
+    var homeTab = HomeReducer.State(homeInfo: .sample)
     var missionStatusTab = MissionStatusReducer.State()
     var myPageTab = MyPageReducer.State(myPageInfo: .sample)
     var selectedTab = TabKind.home

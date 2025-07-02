@@ -14,6 +14,14 @@ struct MissionListReducer {
   @ObservableState
   struct State: Equatable {
     var isTooltipVisible = false
+    
+    var longTermMission: HomeInfo.Mission
+    var todayDailyMissionList: [HomeInfo.Mission] = []
+    
+    init(longTermMission: HomeInfo.Mission, todayDailyMissionList: [HomeInfo.Mission]) {
+      self.longTermMission = longTermMission
+      self.todayDailyMissionList = todayDailyMissionList
+    }
   }
 
   enum Action {
@@ -21,6 +29,8 @@ struct MissionListReducer {
     case tooltipTapped
 
     // Internal Action
+    case updateLongTermMission(HomeInfo.Mission)
+    case updateDailyMissions([HomeInfo.Mission])
 
     // Route Action
   }
@@ -30,6 +40,14 @@ struct MissionListReducer {
       switch action {
       case .tooltipTapped:
         state.isTooltipVisible.toggle()
+        return .none
+        
+      case .updateLongTermMission(let mission):
+        state.longTermMission = mission
+        return .none
+
+      case .updateDailyMissions(let missions):
+        state.todayDailyMissionList = missions
         return .none
       }
     }

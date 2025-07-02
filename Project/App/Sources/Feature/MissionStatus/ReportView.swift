@@ -59,26 +59,17 @@ struct ReportView: View {
             .textStyle(.h5)
             .foregroundStyle(ColorResource.Neutral._50.color)
 
-          MissionSummaryView(
-            imageResource: .moneyWithWings,
-            title: "5월달",
-            description: "미션 평균 성공률 82%"
-          )
+          if let currentMonthHistory = store.currentMonthHistory {
+            MissionSummaryView(
+              imageResource: .moneyWithWings,
+              title: "\(currentMonthHistory.month)월달",
+              description: "미션 평균 성공률 \(currentMonthHistory.averageSucceedProbability)%"
+            )
+          }
 
           CalendarCardView(
-            dateModels: [
-              .init(
-                date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
-                backgroundColor: ColorResource.Text.Highlights.primary.color
-              ),
-              .init(
-                date: Calendar.current.date(byAdding: .day, value: 2, to: Date())!,
-                backgroundColor: ColorResource.Text.Highlights.primary.color
-              ), .init(
-                date: Calendar.current.date(byAdding: .day, value: 4, to: Date())!,
-                backgroundColor: ColorResource.Text.Highlights.primary.color
-              ),
-            ]
+            displayedMonth: $store.currentCalendarMonth,
+            dateModels: store.calendarDateModels
           )
         }
         .padding(.horizontal, 20)

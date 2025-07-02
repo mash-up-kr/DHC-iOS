@@ -6,18 +6,23 @@
 //
 
 import DeveloperToolsSupport
-import Foundation
+import SwiftUI
 
 import ComposableArchitecture
 
 @Reducer
 struct ReportReducer {
   @Dependency(\.reportClient) var reportClient
+  @Dependency(\.dateFormatterCache) var dateFormatterCache
 
   @ObservableState
   struct State: Equatable {
     var reportInfo: ReportInfo
     var spendChart: SpendChart?
+    var missionHistoryCalendar: MissionHistoryCalendar?
+    var currentMonthHistory: MonthlyMissionHistory?
+    var currentCalendarMonth = Date.now
+    var calendarDateModels: [CalendarDateModelKey: CalendarDateModel] = [:]
     var isLoading = false
     var isRedacted = false
 
@@ -27,30 +32,63 @@ struct ReportReducer {
     }
   }
 
-  enum Action {
+  enum Action: BindableAction {
+    case binding(BindingAction<State>)
     case onAppear
     case fetchReportData
+    case fetchMissionHistoryCalendar(Date)
     case reportDataResponse(ReportInfo)
+    case missionHistoryCalendarResponse(MissionHistoryCalendar)
     case reportDataFailed(Error)
+    case missionHistoryCalendarFailed(Error)
   }
 
   var body: some ReducerOf<Self> {
+    BindingReducer()
+      .onChange(of: \.currentCalendarMonth) { _, _ in
+        Reduce { state, _ in
+          .run { [currentCalendarMonth = state.currentCalendarMonth] send in
+            await send(.fetchMissionHistoryCalendar(currentCalendarMonth))
+          }
+        }
+      }
+
     Reduce { state, action in
       switch action {
-      case .onAppear:
-        state.spendChart = makeSpendChart(from: .sample)
-        return .send(.fetchReportData)
+      case .binding:
+        return .none
 
-      case .fetchReportData:
+      case .onAppear:
         state.isLoading = true
         state.isRedacted = true
+        state.spendChart = makeSpendChart(from: .sample)
+        return .merge([
+          .run { send in
+            await send(.fetchReportData)
+          },
+          .run { [currentCalendarMonth = state.currentCalendarMonth] send in
+            await send(.fetchMissionHistoryCalendar(currentCalendarMonth))
+          },
+        ])
 
+      case .fetchReportData:
         return .run { send in
           do {
             let report = try await reportClient.fetchReport()
             await send(.reportDataResponse(report))
           } catch {
             await send(.reportDataFailed(error))
+          }
+        }
+
+      case .fetchMissionHistoryCalendar(let date):
+        return .run { send in
+          do {
+            let currentYearMonth = getCurrentCalendarYearMonth(from: date)
+            let missionHistory = try await reportClient.fetchMissionHistoryCalendar(currentYearMonth)
+            await send(.missionHistoryCalendarResponse(missionHistory))
+          } catch {
+            await send(.missionHistoryCalendarFailed(error))
           }
         }
 
@@ -61,7 +99,30 @@ struct ReportReducer {
         state.spendChart = makeSpendChart(from: report)
         return .none
 
+      case .missionHistoryCalendarResponse(let missionHistory):
+        state.isLoading = false
+        state.isRedacted = false
+        state.missionHistoryCalendar = missionHistory
+        state.currentMonthHistory = missionHistory.monthlyHistory.first(where: {
+          $0.month == state.currentCalendarMonth.month
+        })
+
+        let newDateModels = missionHistory.monthlyHistory
+          .flatMap(\.missionHistoryDateList)
+          .compactMap {
+            makeCalendarDateModel(from: $0)
+          }
+        let newDateModelDictionary = Dictionary(
+          uniqueKeysWithValues: newDateModels.map { (CalendarDateModelKey(date: $0.date), $0) }
+        )
+        state.calendarDateModels.merge(newDateModelDictionary, uniquingKeysWith: { $1 })
+        return .none
+
       case .reportDataFailed:
+        state.isLoading = false
+        return .none
+
+      case .missionHistoryCalendarFailed:
         state.isLoading = false
         return .none
       }
@@ -114,5 +175,27 @@ struct ReportReducer {
     result.append(savedText)
 
     return result
+  }
+
+  /// 현재 년월을 "yyyy-MM" 포맷으로 반환
+  private func getCurrentCalendarYearMonth(from date: Date) -> String {
+    let formatter = dateFormatterCache.formatter(for: "yyyy-MM")
+    return formatter.string(from: date)
+  }
+
+  private func makeCalendarDateModel(from missionHistoryDate: MissionHistoryDate) -> CalendarDateModel? {
+    let formatter = dateFormatterCache.formatter(for: "yyyy-MM-dd")
+    guard let date = formatter.date(from: missionHistoryDate.date) else {
+      return nil
+    }
+
+    let missionCompletionStage = CalendarMissionCompletionStage(
+      completionCount: missionHistoryDate.finishedMissionCount
+    )
+
+    return CalendarDateModel(
+      date: date,
+      backgroundColor: missionCompletionStage.displayColor
+    )
   }
 }

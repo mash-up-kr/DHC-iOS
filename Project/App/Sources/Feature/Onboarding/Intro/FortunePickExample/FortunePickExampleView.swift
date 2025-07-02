@@ -65,7 +65,7 @@ struct FortunePickExampleView: View {
         scaleEffectY: 1.6
       )
       .overlay(alignment: .top) {
-        OnboardingTooltipView(message: "Click!")
+        OnboardingTooltipView(message: "Flip!")
           .padding(.trailing, 10)
       }
     }

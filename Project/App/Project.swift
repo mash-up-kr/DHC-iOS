@@ -23,7 +23,9 @@ let project = Project(
             "UIInterfaceOrientationPortrait"
           ],
           "UIUserInterfaceStyle": "Dark",
-          "UILaunchStoryboardName": "LaunchScreen",
+          "UILaunchScreen": [
+            "UIImageName": "splashThumbnail"
+          ],
           "NSAppTransportSecurity": [
             "NSAllowsArbitraryLoads": true,
           ]
@@ -35,6 +37,7 @@ let project = Project(
         .external(externalDependency: .alamofire),
         .external(externalDependency: .composableArchitecture),
         .external(externalDependency: .sdWebImageSwiftUI),
+        .external(externalDependency: .lottie)
       ],
       settings: .settings(
         base: [

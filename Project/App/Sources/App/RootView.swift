@@ -15,6 +15,11 @@ struct RootView: View {
   var body: some View {
     Group {
       switch store.destination {
+      case .splash:
+        if let store = store.scope(state: \.destination?.splash, action: \.destination.splash) {
+          SplashView(store: store)
+        }
+        
       case .onboarding:
         if let store = store.scope(state: \.destination?.onboarding, action: \.destination.onboarding) {
           OnboardingView(store: store)

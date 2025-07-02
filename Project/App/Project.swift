@@ -23,7 +23,9 @@ let project = Project(
             "UIInterfaceOrientationPortrait"
           ],
           "UIUserInterfaceStyle": "Dark",
-          "UILaunchStoryboardName": "LaunchScreen",
+          "UILaunchScreen": [
+            "UIImageName": "splashThumbnail"
+          ],
           "NSAppTransportSecurity": [
             "NSAllowsArbitraryLoads": true,
           ]

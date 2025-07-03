@@ -35,7 +35,7 @@ extension ReportAPI: RequestTarget {
     }
   }
 
-  var bodyParameters: Parameters? {
+  var bodyParameters: (any Encodable)? {
     switch self {
     case .analysis:
       nil

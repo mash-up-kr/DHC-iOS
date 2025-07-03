@@ -11,7 +11,7 @@ struct HomeInfo: Equatable {
   let longTermMission: Mission
   let todayDailyMissionList: [Mission]
   let todayDailyFortune: DailyFortune
-  let todayDone: Bool
+  var todayDone: Bool
 }
 
 extension HomeInfo {
@@ -20,7 +20,7 @@ extension HomeInfo {
     let category: String
     let difficulty: Int
     let type: String
-    let finished: Bool
+    var finished: Bool
     let cost: String
     let endDate: String
     let title: String

@@ -18,7 +18,7 @@ extension FortuneDetailInfo {
   static let introInfo: FortuneDetailInfo = .init(
     scoreInfo: .init(
       date: "2025년 5월 20일",
-      score: 35,
+      score: "35점",
       summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요.",
       gradientType: .text02
     ),
@@ -59,7 +59,7 @@ extension FortuneDetailInfo {
 
 struct FortuneScoreInfo: Equatable {
   let date: String
-  let score: Int
+  let score: String
   let summary: String
   let gradientType: LinearGradient.LinearType
 }

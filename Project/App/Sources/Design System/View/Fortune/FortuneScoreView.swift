@@ -9,13 +9,13 @@ import SwiftUI
 
 struct FortuneScoreView: View {
   private let date: String
-  private let score: Int
+  private let score: String
   private let summary: String
   private let gradientType: LinearGradient.LinearType
   
   init(
     date: String,
-    score: Int,
+    score: String,
     summary: String,
     gradientType: LinearGradient.LinearType
   ) {
@@ -33,7 +33,7 @@ struct FortuneScoreView: View {
         font: Typography.Body.body6
       )
       
-      Text("\(score)점")
+      Text(score)
         .textStyle(.h0)
         .foregroundStyle(LinearGradient(gradientType))
       

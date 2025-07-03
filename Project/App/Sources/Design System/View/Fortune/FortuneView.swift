@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FortuneView: View {
   private let date: String
-  private let score: Int
+  private let score: String
   private let summary: String
   private let gradientType: LinearGradient.LinearType
   private let cardBackgroundImageURL: URL?
@@ -19,7 +19,7 @@ struct FortuneView: View {
   
   init(
     date: String,
-    score: Int,
+    score: String,
     summary: String,
     gradientType: LinearGradient.LinearType,
     cardBackgroundImageURL: URL?,

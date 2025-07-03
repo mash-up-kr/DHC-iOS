@@ -11,7 +11,6 @@ import ComposableArchitecture
 
 struct HomeView: View {
   @Bindable var store: StoreOf<HomeReducer>
-  @Dependency(\.homeClient) var homeClient
 
   var body: some View {
     ScrollView {

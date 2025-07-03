@@ -32,6 +32,9 @@ struct HomeView: View {
       }
     }
     .radialGradientBackground(type: .backgroundGradient02)
+    .onAppear { 
+      store.send(.onAppear)
+    }
   }
 
   // MARK: 상단 타이틀 섹션
@@ -43,7 +46,7 @@ struct HomeView: View {
 
       HStack(alignment: .top, spacing: 0) {
         VStack(alignment: .leading, spacing: 12) {
-          Text("지갑이 들뜨는 날,\n한 템포 쉬어가요.") // TODO: 타이틀 연결
+          Text(store.homeInfo.todayDailyFortune.fortuneTitle) // TODO: 타이틀 연결
             .textStyle(.h2)
             .foregroundStyle(ColorResource.Text.Body.primary.color)
 
@@ -51,7 +54,7 @@ struct HomeView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
-        FortuneCoreView(score: 35) { // TODO: 점수 연결
+        FortuneCoreView(score: store.homeInfo.todayDailyFortune.score) {
           // TODO: '오늘의 금전운' 화면으로 이동하기
         }
       }
@@ -72,7 +75,8 @@ struct HomeView: View {
           .renderingMode(.template)
           .frame(width: 20, height: 20)
       }
-      .padding(.horizontal, 8)
+      .padding(.leading, 12)
+      .padding(.trailing, 8)
       .padding(.vertical, 4)
       .foregroundStyle(ColorResource.Neutral._300.color)
       .background {
@@ -93,7 +97,7 @@ struct HomeView: View {
 #Preview {
   HomeView(
     store: Store(
-      initialState: .init(),
+      initialState: .init(homeInfo: HomeInfo.sample),
       reducer: HomeReducer.init
     )
   )

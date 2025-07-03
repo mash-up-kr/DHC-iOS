@@ -15,33 +15,35 @@ struct MissionItem<V>: View where V: View {
   @ViewBuilder var badgeView: () -> V
 
   var body: some View {
-    Button {
-      isMissionCompleted.toggle()
-    } label: {
-      ZStack(alignment: .topLeading) {
-        HStack(spacing: 16) {
-          HStack(alignment: .top, spacing: 12) {
-            badgeView()
+    ZStack(alignment: .topLeading) {
+      HStack(spacing: 16) {
+        HStack(alignment: .top, spacing: 12) {
+          badgeView()
 
-            Text(missionTitle)
-              .textStyle(.body3)
-              .foregroundStyle(ColorResource.Text.Body.primary.color)
-              .multilineTextAlignment(.leading)
-              .frame(maxWidth: .infinity, alignment: .leading)
-          }
-
-          CheckMark(size: .medium, style: isMissionCompleted ? .active : .enabled)
+          Text(missionTitle)
+            .textStyle(.body3)
+            .foregroundStyle(ColorResource.Text.Body.primary.color)
+            .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 20)
-        .background(ColorResource.Neutral._700.color)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 16)
 
-        if isPinned {
-          pinView()
+        Button {
+          isMissionCompleted.toggle()
+        } label: {
+          CheckMark(
+            size: .medium, 
+            style: isMissionCompleted ? .active : .enabled)
+          .padding(20)
         }
+      }
+      .padding(.horizontal, 16)
+      .background(ColorResource.Neutral._700.color)
+      .clipShape(RoundedRectangle(cornerRadius: 12))
+      .frame(maxWidth: .infinity)
+      .padding(.horizontal, 16)
+
+      if isPinned {
+        pinView()
       }
     }
   }

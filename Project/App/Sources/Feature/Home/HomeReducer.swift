@@ -57,7 +57,7 @@ struct HomeReducer {
 
       case .homeDataResponse(let homeInfo):
         state.homeInfo = homeInfo
-        return .concatenate(
+        return .merge(
           .send(.missionList(.updateLongTermMission(homeInfo.longTermMission))),
           .send(.missionList(.updateDailyMissions(homeInfo.todayDailyMissionList)))
         )

@@ -32,7 +32,7 @@ extension HomeAPI: RequestTarget {
     }
   }
 
-  var bodyParameters: Alamofire.Parameters? {
+  var bodyParameters: (any Encodable)? {
     switch self {
     case .home:
       nil

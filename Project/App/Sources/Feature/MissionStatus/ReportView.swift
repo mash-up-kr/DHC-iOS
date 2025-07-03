@@ -1,5 +1,5 @@
 //
-//  MissionStatusView.swift
+//  ReportView.swift
 //  Flifin
 //
 //  Created by Aiden.lee on 6/8/25.
@@ -9,8 +9,8 @@ import SwiftUI
 
 import ComposableArchitecture
 
-struct MissionStatusView: View {
-  @Bindable var store: StoreOf<MissionStatusReducer>
+struct ReportView: View {
+  @Bindable var store: StoreOf<ReportReducer>
   @State private var currentPage: Date = Date()
 
   private let dates = [
@@ -31,6 +31,7 @@ struct MissionStatusView: View {
   var body: some View {
     ScrollView {
       LargeNavigationTitleView(title: "통계")
+        .unredacted()
 
       VStack(spacing: 0) {
         VStack(alignment: .leading, spacing: 12) {
@@ -41,16 +42,15 @@ struct MissionStatusView: View {
           MissionSummaryView(
             imageResource: .moneyWithWings,
             title: "지금까지 총",
-            description: "130,000원 아꼈어요!"
+            description: "\(store.reportInfo.totalSavedMoney.formatted(.number))원 아꼈어요!"
           )
 
-          SpendChartCardView(
-            title: "이번주에 20대 남성 대비\n25,000원 더 절약했어요",
-            chartData: [
-              SpendChartData(category: "나", amount: 52000, isHighlighted: true),
-              SpendChartData(category: "20대 남성", amount: 120000, isHighlighted: false),
-            ]
-          )
+          if let spendChart = store.spendChart {
+            SpendChartCardView(
+              title: spendChart.title,
+              chartData: spendChart.chartData
+            )
+          }
         }
         .padding(20)
 
@@ -85,11 +85,15 @@ struct MissionStatusView: View {
         .padding(.bottom, 20)
       }
     }
+    .onAppear {
+      store.send(.onAppear)
+    }
     .contentMargins(.bottom, 46)
     .radialGradientBackground(
       type: .backgroundGradient02,
       endRadiusMultiplier: 1.2,
       scaleEffectX: 1.8
     )
+    .redacted(reason: store.isRedacted ? .placeholder : [])
   }
 }

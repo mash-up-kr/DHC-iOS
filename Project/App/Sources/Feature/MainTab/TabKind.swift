@@ -9,15 +9,15 @@ import Foundation
 
 enum TabKind {
   case home
-  case missionStatus
+  case report
   case myPage
 
   var title: String {
     switch self {
     case .home:
       return "홈"
-    case .missionStatus:
-      return "미션 현황"
+    case .report:
+      return "리포트"
     case .myPage:
       return "마이페이지"
     }

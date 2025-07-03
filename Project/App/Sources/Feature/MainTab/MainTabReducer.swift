@@ -14,14 +14,14 @@ struct MainTabReducer {
   @ObservableState
   struct State: Equatable {
     var homeTab = HomeReducer.State()
-    var missionStatusTab = MissionStatusReducer.State()
+    var reportTab = ReportReducer.State(reportInfo: .sample, spendChart: nil)
     var myPageTab = MyPageReducer.State(myPageInfo: .sample)
     var selectedTab = TabKind.home
   }
 
   enum Action {
     case homeTab(HomeReducer.Action)
-    case missionStatusTab(MissionStatusReducer.Action)
+    case reportTab(ReportReducer.Action)
     case myPageTab(MyPageReducer.Action)
     case selectedTabChanged(TabKind)
   }
@@ -31,7 +31,7 @@ struct MainTabReducer {
       switch action {
       case .homeTab:
         return .none
-      case .missionStatusTab:
+      case .reportTab:
         return .none
       case .myPageTab:
         return .none
@@ -44,8 +44,8 @@ struct MainTabReducer {
     Scope(state: \.homeTab, action: \.homeTab) {
       HomeReducer()
     }
-    Scope(state: \.missionStatusTab, action: \.missionStatusTab) {
-      MissionStatusReducer()
+    Scope(state: \.reportTab, action: \.reportTab) {
+      ReportReducer()
     }
     Scope(state: \.myPageTab, action: \.myPageTab) {
       MyPageReducer()

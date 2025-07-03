@@ -18,7 +18,7 @@ struct RootReducer {
     case mainTab(MainTabReducer)
     case selectGender(SelectGenderReducer)
   }
-
+  
   @ObservableState
   struct State {
     @Presents var destination: Destination.State?
@@ -26,7 +26,7 @@ struct RootReducer {
   
   @Dependency(\.userManager) var userManager
   @Dependency(\.deviceIDManager) var deviceIDManager
-
+  
   enum Action {
     // View Action
     case onAppear
@@ -38,13 +38,12 @@ struct RootReducer {
     // Route Action
     case destination(PresentationAction<Destination.Action>)
   }
-
+  
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
       case .destination(.presented(.splash(.delegate(.splashFinished)))):
-        state.destination = .onboarding(OnboardingReducer.State())
-        return .none
+        return .send(.checkDeviceID)
         
       case .destination(.presented(.onboarding(.delegate(.moveToMainTabView)))):
         state.destination = .mainTab(MainTabReducer.State())
@@ -58,36 +57,36 @@ struct RootReducer {
         // TODO: 홈에서 로직 처리 필요
         state.destination = .mainTab(MainTabReducer.State())
         return .none
-
+        
       case .destination(.presented(.mainTab(.myPageTab(.delegate(.moveToRootView))))):
         return .send(.checkDeviceID)
-          
-        case .destination:
-          return .none
-          
+        
+      case .destination:
+        return .none
+        
       case .onAppear:
         state.destination = .splash(SplashReducer.State())
         return .none
-          
-        case .checkDeviceID:
-          do {
-            _ = try deviceIDManager.loadDeviceID()
-          } catch {
-            let deviceID = deviceIDManager.generateDeviceID()
-            try? deviceIDManager.saveDeviceID(uuid: deviceID)
-          }
-          
-          return .send(.checkUserID)
-          
-        case .checkUserID:
-          let userID = userManager.getUserID()
-          if userID == nil {
-            state.destination = .onboarding(OnboardingReducer.State())
-          } else {
-            state.destination = .mainTab(MainTabReducer.State())
-          }
-          
-          return .none
+        
+      case .checkDeviceID:
+        do {
+          _ = try deviceIDManager.loadDeviceID()
+        } catch {
+          let deviceID = deviceIDManager.generateDeviceID()
+          try? deviceIDManager.saveDeviceID(uuid: deviceID)
+        }
+        
+        return .send(.checkUserID)
+        
+      case .checkUserID:
+        let userID = userManager.getUserID()
+        if userID == nil {
+          state.destination = .onboarding(OnboardingReducer.State())
+        } else {
+          state.destination = .mainTab(MainTabReducer.State())
+        }
+        
+        return .none
       }
     }
     .ifLet(\.$destination, action: \.destination)

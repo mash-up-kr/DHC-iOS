@@ -35,6 +35,7 @@ struct FortuneDetailView: View {
             date: store.detailInfo.scoreInfo.date,
             score: store.detailInfo.scoreInfo.score,
             summary: store.detailInfo.scoreInfo.summary,
+            gradientType: store.detailInfo.scoreInfo.gradientType,
             cardBackgroundImageURL: store.detailInfo.cardInfo.backgroundImageURL,
             cardTitle: store.detailInfo.cardInfo.title,
             cardFortune: store.detailInfo.cardInfo.fortune

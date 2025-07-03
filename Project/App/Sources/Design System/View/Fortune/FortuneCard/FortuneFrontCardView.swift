@@ -1,21 +1,19 @@
 //
-//  FortuneCardView.swift
+//  FortuneCardFrontView.swift
 //  Flifin
 //
-//  Created by hyerin on 6/17/25.
+//  Created by 최혜린 on 7/1/25.
 //
 
 import SwiftUI
 
-import SDWebImageSwiftUI
-
-struct FortuneCardView: View {
-  private let backgroundImageURL: URL
+struct FortuneCardFrontView: View {
+  private let backgroundImageURL: URL?
   private let title: String
   private let fortune: String
   
   init(
-    backgroundImageURL: URL,
+    backgroundImageURL: URL?,
     title: String,
     fortune: String
   ) {
@@ -23,19 +21,9 @@ struct FortuneCardView: View {
     self.title = title
     self.fortune = fortune
   }
-
+  
   var body: some View {
-    WebImage(
-      url: backgroundImageURL,
-      content: { image in
-        image.resizable()
-      },
-      placeholder: {
-        Rectangle()
-      }
-    )
-    .frame(width: 144, height: 200, alignment: .center)
-    .clipShape(RoundedRectangle(cornerRadius: 12))
+    FortuneCardView(backgroundImageURL: backgroundImageURL)
     .overlay {
       RoundedRectangle(cornerRadius: 12)
         .strokeBorder(LinearGradient(.cardBorder))
@@ -53,12 +41,4 @@ struct FortuneCardView: View {
       .padding(.top, 20)
     }
   }
-}
-
-#Preview {
-  FortuneCardView(
-    backgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
-    title: "최고의 날",
-    fortune: "네잎클로버"
-  )
 }

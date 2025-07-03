@@ -45,7 +45,9 @@ struct MissionExampleView: View {
           style: .secondary,
           title: "간편 개인정보 입력하기",
           action: {
-            store.send(.nextButtonTapped)
+            _ = withAnimation {
+              store.send(.nextButtonTapped)
+            }
           }
         )
         .padding(20)

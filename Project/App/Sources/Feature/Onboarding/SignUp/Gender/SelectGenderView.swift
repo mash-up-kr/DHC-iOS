@@ -17,25 +17,48 @@ struct SelectGenderView: View {
   }
   
   var body: some View {
-    VStack(alignment: .leading, spacing: 0) {
-      DHCNavigationBar(
-        type: .progress(currentProgress: 1, totalProgress: 4)
-      )
-      
-      IntroTitleView(
-        style: .page,
-        title: "성별은\n어떻게 되시나요?",
-        description: "성별에 따라 대운의\n흐름이 달라져요."
-      )
-      .padding(.bottom, 84)
-      
-      genderSection
-      
-      Spacer()
-      
-      bottomButton
+    NavigationStack(
+      path: $store.scope(state: \.path, action: \.path)
+    ) {
+      VStack(alignment: .leading, spacing: 0) {
+        DHCNavigationBar(
+          type: .progress(currentProgress: 1, totalProgress: 4)
+        )
+        
+        IntroTitleView(
+          style: .page,
+          title: "성별은\n어떻게 되시나요?",
+          description: "성별에 따라 대운의\n흐름이 달라져요."
+        )
+        .padding(.bottom, 84)
+        
+        genderSection
+        
+        Spacer()
+        
+        CTAButton(
+          size: .extraLarge,
+          style: .secondary,
+          title: "다음",
+          action: {
+            store.send(.nextButtonTapped)
+          }
+        )
+        .disabled(store.isBottomButtonDisabled)
+        .padding(20)
+      }
+      .background(ColorResource.Background.main.color)
+      .navigationBarBackButtonHidden()
+    }  destination: { store in
+      switch store.case {
+      case .birthdayInput(let store):
+        BirthdayInputView(store: store)
+      case .birthTimeInput(let store):
+        BirthTimeInputView(store: store)
+      case .selectCategory(let store):
+        SelectCategoryView(store: store)
+      }
     }
-    .background(ColorResource.Background.main.color)
   }
   
   private var genderSection: some View {
@@ -64,19 +87,6 @@ struct SelectGenderView: View {
         )
       }
     }
-    .padding(20)
-  }
-  
-  private var bottomButton: some View {
-    CTAButton(
-      size: .extraLarge,
-      style: .secondary,
-      title: store.bottomButtonTitle,
-      action: {
-        store.send(.bottomButtonTapped)
-      }
-    )
-    .disabled(store.isBottomButtonDisabled)
     .padding(20)
   }
 }

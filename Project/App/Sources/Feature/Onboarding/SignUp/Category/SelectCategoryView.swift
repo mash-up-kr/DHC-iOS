@@ -39,7 +39,7 @@ struct SelectCategoryView: View {
       CTAButton(
         size: .extraLarge,
         style: .secondary,
-        title: store.nextButtonTitle,
+        title: "개인정보 기입완료",
         action: {
           store.send(.nextButtonTapped)
         }
@@ -48,6 +48,10 @@ struct SelectCategoryView: View {
       .padding(20)
     }
     .background(ColorResource.Background.main.color)
+    .navigationBarBackButtonHidden()
+    .onAppear {
+      store.send(.onAppear)
+    }
   }
   
   private var categoryGridView: some View {
@@ -56,16 +60,16 @@ struct SelectCategoryView: View {
         columns: columns,
         spacing: 15,
         content: {
-          ForEach(store.categoryInfos, id: \.id) { categoryInfo in
+          ForEach(store.missionCategories, id: \.name) { category in
             CategoryCardButton(
-              imageURL: categoryInfo.url,
-              title: categoryInfo.title,
+              imageURL: category.imageURL,
+              title: category.displayName,
               isSelected: Binding(
                 get: {
-                  store.selectedCategoryID.contains(categoryInfo.id)
+                  store.selectedCategories.contains(category.name)
                 },
                 set: { isSelected in
-                  store.send(.categoryButtonTapped(categoryID: categoryInfo.id, isSelected: isSelected))
+                  store.send(.categoryButtonTapped(categoryName: category.name, isSelected: isSelected))
                 }
               )
             )
@@ -83,7 +87,7 @@ struct SelectCategoryView: View {
 #Preview {
   SelectCategoryView(
     store: Store(
-      initialState: .init(),
+      initialState: .init(gender: .male, calendarType: .lunar, birthday: Date(), birthTime: Date()),
       reducer: SelectCategoryReducer.init
     )
   )

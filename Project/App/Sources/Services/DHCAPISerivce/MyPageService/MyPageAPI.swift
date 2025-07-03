@@ -40,7 +40,7 @@ extension MyPageAPI: RequestTarget {
     }
   }
 
-  var bodyParameters: Parameters? {
+  var bodyParameters: (any Encodable)? {
     switch self {
     case .myPage, .resetApp:
       nil

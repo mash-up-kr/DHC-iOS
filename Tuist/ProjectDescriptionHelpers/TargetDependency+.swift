@@ -17,4 +17,5 @@ public enum ExternalDependency: String {
 	case composableArchitecture = "ComposableArchitecture"
 	case alamofire = "Alamofire"
   case sdWebImageSwiftUI = "SDWebImageSwiftUI"
+  case lottie = "Lottie"
 }

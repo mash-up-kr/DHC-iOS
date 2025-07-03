@@ -25,5 +25,6 @@ let package = Package(
       exact: .init(stringLiteral: "1.19.1")
     ),
     .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", .upToNextMajor(from: "3.1.0")),
+    .package(url: "https://github.com/airbnb/lottie-spm.git", .upToNextMinor(from: "4.5.0"))
   ]
 )

@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 struct MissionListView: View {
   @Bindable var store: StoreOf<MissionListReducer>
+  @Dependency(\.dateFormatterCache) var dateFormatterCache
 
   var body: some View {
     VStack(alignment: .leading, spacing: 24) {
@@ -18,12 +19,11 @@ struct MissionListView: View {
 
       dailyMissionSection
     }
-    .padding(.horizontal, 20)
     .frame(maxWidth: .infinity, alignment: .leading)
   }
 
   private var pinnedMissionSection: some View {
-    VStack(spacing: 4) {
+    VStack(alignment: .leading, spacing: 4) {
       HStack(spacing: 12) {
         HStack(spacing: 8) {
           Text("소비습관 미션")
@@ -48,20 +48,67 @@ struct MissionListView: View {
           }
         }
 
-        Text("식음료") // TODO: 소비 카테고리 -> Badge 컴포넌트로 대체하기 + 카테고리 연결
+        DHCBadge(
+          badgeTitle: store.longTermMission.category,
+          badgeStyle: .spendCategory
+        )
       }
-      
-      // TODO: PinnedMissionItemView 넣기
+      .padding(.horizontal, 20)
+
+      PinnedMissionItemView(
+        missionTitle: store.longTermMission.title,
+        remainingDays: remainingDays(
+          until: store.longTermMission.endDate
+        ),
+        isMissionCompleted: Binding(
+          get: { store.longTermMission.finished },
+          set: { _ in store.send(.longTermMissionTapped) }
+        )
+      )
     }
   }
 
   private var dailyMissionSection: some View {
-    VStack(spacing: 16) {
+    VStack(alignment: .leading, spacing: 16) {
       Text("금전운 기반 일일 미션")
         .textStyle(.h4_1)
         .foregroundStyle(ColorResource.Text.Body.primary.color)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal,20)
 
-      // TODO: DailyMissionItemView 넣기
+      ForEach(store.todayDailyMissionList, id: \.missionId) { mission in
+        DailyMissionItemView(
+          missionTitle: mission.title,
+          missionLevel: missionLevel(for: mission.difficulty),
+          isMissionCompleted: Binding(
+            get: { mission.finished },
+            set: { _ in store.send(.dailyMissionTapped(missionID: mission.missionId)) }
+          )
+        )
+      }
+    }
+  }
+
+  private func remainingDays(until dateString: String) -> Int {
+    let formatter = dateFormatterCache.formatter(for: "yyyy-MM-dd")
+
+    guard let endDate = formatter.date(from: dateString) else {
+      return 0
+    }
+
+    let calendar = Calendar.current
+    let today = calendar.startOfDay(for: Date())
+    let end = calendar.startOfDay(for: endDate)
+
+    return max(calendar.dateComponents([.day], from: today, to: end).day ?? 0, 0)
+  }
+
+  private func missionLevel(for difficulty: Int) -> DHCBadge.MissionLevel {
+    switch difficulty {
+    case 1: return .easy
+    case 2: return .medium
+    case 3: return .hard
+    default: return .easy
     }
   }
 }
@@ -69,7 +116,11 @@ struct MissionListView: View {
 #Preview {
   MissionListView(
     store: Store(
-      initialState: MissionListReducer.State(),
+      initialState: MissionListReducer
+        .State(
+          longTermMission: HomeInfo.sample.longTermMission,
+          todayDailyMissionList: HomeInfo.sample.todayDailyMissionList
+        ),
       reducer: MissionListReducer.init
     )
   )

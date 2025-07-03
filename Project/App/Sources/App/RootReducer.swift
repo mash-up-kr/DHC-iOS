@@ -13,36 +13,79 @@ import ComposableArchitecture
 struct RootReducer {
   @Reducer
   enum Destination {
+    case splash(SplashReducer)
     case onboarding(OnboardingReducer)
     case mainTab(MainTabReducer)
+    case selectGender(SelectGenderReducer)
   }
-
+  
   @ObservableState
   struct State {
     @Presents var destination: Destination.State?
   }
-
+  
+  @Dependency(\.userManager) var userManager
+  @Dependency(\.deviceIDManager) var deviceIDManager
+  
   enum Action {
-    case destination(PresentationAction<Destination.Action>)
+    // View Action
     case onAppear
+    
+    // Internal Action
+    case checkDeviceID
+    case checkUserID
+    
+    // Route Action
+    case destination(PresentationAction<Destination.Action>)
   }
-
+  
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-        case .destination(.presented(.onboarding(.nextButtonTapped))):
+      case .destination(.presented(.splash(.delegate(.splashFinished)))):
+        return .send(.checkDeviceID)
+        
+      case .destination(.presented(.onboarding(.delegate(.moveToMainTabView)))):
         state.destination = .mainTab(MainTabReducer.State())
         return .none
-
-      case .destination(.presented(.mainTab(.myPageTab(.delegate(.moveToOnboarding))))):
-        state.destination = .onboarding(OnboardingReducer.State())
+        
+      case .destination(.presented(.onboarding(.delegate(.moveToSelectGenderView)))):
+        state.destination = .selectGender(SelectGenderReducer.State())
         return .none
-
+        
+      case .destination(.presented(.selectGender(.delegate(.registerCompleted)))):
+        // TODO: 홈에서 로직 처리 필요
+        state.destination = .mainTab(MainTabReducer.State())
+        return .none
+        
+      case .destination(.presented(.mainTab(.myPageTab(.delegate(.moveToRootView))))):
+        return .send(.checkDeviceID)
+        
       case .destination:
         return .none
-
+        
       case .onAppear:
-        state.destination = .onboarding(OnboardingReducer.State())
+        state.destination = .splash(SplashReducer.State())
+        return .none
+        
+      case .checkDeviceID:
+        do {
+          _ = try deviceIDManager.loadDeviceID()
+        } catch {
+          let deviceID = deviceIDManager.generateDeviceID()
+          try? deviceIDManager.saveDeviceID(uuid: deviceID)
+        }
+        
+        return .send(.checkUserID)
+        
+      case .checkUserID:
+        let userID = userManager.getUserID()
+        if userID == nil {
+          state.destination = .onboarding(OnboardingReducer.State())
+        } else {
+          state.destination = .mainTab(MainTabReducer.State())
+        }
+        
         return .none
       }
     }

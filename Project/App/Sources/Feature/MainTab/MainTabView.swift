@@ -32,19 +32,19 @@ struct MainTabView: View {
         Text(TabKind.home.title)
       }
 
-      Tab(value: .missionStatus) {
+      Tab(value: .report) {
         NavigationStack {
-          MissionStatusView(
+          ReportView(
             store: store.scope(
-              state: \.missionStatusTab,
-              action: \.missionStatusTab
+              state: \.reportTab,
+              action: \.reportTab
             )
           )
         }
       } label: {
         Image(.Icon.status)
           .renderingMode(.template)
-        Text(TabKind.missionStatus.title)
+        Text(TabKind.report.title)
       }
 
       Tab(value: .myPage) {

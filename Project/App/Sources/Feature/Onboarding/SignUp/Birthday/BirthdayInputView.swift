@@ -44,6 +44,7 @@ struct BirthdayInputView: View {
       nextButton
     }
     .background(ColorResource.Background.main.color)
+    .navigationBarBackButtonHidden()
   }
 
   private var birthdaySection: some View {
@@ -59,7 +60,7 @@ struct BirthdayInputView: View {
           action: {
             store.send(.calendarTypeButtonTapped(.solar))
           },
-          isSelected: .constant(store.dateType == .solar)
+          isSelected: .constant(store.calendarType == .solar)
         )
         
         SelectableButton(
@@ -68,7 +69,7 @@ struct BirthdayInputView: View {
           action: {
             store.send(.calendarTypeButtonTapped(.lunar))
           },
-          isSelected: .constant(store.dateType == .lunar)
+          isSelected: .constant(store.calendarType == .lunar)
         )
       }
     }
@@ -79,7 +80,7 @@ struct BirthdayInputView: View {
     CTAButton(
       size: .extraLarge,
       style: .secondary,
-      title: "금전운 확인하고 시작하기",
+      title: "다음",
       action: {
         store.send(.nextButtonTapped)
       }
@@ -91,7 +92,7 @@ struct BirthdayInputView: View {
 #Preview {
   BirthdayInputView(
     store: Store(
-      initialState: .init(),
+      initialState: .init(gender: .male),
       reducer: BirthdayInputReducer.init
     )
   )

@@ -40,6 +40,7 @@ struct BirthTimeInputView: View {
       nextButton
     }
     .background(ColorResource.Background.main.color)
+    .navigationBarBackButtonHidden()
   }
 
   private var birthTimeSection: some View {
@@ -77,7 +78,7 @@ struct BirthTimeInputView: View {
     CTAButton(
       size: .extraLarge,
       style: .secondary,
-      title: "금전운 확인하고 시작하기",
+      title: "다음",
       action: {
         store.send(.nextButtonTapped)
       }
@@ -89,7 +90,7 @@ struct BirthTimeInputView: View {
 #Preview {
   BirthTimeInputView(
     store: Store(
-      initialState: .init(),
+      initialState: .init(gender: .male, calendarType: .lunar, birthday: Date()),
       reducer: BirthTimeInputReducer.init
     )
   )

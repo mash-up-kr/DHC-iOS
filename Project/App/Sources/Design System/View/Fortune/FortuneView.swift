@@ -9,18 +9,20 @@ import SwiftUI
 
 struct FortuneView: View {
   private let date: String
-  private let score: Int
+  private let score: String
   private let summary: String
-  private let cardBackgroundImageURL: URL
+  private let gradientType: LinearGradient.LinearType
+  private let cardBackgroundImageURL: URL?
   private let cardTitle: String
   private let cardFortune: String
   private let needsGradientBackground: Bool
   
   init(
     date: String,
-    score: Int,
+    score: String,
     summary: String,
-    cardBackgroundImageURL: URL,
+    gradientType: LinearGradient.LinearType,
+    cardBackgroundImageURL: URL?,
     cardTitle: String,
     cardFortune: String,
     needsGradientBackground: Bool = false
@@ -28,6 +30,7 @@ struct FortuneView: View {
     self.date = date
     self.score = score
     self.summary = summary
+    self.gradientType = gradientType
     self.cardBackgroundImageURL = cardBackgroundImageURL
     self.cardTitle = cardTitle
     self.cardFortune = cardFortune
@@ -39,10 +42,11 @@ struct FortuneView: View {
       FortuneScoreView(
         date: date,
         score: score,
-        summary: summary
+        summary: summary,
+        gradientType: gradientType
       )
       
-      FortuneCardView(
+      FortuneCardFrontView(
         backgroundImageURL: cardBackgroundImageURL,
         title: cardTitle,
         fortune: cardFortune
@@ -59,15 +63,4 @@ struct FortuneView: View {
       .padding(.bottom, 20)
     }
   }
-}
-
-#Preview {
-  FortuneView(
-    date: "2025년 5월 20일",
-    score: 35,
-    summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요.",
-    cardBackgroundImageURL: URL(string: "https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg")!,
-    cardTitle: "오늘의 운세 카드",
-    cardFortune: "\'한 템포 쉬어가기\'"
-  )
 }

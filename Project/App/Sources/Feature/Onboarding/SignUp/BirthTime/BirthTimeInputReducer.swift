@@ -15,13 +15,25 @@ struct BirthTimeInputReducer {
 
   @ObservableState
   struct State: Equatable {
+    let gender: Gender
+    let calendarType: CalendarType
+    let birthday: Date
     var birthTime: Date
     var isNoIdeaButtonChecked: Bool
+    var selectedBirthTime: Date? {
+      isNoIdeaButtonChecked ? nil : birthTime
+    }
 
     init(
+      gender: Gender,
+      calendarType: CalendarType,
+      birthday: Date,
       birthTime: Date = Date(hour: 1, minute: 0),
       isNoIdeaButtonSelected: Bool = false
     ) {
+      self.gender = gender
+      self.calendarType = calendarType
+      self.birthday = birthday
       self.birthTime = birthTime
       self.isNoIdeaButtonChecked = isNoIdeaButtonSelected
     }
@@ -37,6 +49,7 @@ struct BirthTimeInputReducer {
     // Internal Action
     
     // Route Action
+    case moveToSelectCategoryView(Gender, CalendarType, Date, Date?)
   }
 
   var body: some Reducer<State, Action> {
@@ -51,9 +64,12 @@ struct BirthTimeInputReducer {
           return .none
           
         case .nextButtonTapped:
-          return .none
+          return .send(.moveToSelectCategoryView(state.gender, state.calendarType, state.birthday, state.selectedBirthTime))
           
         case .backButtonTapped:
+          return .none
+          
+        case .moveToSelectCategoryView:
           return .none
       }
     }

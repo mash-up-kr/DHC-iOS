@@ -14,7 +14,14 @@ extension Date {
   }
 }
 
-struct CalendarDateModel: Identifiable {
+struct CalendarDateModelKey: Hashable {
+  let id: String
+  init(date: Date) {
+    self.id = date.id
+  }
+}
+
+struct CalendarDateModel: Identifiable, Equatable {
   let date: Date
   let backgroundColor: Color?
   var id: String {
@@ -35,7 +42,7 @@ struct CalendarCellData: Identifiable {
 // MARK: - Calendar Card View
 
 struct CalendarCardView: View {
-  @State private var displayedMonth = Date()
+  @Binding private var displayedMonth: Date
   @State private var calendarCells: [CalendarCellData] = []
 
   private static let dateFormatter: DateFormatter = {
@@ -46,15 +53,11 @@ struct CalendarCardView: View {
   }()
 
   private let weekdays = ["월", "화", "수", "목", "금", "토", "일"]
-  private var dateModels: [String: CalendarDateModel] = [:]
+  private let dateModels: [CalendarDateModelKey: CalendarDateModel]
 
-  init(dateModels: [CalendarDateModel]) {
-    self.displayedMonth = displayedMonth
-    self.dateModels = Dictionary(
-      uniqueKeysWithValues: dateModels.map {
-        ($0.id, $0)
-      }
-    )
+  init(displayedMonth: Binding<Date>, dateModels: [CalendarDateModelKey: CalendarDateModel]) {
+    self._displayedMonth = displayedMonth
+    self.dateModels = dateModels
   }
 
   var body: some View {
@@ -83,14 +86,10 @@ struct CalendarCardView: View {
         .fill(ColorResource.Neutral._700.color)
     )
     .onAppear {
-      withAnimation(.easeInOut(duration: 0.3)) {
-        calendarCells = calculateCalendarCells()
-      }
+      calendarCells = calculateCalendarCells()
     }
     .onChange(of: displayedMonth) { _, _ in
-      withAnimation(.easeInOut(duration: 0.3)) {
-        calendarCells = calculateCalendarCells()
-      }
+      calendarCells = calculateCalendarCells()
     }
   }
 
@@ -172,7 +171,7 @@ struct CalendarCardView: View {
     for _ in 0..<42 {
       let isCurrentMonth = calendar.isDate(currentDate, equalTo: displayedMonth, toGranularity: .month)
 
-      let dateModel = dateModels[currentDate.id]
+      let dateModel = dateModels[.init(date: currentDate)]
       allCells.append(
         CalendarCellData(
           date: currentDate,
@@ -241,18 +240,13 @@ struct CalendarCellView: View {
 
 #Preview {
   CalendarCardView(
+    displayedMonth: .constant(.now),
     dateModels: [
-      .init(
-        date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
-        backgroundColor: ColorResource.Text.Highlights.primary.color
-      ),
-      .init(
-        date: Calendar.current.date(byAdding: .day, value: 2, to: Date())!,
-        backgroundColor: ColorResource.Text.Highlights.primary.color
-      ), .init(
-        date: Calendar.current.date(byAdding: .day, value: 4, to: Date())!,
-        backgroundColor: ColorResource.Text.Highlights.primary.color
-      ),
+      .init(date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!)
+        : .init(
+          date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
+          backgroundColor: ColorResource.Text.Highlights.primary.color
+        ),
     ]
   )
 }

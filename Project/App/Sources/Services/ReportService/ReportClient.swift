@@ -12,23 +12,42 @@ import ComposableArchitecture
 @DependencyClient
 struct ReportClient {
   var fetchReport: @Sendable () async throws -> ReportInfo
+  var fetchMissionHistoryCalendar: @Sendable (_ yearMonth: String) async throws -> MissionHistoryCalendar
 }
 
 extension ReportClient: DependencyKey {
   static let liveValue: Self = {
     let networkManager = NetworkManager()
+    nonisolated(unsafe) let cache = MutexLock<[String: MissionHistoryCalendar]>([:])
 
     return ReportClient(fetchReport: {
       try await networkManager
         .request(ReportAPI.analysis)
         .map(to: ReportDTO.self)
         .toDomain()
+    }, fetchMissionHistoryCalendar: { yearMonth in
+      let cachedResult = cache.withLock {
+        $0[yearMonth]
+      }
+
+      if let cachedResult {
+        return cachedResult
+      }
+
+      let result = try await networkManager
+        .request(ReportAPI.calendar(yearMonth: yearMonth))
+        .map(to: MissionHistoryCalendarDTO.self)
+        .toDomain()
+
+      cache.withLock {
+        $0[yearMonth] = result
+      }
+
+      return result
     })
   }()
 
-  static let previewValue = ReportClient(
-    fetchReport: { .sample }
-  )
+  static let previewValue = Self()
   static let testValue = Self()
 }
 

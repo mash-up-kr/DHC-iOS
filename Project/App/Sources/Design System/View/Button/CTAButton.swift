@@ -64,7 +64,7 @@ extension CTAButton {
         case .extraLarge:
           return 15
         case .large:
-          return 12
+          return 14
       }
     }
     

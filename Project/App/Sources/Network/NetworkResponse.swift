@@ -37,7 +37,7 @@ struct DHCResponseSerializer: ResponseSerializer {
     error: Error?
   ) throws -> DHCNetworkResponse {
     if let error {
-      throw NetworkManagerError.requestFailed(underlying: error)
+      throw NetworkManagerError.requestFailed(underlying: error, statusCode: response?.statusCode ?? -1)
     }
 
     return DHCNetworkResponse(

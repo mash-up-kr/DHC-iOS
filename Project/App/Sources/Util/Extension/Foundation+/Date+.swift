@@ -23,6 +23,10 @@ extension Date {
   var isToday: Bool {
     Calendar.current.isDateInToday(self)
   }
+  
+  func addDate(day: Int) -> Date {
+    Calendar.current.date(byAdding: .day, value: day, to: self) ?? Date()
+  }
 
   init(year: Int, month: Int, day: Int) {
     let calendar = Calendar(identifier: .gregorian)

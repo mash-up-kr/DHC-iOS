@@ -28,17 +28,19 @@ struct MissionExampleView: View {
       .padding(.bottom, 45)
       
       ScrollView {
-        // TODO: 추후 미션 목록 추가
-        EmptyView()
+        IfLetStore(
+          store.scope(state: \.missionList, action: \.missionList)
+        ) { missionListStore in
+          MissionListView(store: missionListStore)
+        }
       }
       .padding(.bottom, bottomVStackHeight)
-      
-      Spacer()
+      .scrollIndicators(.hidden)
     }
-    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(ColorResource.Background.main.color)
     .overlay(alignment: .bottom) {
       VStack(spacing: 0) {
-        BottomGradientView()
+//        BottomGradientView()
         
         CTAButton(
           size: .extraLarge,
@@ -59,6 +61,9 @@ struct MissionExampleView: View {
       bottomVStackHeight = height
     }
     .navigationBarBackButtonHidden()
+    .onAppear {
+      store.send(.onAppear)
+    }
   }
 }
 

@@ -20,14 +20,23 @@ struct HomeView: View {
         VStack(spacing: 0) {
           headerSection
 
-          Rectangle().frame(width: 144, height: 200)
-            // TODO: card 넣기
-            .frame(maxWidth: .infinity)
-            .padding([.horizontal, .top], 20)
-            .padding(.bottom, 60)
-            .onTapGesture {
-              store.send(.moveToFortuneDetail)
-            }
+          FortuneCardFrontView(
+            backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
+            title: "최고의 날",
+            fortune: "네잎클로버"
+          )
+          .radialGradientBackground(
+            type: .backgroundGradient01,
+            endRadiusMultiplier: 0.4,
+            scaleEffectX: 2.5,
+            scaleEffectY: 1.6
+          )
+          .rotationEffect(.init(degrees: 4))
+          .padding([.horizontal, .top], 20)
+          .padding(.bottom, 60)
+          .onTapGesture {
+            store.send(.moveToFortuneDetail)
+          }
 
           MissionListView(
             store: store.scope(
@@ -37,7 +46,12 @@ struct HomeView: View {
           )
         }
       }
-      .radialGradientBackground(type: .backgroundGradient02)
+      .radialGradientBackground(
+        type: .backgroundGradient02,
+        endRadiusMultiplier: 1.2,
+        scaleEffectX: 1.8
+      )
+      .background(ColorResource.Background.main.color)
       .onAppear {
         store.send(.onAppear)
       }

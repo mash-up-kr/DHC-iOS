@@ -100,6 +100,10 @@ struct HomeReducer {
           do {
             try await homeClient.todayMissionDone(todayDate)
             await send(.fetchHomeData)
+          } catch {
+            #if DEBUG
+            print("오늘 미션 완료 처리 실패")
+            #endif
           }
         }
 

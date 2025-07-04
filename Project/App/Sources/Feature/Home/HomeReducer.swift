@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 @Reducer
 struct HomeReducer {
-  @Dependency(\.homeClient) var homeClient
+  @Dependency(\.homeAPIClient) var homeAPIClient
 
   @ObservableState
   struct State: Equatable {
@@ -56,7 +56,7 @@ struct HomeReducer {
       case .fetchHomeData:
         return .run { send in
           do {
-            let homeInfo = try await homeClient.fetchHomeInfo()
+            let homeInfo = try await homeAPIClient.fetchHomeInfo()
             await send(.homeDataResponse(homeInfo))
           } catch {
             await send(.homeDataFailed(error))

@@ -23,13 +23,13 @@ struct FortuneDetailDTO: Codable {
   
   enum CodingKeys: String, CodingKey {
     case date, fortuneTitle, fortuneDetail, jinxedColor, jinxedColorHex
-    case jinxedColorImageURL = "jinxedColorImageUrl"
+    case jinxedColorImageURL = "jinxedColorImage"
     case jinxedMenu
-    case jinxedMenuImageURL = "jinxedMenuImageUrl"
+    case jinxedMenuImageURL = "jinxedMenuImage"
     case jinxedNumber, luckyColor, luckyColorHex
-    case luckyColorImageURL = "luckyColorImageUrl"
+    case luckyColorImageURL = "luckyColorImage"
     case luckyNumber, positiveScore, negativeScore, totalScore, todayMenu
-    case todayMenuImageURL = "todayMenuImageUrl"
+    case todayMenuImageURL = "todayMenuImage"
     case luckyColorType, jinxedColorType
   }
 }
@@ -60,7 +60,7 @@ extension FortuneDetailDTO {
           imageURL: URL(string: luckyColorImageURL),
           title: "행운의 색상",
           content: luckyColor,
-          contentColorHex: Color(hexCode: jinxedColorHex)
+          contentColor: Color(hexCode: luckyColorHex)
         ),
         .init(
           imageURL: URL(string: jinxedMenuImageURL),

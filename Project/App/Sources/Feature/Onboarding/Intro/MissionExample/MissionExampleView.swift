@@ -36,14 +36,12 @@ struct MissionExampleView: View {
         )
       }
       .padding(.bottom, bottomVStackHeight)
-      
-      Spacer()
+      .scrollIndicators(.hidden)
     }
-    .frame(maxWidth: .infinity, alignment: .leading)
     .background(ColorResource.Background.main.color)
     .overlay(alignment: .bottom) {
       VStack(spacing: 0) {
-        BottomGradientView()
+//        BottomGradientView()
         
         CTAButton(
           size: .extraLarge,
@@ -64,6 +62,9 @@ struct MissionExampleView: View {
       bottomVStackHeight = height
     }
     .navigationBarBackButtonHidden()
+    .onAppear {
+      store.send(.onAppear)
+    }
   }
 }
 

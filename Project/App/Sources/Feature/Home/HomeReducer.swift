@@ -5,13 +5,14 @@
 //  Created by Aiden.lee on 6/8/25.
 //
 
-import Foundation
+import SwiftUI
 
 import ComposableArchitecture
 
 @Reducer
 struct HomeReducer {
   @Dependency(\.homeAPIClient) var homeAPIClient
+  @Dependency(\.dateFormatterCache) var dateFormatterCache
 
   @ObservableState
   struct State: Equatable {
@@ -73,7 +74,9 @@ struct HomeReducer {
       switch action {
       case .onAppear:
         if state.isFirstLaunchOfToday {
-          state.viewState = .firstLaunch
+          withAnimation(.easeInOut(duration: 0.5)) {
+            state.viewState = .firstLaunch
+          }
         } else {
           state.viewState = .home
         }
@@ -95,7 +98,7 @@ struct HomeReducer {
           let dailyFortune = homeInfo.todayDailyFortune
           state.fortuneLoadingComplete = .init(
             scoreInfo: .init(
-              date: dailyFortune.date,
+              date: formatDate(from: dailyFortune.date),
               scoreString: "\(dailyFortune.score)점",
               score: dailyFortune.score,
               summary: dailyFortune.fortuneTitle
@@ -107,7 +110,9 @@ struct HomeReducer {
             )
           )
           
-          state.viewState = .firstLaunch
+          withAnimation(.easeInOut(duration: 0.5)) {
+            state.viewState = .firstLaunch
+          }
           return .none
         } else {
           state.homeInfo = homeInfo
@@ -126,7 +131,9 @@ struct HomeReducer {
       case .fortuneLoadingComplete(let action):
         switch action {
         case .delegate(.moveToHome):
-          state.viewState = .home
+          withAnimation(.easeInOut(duration: 0.5)) {
+            state.viewState = .home
+          }
           return .none
         default:
           return .none
@@ -151,6 +158,12 @@ struct HomeReducer {
     .ifLet(\.fortuneLoadingComplete, action: \.fortuneLoadingComplete) {
       FortuneLoadingCompleteReducer()
     }
+  }
+  
+  private func formatDate(from dateString: String) -> String {
+    let date = dateFormatterCache.formatter(for: "yyyy-MM-dd").date(from: dateString) ?? Date()
+    let formattedString = dateFormatterCache.formatter(for: "yyyy년 M월 d일").string(from: date)
+    return formattedString
   }
 }
 

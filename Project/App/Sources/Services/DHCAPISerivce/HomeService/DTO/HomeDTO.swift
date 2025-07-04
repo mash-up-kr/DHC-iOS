@@ -42,6 +42,21 @@ extension HomeDTO {
     let luckyNumber: Int
     let score: Int
     let todayMenu: String
+    
+    enum CodingKeys: String, CodingKey {
+      case date
+      case fortuneTitle
+      case fortuneDetail
+      case jinxedColor
+      case jinxedColorHex
+      case jinxedMenu
+      case jinxedNumber
+      case luckyColor
+      case luckyColorHex
+      case luckyNumber
+      case score = "totalScore"
+      case todayMenu
+    }
   }
 }
 

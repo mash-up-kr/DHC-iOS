@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 struct HomeView: View {
   @Bindable var store: StoreOf<HomeReducer>
+  @Dependency(\.dateFormatterCache) private var dateFormatterCache
 
   var body: some View {
     NavigationStack(

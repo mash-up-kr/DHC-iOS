@@ -13,27 +13,39 @@ struct HomeView: View {
   @Bindable var store: StoreOf<HomeReducer>
 
   var body: some View {
-    ScrollView {
-      VStack(spacing: 0) {
-        headerSection
+    NavigationStack(
+      path: $store.scope(state: \.path, action: \.path)
+    ) {
+      ScrollView {
+        VStack(spacing: 0) {
+          headerSection
 
-        Rectangle().frame(width: 144, height: 200)
-          // TODO: card 넣기
-          .frame(maxWidth: .infinity)
-          .padding([.horizontal, .top], 20)
-          .padding(.bottom, 60)
+          Rectangle().frame(width: 144, height: 200)
+            // TODO: card 넣기
+            .frame(maxWidth: .infinity)
+            .padding([.horizontal, .top], 20)
+            .padding(.bottom, 60)
+            .onTapGesture {
+              store.send(.moveToFortuneDetail)
+            }
 
-        MissionListView(
-          store: store.scope(
-            state: \.missionList,
-            action: \.missionList
+          MissionListView(
+            store: store.scope(
+              state: \.missionList,
+              action: \.missionList
+            )
           )
-        )
+        }
       }
-    }
-    .radialGradientBackground(type: .backgroundGradient02)
-    .onAppear { 
-      store.send(.onAppear)
+      .radialGradientBackground(type: .backgroundGradient02)
+      .onAppear {
+        store.send(.onAppear)
+      }
+    }  destination: { store in
+      switch store.case {
+      case .fortuneDetail(let store):
+        FortuneDetailView(store: store)
+      }
     }
   }
 
@@ -55,7 +67,7 @@ struct HomeView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
 
         FortuneCoreView(score: store.homeInfo.todayDailyFortune.score) {
-          // TODO: '오늘의 금전운' 화면으로 이동하기
+          store.send(.moveToFortuneDetail)
         }
       }
     }
@@ -64,7 +76,7 @@ struct HomeView: View {
 
   private var seeMoreButton: some View {
     Button {
-      // TODO: '오늘의 금전운' 화면으로 이동
+      store.send(.moveToFortuneDetail)
     } label: {
       HStack(spacing: 4) {
         Text("더보기")

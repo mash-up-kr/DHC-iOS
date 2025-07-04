@@ -29,7 +29,7 @@ extension MissionAPI: RequestTarget {
     nil
   }
 
-  var bodyParameters: Alamofire.Parameters? {
+  var bodyParameters: (any Encodable)? {
     switch self {
     case .updateMissionStatus(_, let finished):
       return ["finished": finished]

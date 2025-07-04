@@ -35,7 +35,11 @@ extension MyPageAPI: RequestTarget {
 
   var queryParameters: Parameters? {
     switch self {
-    case .myPage, .resetApp:
+    case .myPage:
+      [
+        "format": "png"
+      ]
+    case .resetApp:
       nil
     }
   }

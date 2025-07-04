@@ -36,7 +36,10 @@ extension HomeAPI: RequestTarget {
     case .home:
       nil
     case .fortuneDetail(let date):
-      ["date": date]
+      [
+        "date": date,
+        "format": "png"
+      ]
     }
   }
 

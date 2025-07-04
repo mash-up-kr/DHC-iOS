@@ -24,7 +24,7 @@ extension MissionCategoryDTO {
     enum CodingKeys: String, CodingKey {
       case name
       case displayName
-      case imageURL = "imageUrl"
+      case imageURL = "image"
     }
   }
 }

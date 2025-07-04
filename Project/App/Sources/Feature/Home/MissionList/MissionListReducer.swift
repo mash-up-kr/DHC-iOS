@@ -16,16 +16,18 @@ struct MissionListReducer {
   @ObservableState
   struct State: Equatable {
     var isTooltipVisible = false
-
     var longTermMission: HomeInfo.Mission
     var todayDailyMissionList: [HomeInfo.Mission] = []
+    let isUserInteractionEnabled: Bool
 
     init(
       longTermMission: HomeInfo.Mission,
-      todayDailyMissionList: [HomeInfo.Mission]
+      todayDailyMissionList: [HomeInfo.Mission],
+      isUserInteractionEnabled: Bool = true
     ) {
       self.longTermMission = longTermMission
       self.todayDailyMissionList = todayDailyMissionList
+      self.isUserInteractionEnabled = isUserInteractionEnabled
     }
   }
 

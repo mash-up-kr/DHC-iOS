@@ -46,7 +46,8 @@ struct MissionExampleReducer {
         let longTermMission = HomeInfo.Mission.onboardingLongTermMisson(endDate: endDate)
         state.missionList = .init(
           longTermMission: longTermMission,
-          todayDailyMissionList: HomeInfo.Mission.onboardingDailyMissionList
+          todayDailyMissionList: HomeInfo.Mission.onboardingDailyMissionList,
+          isUserInteractionEnabled: false
         )
         return .none
         

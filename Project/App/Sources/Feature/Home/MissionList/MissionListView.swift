@@ -65,6 +65,7 @@ struct MissionListView: View {
           set: { _ in store.send(.longTermMissionTapped) }
         )
       )
+      .allowsHitTesting(store.isUserInteractionEnabled)
     }
   }
 
@@ -85,6 +86,7 @@ struct MissionListView: View {
             set: { _ in store.send(.dailyMissionTapped(missionID: mission.missionId)) }
           )
         )
+        .allowsHitTesting(store.isUserInteractionEnabled)
       }
     }
   }

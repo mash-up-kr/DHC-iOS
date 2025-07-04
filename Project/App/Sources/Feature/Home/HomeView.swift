@@ -120,6 +120,19 @@ struct HomeView: View {
         )
       )
     }
+    .overlay {
+      if store.presentMissionDonePopup {
+        ColorResource._0_F_1114.color
+          .ignoresSafeArea()
+
+        HomePopup(todaySavedAmount: 3300) { // TODO: 절약 금액 연결하기
+          store.send(.popupConfirmButtonTapped)
+        } onDismiss: {
+          store.send(.popupDismissButtonTapped)
+        }
+        .padding(.horizontal, 28)
+      }
+    }
   }
 
   // MARK: 상단 타이틀 섹션

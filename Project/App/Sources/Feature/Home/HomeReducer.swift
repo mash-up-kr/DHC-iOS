@@ -120,9 +120,17 @@ struct HomeReducer {
       case .homeDataFailed:
         return .none
         
-      case .missionList,
-          .fortuneLoadingComplete:
+      case .missionList:
         return .none
+        
+      case .fortuneLoadingComplete(let action):
+        switch action {
+        case .delegate(.moveToHome):
+          state.viewState = .home
+          return .none
+        default:
+          return .none
+        }
         
       case .moveToFortuneDetail:
         state.path.append(.fortuneDetail(FortuneDetailReducer.State(type: .detail)))

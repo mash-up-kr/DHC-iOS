@@ -21,6 +21,13 @@ struct HomeReducer {
       todayDailyMissionList: HomeInfo.sample.todayDailyMissionList
     )
     var homeInfo: HomeInfo
+    
+    let isFirstLaunchOfToday: Bool
+    
+    init(homeInfo: HomeInfo, isFirstLaunchOfToday: Bool) {
+      self.homeInfo = homeInfo
+      self.isFirstLaunchOfToday = isFirstLaunchOfToday
+    }
   }
 
   enum Action {

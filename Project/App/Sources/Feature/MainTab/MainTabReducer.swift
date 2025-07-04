@@ -11,15 +11,23 @@ import ComposableArchitecture
 
 @Reducer
 struct MainTabReducer {
+  @Dependency(\.launchManager) var launchManager
+  
   @ObservableState
   struct State: Equatable {
-    var homeTab = HomeReducer.State(homeInfo: .sample)
+    var homeTab: HomeReducer.State?
     var reportTab = ReportReducer.State(reportInfo: .sample, spendChart: nil)
     var myPageTab = MyPageReducer.State(myPageInfo: .sample)
     var selectedTab = TabKind.home
+    
+    init(homeTab: HomeReducer.State? = nil) {
+      self.homeTab = homeTab
+    }
   }
 
   enum Action {
+    case onAppear
+    
     case homeTab(HomeReducer.Action)
     case reportTab(ReportReducer.Action)
     case myPageTab(MyPageReducer.Action)
@@ -29,6 +37,11 @@ struct MainTabReducer {
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
+      case .onAppear:
+        let isFirstLaunch = launchManager.isFirstLaunchOfToday()
+        state.homeTab = HomeReducer.State(homeInfo: .sample, isFirstLaunchOfToday: isFirstLaunch)
+        return .none
+        
       case .homeTab:
         return .none
       case .reportTab:
@@ -40,10 +53,10 @@ struct MainTabReducer {
         return .none
       }
     }
-
-    Scope(state: \.homeTab, action: \.homeTab) {
+    .ifLet(\.homeTab, action: \.homeTab) {
       HomeReducer()
     }
+
     Scope(state: \.reportTab, action: \.reportTab) {
       ReportReducer()
     }

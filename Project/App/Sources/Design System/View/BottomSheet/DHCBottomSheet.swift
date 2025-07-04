@@ -10,8 +10,8 @@ import SwiftUI
 extension View {
   func adaptiveBottomSheet(
     isPresented: Binding<Bool>,
-    cornerRadius: CGFloat,
-    backgroundColor: Color,
+    cornerRadius: CGFloat = 32,
+    backgroundColor: Color = ColorResource.Neutral._700.color,
     @ViewBuilder content: @escaping () -> some View
   ) -> some View {
     modifier(
@@ -23,7 +23,7 @@ extension View {
       )
     )
   }
-  
+
   func measureHeight(_ height: Binding<CGFloat>) -> some View {
     self.modifier(AdaptableHeightModifier(currentHeight: height))
   }

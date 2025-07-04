@@ -41,6 +41,7 @@ struct OnboardingView: View {
             .scaledToFill()
         }
       }
+      .background(ColorResource._020202.color)
     } destination: { store in
       switch store.case {
       case .serviceExplanation(let store):

@@ -22,10 +22,16 @@ struct HomeReducer {
     )
     var homeInfo: HomeInfo
     
+    var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
     let isFirstLaunchOfToday: Bool
     
-    init(homeInfo: HomeInfo, isFirstLaunchOfToday: Bool) {
+    init(
+      homeInfo: HomeInfo,
+      fortuneLoadingComplete: FortuneLoadingCompleteReducer.State? = nil,
+      isFirstLaunchOfToday: Bool
+    ) {
       self.homeInfo = homeInfo
+      self.fortuneLoadingComplete = fortuneLoadingComplete
       self.isFirstLaunchOfToday = isFirstLaunchOfToday
     }
   }
@@ -39,6 +45,7 @@ struct HomeReducer {
     case homeDataResponse(HomeInfo)
     case homeDataFailed(Error)
     case missionList(MissionListReducer.Action)
+    case fortuneLoadingComplete(FortuneLoadingCompleteReducer.Action)
 
     // Navigation Actions
     case path(StackActionOf<Path>)
@@ -80,7 +87,7 @@ struct HomeReducer {
       case .homeDataFailed:
         return .none
 
-      case .missionList:
+      case .missionList, .fortuneLoadingComplete:
         return .none
         
       case .moveToFortuneDetail:
@@ -99,6 +106,9 @@ struct HomeReducer {
       }
     }
     .forEach(\.path, action: \.path)
+    .ifLet(\.fortuneLoadingComplete, action: \.fortuneLoadingComplete) {
+      FortuneLoadingCompleteReducer()
+    }
   }
 }
 

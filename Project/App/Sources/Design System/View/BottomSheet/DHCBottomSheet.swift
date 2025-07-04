@@ -45,7 +45,7 @@ private struct AdaptiveBottomSheetModifier<SheetContent: View>: ViewModifier {
           .presentationDetents([.height(contentHeight)])
           .presentationCornerRadius(cornerRadius)
           .presentationBackground(backgroundColor)
-          .presentationDragIndicator(.visible)
+          .presentationDragIndicator(.hidden)
       }
   }
 }

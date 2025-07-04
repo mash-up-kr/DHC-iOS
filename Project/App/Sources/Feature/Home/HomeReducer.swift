@@ -29,6 +29,7 @@ struct HomeReducer {
       todayDailyMissionList: HomeInfo.sample.todayDailyMissionList
     )
     var homeInfo: HomeInfo
+    var presentBottomSheet = false
     
     var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
     let isFirstLaunchOfToday: Bool
@@ -47,6 +48,7 @@ struct HomeReducer {
   enum Action {
     // View Actions
     case onAppear
+    case presentBottomSheet(Bool)
 
     // Internal Actions
     case fetchHomeData
@@ -82,6 +84,10 @@ struct HomeReducer {
         }
         
         return .send(.fetchHomeData)
+
+      case .presentBottomSheet(let isVisible):
+        state.presentBottomSheet = isVisible
+        return .none
         
       case .fetchHomeData:
         return .run { send in

@@ -49,6 +49,8 @@ struct HomeReducer {
     // View Actions
     case onAppear
     case presentBottomSheet(Bool)
+    case confirmTodayMissionDoneButtonTapped
+    case cancelTodayMissionDoneButtonTapped
 
     // Internal Actions
     case fetchHomeData
@@ -88,7 +90,23 @@ struct HomeReducer {
       case .presentBottomSheet(let isVisible):
         state.presentBottomSheet = isVisible
         return .none
-        
+
+      case .confirmTodayMissionDoneButtonTapped:
+        state.presentBottomSheet = false
+
+        let todayDate = formattedTodayDate()
+
+        return .run { send in
+          do {
+            try await homeClient.todayMissionDone(todayDate)
+            await send(.fetchHomeData)
+          }
+        }
+
+      case .cancelTodayMissionDoneButtonTapped:
+        state.presentBottomSheet = false
+        return .none
+
       case .fetchHomeData:
         return .run { send in
           do {
@@ -170,6 +188,11 @@ struct HomeReducer {
     let date = dateFormatterCache.formatter(for: "yyyy-MM-dd").date(from: dateString) ?? Date()
     let formattedString = dateFormatterCache.formatter(for: "yyyy년 M월 d일").string(from: date)
     return formattedString
+  }
+
+  private func formattedTodayDate() -> String {
+    let formatter = dateFormatterCache.formatter(for: "yyyy-MM-dd")
+    return formatter.string(from: Date())
   }
 }
 

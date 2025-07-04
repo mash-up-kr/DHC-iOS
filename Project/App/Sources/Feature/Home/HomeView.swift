@@ -130,9 +130,7 @@ struct HomeView: View {
   }
 
   private var todayDateString: String {
-    let formatter = DateFormatter()
-    formatter.locale = Locale(identifier: "ko_KR")
-    formatter.dateFormat = "M월 d일"
+    let formatter = dateFormatterCache.formatter(for: "M월 d일")
     return formatter.string(from: Date())
   }
 }

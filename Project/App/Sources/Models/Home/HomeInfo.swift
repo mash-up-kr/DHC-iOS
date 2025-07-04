@@ -97,3 +97,89 @@ extension HomeInfo {
     todayDone: false
   )
 }
+
+extension HomeInfo.Mission {
+  init() {
+    self.missionId = ""
+    self.category = ""
+    self.difficulty = -1
+    self.type = ""
+    self.finished = false
+    self.cost = ""
+    self.endDate = ""
+    self.title = ""
+    self.switchCount = 0
+  }
+  
+  static func onboardingLongTermMisson(endDate: String) -> HomeInfo.Mission {
+    .init(
+      missionId: "-1",
+      category: "식음료",
+      difficulty: 5,
+      type: "LONG_TERM",
+      finished: false,
+      cost: "100.00",
+      endDate: endDate,
+      title: "도시락 싸서 점심·저녁 해결하기",
+      switchCount: 0
+    )
+  }
+  
+  static let onboardingDailyMissionList: [HomeInfo.Mission] = [
+    .init(
+      missionId: "0",
+      category: "취미·문화",
+      difficulty: 1,
+      type: "DAILY",
+      finished: false,
+      cost: "100.00",
+      endDate: "2024-12-31",
+      title: "간식은 집에서 챙겨 다니기",
+      switchCount: 0
+    ),
+    .init(
+      missionId: "1",
+      category: "취미·문화",
+      difficulty: 1,
+      type: "DAILY",
+      finished: false,
+      cost: "100.00",
+      endDate: "2024-12-31",
+      title: "아침 집밥 챙겨먹기",
+      switchCount: 0
+    ),
+    .init(
+      missionId: "2",
+      category: "취미·문화",
+      difficulty: 1,
+      type: "DAILY",
+      finished: false,
+      cost: "100.00",
+      endDate: "2024-12-31",
+      title: "커피는 집에서 내려 마시기",
+      switchCount: 0
+    ),
+    .init(
+      missionId: "3",
+      category: "취미·문화",
+      difficulty: 1,
+      type: "DAILY",
+      finished: false,
+      cost: "100.00",
+      endDate: "2024-12-31",
+      title: "음료 구매할때 텀블러 할인받기",
+      switchCount: 0
+    ),
+    .init(
+      missionId: "4",
+      category: "취미·문화",
+      difficulty: 1,
+      type: "DAILY",
+      finished: false,
+      cost: "100.00",
+      endDate: "2024-12-31",
+      title: "오늘 하루 배달앱 알림 꺼두기",
+      switchCount: 0
+    )
+  ]
+}

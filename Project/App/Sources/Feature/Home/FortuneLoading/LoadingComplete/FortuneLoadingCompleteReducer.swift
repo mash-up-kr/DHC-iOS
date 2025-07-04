@@ -14,13 +14,13 @@ struct FortuneLoadingCompleteReducer {
   @ObservableState
   struct State: Equatable {
     var isCardFlipped: Bool
-    let scoreInfo: FortuneScoreInfo
-    let cardInfo: FortuneCardInfo
+    let scoreInfo: FortuneDetail.FortuneScore
+    let cardInfo: FortuneDetail.FortuneCard
 
     init(
       isCardFlipped: Bool = false,
-      scoreInfo: FortuneScoreInfo,
-      cardInfo: FortuneCardInfo
+      scoreInfo: FortuneDetail.FortuneScore,
+      cardInfo: FortuneDetail.FortuneCard
     ) {
       self.isCardFlipped = isCardFlipped
       self.scoreInfo = scoreInfo

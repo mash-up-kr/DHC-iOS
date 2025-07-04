@@ -55,6 +55,7 @@ extension HomeAPIClient: DependencyKey {
       .init(
         scoreInfo: .init(
           date: "",
+          scoreString: "",
           score: 0,
           summary: ""
         ),

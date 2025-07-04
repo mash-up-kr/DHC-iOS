@@ -26,13 +26,13 @@ struct FortuneDetailReducer {
     let type: FortuneDetailType
     var rawTodayString: String // yyyy-MM-dd 형식
     var formattedTodayString: String // yyyy년 MM월 dd일 형식
-    var detailInfo: FortuneDetailViewModel
+    var detailInfo: FortuneDetail?
 
     init(
       type: FortuneDetailType,
       rawTodayString: String = "",
       formattedTodayString: String = "",
-      detailInfo: FortuneDetailViewModel = .introInfo(date: "")
+      detailInfo: FortuneDetail? = nil
     ) {
       self.type = type
       self.rawTodayString = rawTodayString
@@ -49,7 +49,7 @@ struct FortuneDetailReducer {
     
     // Internal Action
     case fetchFortuneDetail
-    case fortuneDetailResponse(FortuneDetailViewModel)
+    case fortuneDetailResponse(FortuneDetail)
     case fortuneDetailError(Error)
     case updateTodayDate
     
@@ -77,8 +77,8 @@ struct FortuneDetailReducer {
           return .run { [state] send in
             do {
               let fortuneDetail = try await homeAPIClient.fetchFortuneDetail(state.rawTodayString)
-              let viewModel = convertToViewModel(from: fortuneDetail)
-              await send(.fortuneDetailResponse(viewModel))
+              let formattedModel = formatModel(from: fortuneDetail)
+              await send(.fortuneDetailResponse(formattedModel))
             } catch {
               await send(.fortuneDetailError(error))
             }
@@ -107,32 +107,14 @@ struct FortuneDetailReducer {
 }
 
 extension FortuneDetailReducer {
-  private func convertToViewModel(from domainModel: FortuneDetail) -> FortuneDetailViewModel {
-    let tipViewModels: [TipInfo] = domainModel.tipInfos.map { domainModel in
-        .init(
-          imageURL: domainModel.imageURL,
-          title: domainModel.title,
-          content: domainModel.content,
-          contentColor: domainModel.contentColorHex
-        )
-    }
-    let date = dateFormatterCache.formatter(for: "yyyy-MM-dd").date(from: domainModel.scoreInfo.date) ?? Date()
-    let formattedDate = dateFormatterCache.formatter(for: "yyyy년 MM월 dd일").string(from: date)
+  private func formatModel(from model: FortuneDetail) -> FortuneDetail {
+    var newModel = model
     
-    return .init(
-      scoreInfo: .init(
-        date: formattedDate,
-        score: "\(domainModel.scoreInfo.score)점",
-        summary: domainModel.scoreInfo.summary,
-        gradientType: FortuneScore(score: domainModel.scoreInfo.score).textGradient
-      ),
-      cardInfo: .init(
-        backgroundImageURL: domainModel.cardInfo.backgroundImageURL,
-        title: domainModel.cardInfo.title,
-        fortune: domainModel.cardInfo.fortune
-      ),
-      detailMessage: domainModel.detailMessage,
-      tipInfos: tipViewModels
-    )
+    let date = dateFormatterCache.formatter(for: "yyyy-MM-dd").date(from: model.scoreInfo.date) ?? Date()
+    let formattedDate = dateFormatterCache.formatter(for: "yyyy년 M월 d일").string(from: date)
+    
+    newModel.scoreInfo.date = formattedDate
+    
+    return newModel
   }
 }

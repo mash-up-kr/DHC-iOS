@@ -31,16 +31,18 @@ struct FortuneDetailView: View {
       
       ScrollView {
         VStack(spacing: 24) {
-          FortuneView(
-            date: store.detailInfo.scoreInfo.date,
-            score: store.detailInfo.scoreInfo.score,
-            summary: store.detailInfo.scoreInfo.summary,
-            gradientType: store.detailInfo.scoreInfo.gradientType,
-            cardBackgroundImageURL: store.detailInfo.cardInfo.backgroundImageURL,
-            cardTitle: store.detailInfo.cardInfo.title,
-            cardFortune: store.detailInfo.cardInfo.fortune
-          )
-          .padding(.top, 32)
+          if let detailInfo = store.detailInfo {
+            FortuneView(
+              date: detailInfo.scoreInfo.date,
+              score: detailInfo.scoreInfo.scoreString,
+              summary: detailInfo.scoreInfo.summary,
+              gradientType: FortuneScore(score: detailInfo.scoreInfo.score).textGradient,
+              cardBackgroundImageURL: detailInfo.cardInfo.backgroundImageURL,
+              cardTitle: detailInfo.cardInfo.title,
+              cardFortune: detailInfo.cardInfo.fortune
+            )
+            .padding(.top, 32)
+          }
           
           detailFortuneView
           
@@ -104,10 +106,10 @@ struct FortuneDetailView: View {
       
       MessageCardView(
         title: "금전운",
-        message: store.detailInfo.detailMessage
+        message: store.detailInfo?.detailMessage ?? ""
       )
     }
-    .padding(.horizontal, 20.5)
+    .padding(.horizontal, 20)
   }
   
   var tipView: some View {
@@ -116,20 +118,22 @@ struct FortuneDetailView: View {
         .textStyle(.h4_1)
         .foregroundStyle(ColorResource.Text.main.color)
       
-      LazyVGrid(
-        columns: columns,
-        spacing: 12,
-        content: {
-          ForEach(store.detailInfo.tipInfos, id: \.self) { tipInfo in
-            TipCardView(
-              imageURL: tipInfo.imageURL,
-              title: tipInfo.title,
-              content: tipInfo.content,
-              contentColor: tipInfo.contentColor
-            )
+      if let tipInfos = store.detailInfo?.tipInfos {
+        LazyVGrid(
+          columns: columns,
+          spacing: 12,
+          content: {
+            ForEach(tipInfos, id: \.self) { tipInfo in
+              TipCardView(
+                imageURL: tipInfo.imageURL,
+                title: tipInfo.title,
+                content: tipInfo.content,
+                contentColor: tipInfo.contentColor
+              )
+            }
           }
-        }
-      )
+        )
+      }
     }
     .padding(.horizontal, 20)
   }

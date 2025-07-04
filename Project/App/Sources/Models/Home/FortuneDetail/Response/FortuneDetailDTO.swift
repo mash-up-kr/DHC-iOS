@@ -39,6 +39,7 @@ extension FortuneDetailDTO {
     .init(
       scoreInfo: .init(
         date: date,
+        scoreString: "\(totalScore)점",
         score: totalScore,
         summary: fortuneTitle
       ),
@@ -53,7 +54,7 @@ extension FortuneDetailDTO {
           imageURL: URL(string: todayMenuImageURL),
           title: "오늘의 추천메뉴",
           content: todayMenu,
-          contentColorHex: nil
+          contentColor: nil
         ),
         .init(
           imageURL: URL(string: luckyColorImageURL),
@@ -65,13 +66,13 @@ extension FortuneDetailDTO {
           imageURL: URL(string: jinxedMenuImageURL),
           title: "피해야 할 음식",
           content: jinxedMenu,
-          contentColorHex: nil
+          contentColor: nil
         ),
         .init(
           imageURL: URL(string: jinxedColorImageURL),
           title: "피해야 할 색상",
           content: jinxedColor,
-          contentColorHex: Color(hexCode: jinxedColorHex)
+          contentColor: Color(hexCode: jinxedColorHex)
         )
       ]
     )

@@ -66,9 +66,9 @@ struct FortuneLoadingCompleteView: View {
   var cardFlippedView: some View {
     FortuneView(
       date: store.scoreInfo.date,
-      score: store.scoreInfo.score,
+      score: store.scoreInfo.scoreString,
       summary: store.scoreInfo.summary,
-      gradientType: store.scoreInfo.gradientType,
+      gradientType: FortuneScore(score: store.scoreInfo.score).textGradient,
       cardBackgroundImageURL: store.cardInfo.backgroundImageURL,
       cardTitle: store.cardInfo.title,
       cardFortune: store.cardInfo.fortune,

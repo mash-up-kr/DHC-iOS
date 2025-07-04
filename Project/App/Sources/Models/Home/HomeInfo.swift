@@ -99,18 +99,6 @@ extension HomeInfo {
 }
 
 extension HomeInfo.Mission {
-  init() {
-    self.missionId = ""
-    self.category = ""
-    self.difficulty = -1
-    self.type = ""
-    self.finished = false
-    self.cost = ""
-    self.endDate = ""
-    self.title = ""
-    self.switchCount = 0
-  }
-  
   static func onboardingLongTermMisson(endDate: String) -> HomeInfo.Mission {
     .init(
       missionId: "-1",

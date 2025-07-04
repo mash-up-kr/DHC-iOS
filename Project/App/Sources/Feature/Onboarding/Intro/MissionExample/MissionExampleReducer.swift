@@ -17,9 +17,9 @@ struct MissionExampleReducer {
 
   @ObservableState
   struct State: Equatable {
-    var missionList: MissionListReducer.State
+    var missionList: MissionListReducer.State?
     
-    init(missionList: MissionListReducer.State = .init(longTermMission: .init(), todayDailyMissionList: [])) {
+    init(missionList: MissionListReducer.State? = nil) {
       self.missionList = missionList
     }
   }
@@ -53,6 +53,9 @@ struct MissionExampleReducer {
       case .missionList:
         return .none
       }
+    }
+    .ifLet(\.missionList, action: \.missionList) {
+      MissionListReducer()
     }
   }
 }

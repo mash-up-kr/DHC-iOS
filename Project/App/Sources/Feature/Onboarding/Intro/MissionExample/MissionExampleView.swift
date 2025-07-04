@@ -28,12 +28,11 @@ struct MissionExampleView: View {
       .padding(.bottom, 45)
       
       ScrollView {
-        MissionListView(
-          store: store.scope(
-            state: \.missionList,
-            action: \.missionList
-          )
-        )
+        IfLetStore(
+          store.scope(state: \.missionList, action: \.missionList)
+        ) { missionListStore in
+          MissionListView(store: missionListStore)
+        }
       }
       .padding(.bottom, bottomVStackHeight)
       .scrollIndicators(.hidden)

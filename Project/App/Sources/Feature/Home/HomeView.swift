@@ -93,6 +93,33 @@ struct HomeView: View {
     .onAppear {
       store.send(.onAppear)
     }
+    .adaptiveBottomSheet(
+      isPresented: $store.presentBottomSheet.sending(\.presentBottomSheet)
+    ) {
+      DHCBottomSheetContent(
+        configuration:
+        .init(
+          title: "오늘의 미션을\n정말 마무리할까요?",
+          description: "아직 미션이 남아있어요!",
+          showCloseButton: false,
+          interactiveDisabled: false,
+          firstButton:
+          .init(
+            title: "네! 완료했어요",
+            action: {
+              store.send(.confirmTodayMissionDoneButtonTapped)
+            }
+          ),
+          secondButton:
+          .init(
+            title: "이전으로 돌아가기",
+            action: {
+              store.send(.cancelTodayMissionDoneButtonTapped)
+            }
+          )
+        )
+      )
+    }
   }
 
   // MARK: 상단 타이틀 섹션

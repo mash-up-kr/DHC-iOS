@@ -14,7 +14,7 @@ struct MainTabView: View {
 
   init(store: StoreOf<MainTabReducer>) {
     self.store = store
-    UITabBar.appearance().unselectedItemTintColor = ColorResource.Neutral._600.uiColor
+    configureTabBar()
   }
 
   var body: some View {
@@ -63,5 +63,16 @@ struct MainTabView: View {
       }
     }
     .tint(ColorResource.Neutral._200.color)
+  }
+}
+
+extension MainTabView {
+  private func configureTabBar() {
+    let appearance = UITabBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    UITabBar.appearance().backgroundColor = ColorResource.Background.main.color.uiColor
+    UITabBar.appearance().unselectedItemTintColor = ColorResource.Neutral._600.uiColor
+    UITabBar.appearance().standardAppearance = appearance
+    UITabBar.appearance().scrollEdgeAppearance = appearance
   }
 }

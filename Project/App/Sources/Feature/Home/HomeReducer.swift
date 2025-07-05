@@ -29,6 +29,8 @@ struct HomeReducer {
       todayDailyMissionList: HomeInfo.sample.todayDailyMissionList
     )
     var homeInfo: HomeInfo
+    var presentBottomSheet = false
+    var presentMissionDonePopup = false
     
     var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
     let isFirstLaunchOfToday: Bool
@@ -47,6 +49,13 @@ struct HomeReducer {
   enum Action {
     // View Actions
     case onAppear
+
+    case presentBottomSheet(Bool)
+    case confirmTodayMissionDoneButtonTapped
+    case cancelTodayMissionDoneButtonTapped
+
+    case popupConfirmButtonTapped
+    case popupDismissButtonTapped
 
     // Internal Actions
     case fetchHomeData
@@ -82,7 +91,41 @@ struct HomeReducer {
         }
         
         return .send(.fetchHomeData)
-        
+
+      case .presentBottomSheet(let isVisible):
+        state.presentBottomSheet = isVisible
+        return .none
+
+      case .confirmTodayMissionDoneButtonTapped:
+        state.presentBottomSheet = false
+        state.presentMissionDonePopup = true
+
+        let todayDate = formattedTodayDate()
+
+        return .run { send in
+          do {
+            try await homeAPIClient.todayMissionDone(todayDate)
+            await send(.fetchHomeData)
+          } catch {
+            #if DEBUG
+            print("오늘 미션 완료 처리 실패")
+            #endif
+          }
+        }
+
+      case .cancelTodayMissionDoneButtonTapped:
+        state.presentBottomSheet = false
+        return .none
+
+      case .popupConfirmButtonTapped:
+        state.presentMissionDonePopup = false
+        // TODO: 통계 탭으로 이동
+        return .none
+
+      case .popupDismissButtonTapped:
+        state.presentMissionDonePopup = false
+        return .none
+
       case .fetchHomeData:
         return .run { send in
           do {
@@ -164,6 +207,11 @@ struct HomeReducer {
     let date = dateFormatterCache.formatter(for: "yyyy-MM-dd").date(from: dateString) ?? Date()
     let formattedString = dateFormatterCache.formatter(for: "yyyy년 M월 d일").string(from: date)
     return formattedString
+  }
+
+  private func formattedTodayDate() -> String {
+    let formatter = dateFormatterCache.formatter(for: "yyyy-MM-dd")
+    return formatter.string(from: Date())
   }
 }
 

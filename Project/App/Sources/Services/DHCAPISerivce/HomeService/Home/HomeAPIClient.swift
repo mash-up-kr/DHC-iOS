@@ -12,6 +12,7 @@ import ComposableArchitecture
 @DependencyClient
 struct HomeAPIClient {
   var fetchHomeInfo: () async throws -> HomeInfo
+  var todayMissionDone: (_ date: String) async throws -> Void
   var fetchFortuneDetail: (_ date: String) async throws -> FortuneDetail
 }
 
@@ -25,6 +26,14 @@ extension HomeAPIClient: DependencyKey {
           .request(HomeAPI.home)
           .map(to: HomeDTO.self)
           .toDomain()
+      },
+      todayMissionDone: { date in
+        _ = try await networkManager
+          .request(
+            HomeAPI.todayMissionDone(
+              date: date
+            )
+          )
       },
       fetchFortuneDetail: { date in
         let endPoint = HomeAPI.fortuneDetail(date: date)
@@ -51,6 +60,7 @@ extension HomeAPIClient: DependencyKey {
 
   static let previewValue = HomeAPIClient(
     fetchHomeInfo: { .sample },
+    todayMissionDone: { _ in },
     fetchFortuneDetail: { _ in
       .init(
         scoreInfo: .init(

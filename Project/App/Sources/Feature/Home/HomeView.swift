@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 struct HomeView: View {
   @Bindable var store: StoreOf<HomeReducer>
+  @Dependency(\.dateFormatterCache) private var dateFormatterCache
 
   var body: some View {
     NavigationStack(
@@ -33,7 +34,7 @@ struct HomeView: View {
       .onAppear {
         store.send(.onAppear)
       }
-    }  destination: { store in
+    } destination: { store in
       switch store.case {
       case .fortuneDetail(let store):
         FortuneDetailView(store: store)
@@ -42,34 +43,45 @@ struct HomeView: View {
   }
   
   private var homeView: some View {
-    ScrollView {
-      VStack(spacing: 0) {
-        headerSection
+    ZStack(alignment: .bottomTrailing) {
+      ScrollView {
+        VStack(spacing: 0) {
+          headerSection
 
-        FortuneCardFrontView(
-          backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
-          title: "최고의 날",
-          fortune: "네잎클로버"
-        )
-        .radialGradientBackground(
-          type: .backgroundGradient01,
-          endRadiusMultiplier: 0.4,
-          scaleEffectX: 2.5,
-          scaleEffectY: 1.6
-        )
-        .rotationEffect(.init(degrees: 4))
-        .padding([.horizontal, .top], 20)
-        .padding(.bottom, 60)
-        .onTapGesture {
-          store.send(.moveToFortuneDetail)
-        }
-
-        MissionListView(
-          store: store.scope(
-            state: \.missionList,
-            action: \.missionList
+          FortuneCardFrontView(
+            backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
+            title: "최고의 날",
+            fortune: "네잎클로버"
           )
-        )
+          .radialGradientBackground(
+            type: .backgroundGradient01,
+            endRadiusMultiplier: 0.4,
+            scaleEffectX: 2.5,
+            scaleEffectY: 1.6
+          )
+          .rotationEffect(.init(degrees: 4))
+          .padding([.horizontal, .top], 20)
+          .padding(.bottom, 60)
+          .onTapGesture {
+            store.send(.moveToFortuneDetail)
+          }
+
+          MissionListView(
+            store: store.scope(
+              state: \.missionList,
+              action: \.missionList
+            )
+          )
+        }
+      }
+
+      if !store.homeInfo.todayDone {
+        FloatingButton(title: "오늘 미션 끝내기") {
+          store.send(.presentBottomSheet(true))
+        }
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.horizontal, 20)
+        .padding(.bottom, 24)
       }
     }
     .radialGradientBackground(
@@ -78,6 +90,49 @@ struct HomeView: View {
       scaleEffectX: 1.8
     )
     .background(ColorResource.Background.main.color)
+    .onAppear {
+      store.send(.onAppear)
+    }
+    .adaptiveBottomSheet(
+      isPresented: $store.presentBottomSheet.sending(\.presentBottomSheet)
+    ) {
+      DHCBottomSheetContent(
+        configuration:
+        .init(
+          title: "오늘의 미션을\n정말 마무리할까요?",
+          description: "아직 미션이 남아있어요!",
+          showCloseButton: false,
+          interactiveDisabled: false,
+          firstButton:
+          .init(
+            title: "네! 완료했어요",
+            action: {
+              store.send(.confirmTodayMissionDoneButtonTapped)
+            }
+          ),
+          secondButton:
+          .init(
+            title: "이전으로 돌아가기",
+            action: {
+              store.send(.cancelTodayMissionDoneButtonTapped)
+            }
+          )
+        )
+      )
+    }
+    .overlay {
+      if store.presentMissionDonePopup {
+        ColorResource._0_F_1114.color
+          .ignoresSafeArea()
+
+        HomePopup(todaySavedAmount: 3300) { // TODO: 절약 금액 연결하기
+          store.send(.popupConfirmButtonTapped)
+        } onDismiss: {
+          store.send(.popupDismissButtonTapped)
+        }
+        .padding(.horizontal, 28)
+      }
+    }
   }
 
   // MARK: 상단 타이틀 섹션
@@ -89,7 +144,7 @@ struct HomeView: View {
 
       HStack(alignment: .top, spacing: 0) {
         VStack(alignment: .leading, spacing: 12) {
-          Text(store.homeInfo.todayDailyFortune.fortuneTitle) // TODO: 타이틀 연결
+          Text(store.homeInfo.todayDailyFortune.fortuneTitle)
             .textStyle(.h2)
             .foregroundStyle(ColorResource.Text.Body.primary.color)
 
@@ -130,9 +185,7 @@ struct HomeView: View {
   }
 
   private var todayDateString: String {
-    let formatter = DateFormatter()
-    formatter.locale = Locale(identifier: "ko_KR")
-    formatter.dateFormat = "M월 d일"
+    let formatter = dateFormatterCache.formatter(for: "M월 d일")
     return formatter.string(from: Date())
   }
 }

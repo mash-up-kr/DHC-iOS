@@ -11,6 +11,7 @@ import Alamofire
 
 enum HomeAPI {
   case home
+  case todayMissionDone(date: String)
   case fortuneDetail(date: String)
 }
 
@@ -21,6 +22,8 @@ extension HomeAPI: RequestTarget {
       return "/view/users/{userID}/home"
     case .fortuneDetail:
       return "/api/users/{userID}/fortune"
+    case .todayMissionDone:
+      return "/view/users/{userID}/done"
     }
   }
 
@@ -28,12 +31,14 @@ extension HomeAPI: RequestTarget {
     switch self {
     case .home, .fortuneDetail:
       .get
+    case .todayMissionDone:
+      .post
     }
   }
 
   var queryParameters: Alamofire.Parameters? {
     switch self {
-    case .home:
+    case .home, .todayMissionDone:
       nil
     case .fortuneDetail(let date):
       [
@@ -46,7 +51,9 @@ extension HomeAPI: RequestTarget {
   var bodyParameters: (any Encodable)? {
     switch self {
     case .home, .fortuneDetail:
-      nil
+      return nil
+    case .todayMissionDone(let date):
+      return ["date": date]
     }
   }
 }

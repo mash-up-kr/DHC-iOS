@@ -5,22 +5,43 @@
 //  Created by Aiden.lee on 6/8/25.
 //
 
-import Foundation
+import SwiftUI
 
 import ComposableArchitecture
 
 @Reducer
 struct HomeReducer {
   @Dependency(\.homeAPIClient) var homeAPIClient
+  @Dependency(\.dateFormatterCache) var dateFormatterCache
 
   @ObservableState
   struct State: Equatable {
+    enum ViewState {
+      case firstLaunch
+      case home
+    }
+    
+    var viewState: ViewState = .home
+    
     var path = StackState<Path.State>()
     var missionList = MissionListReducer.State(
       longTermMission: HomeInfo.sample.longTermMission,
       todayDailyMissionList: HomeInfo.sample.todayDailyMissionList
     )
     var homeInfo: HomeInfo
+    
+    var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
+    let isFirstLaunchOfToday: Bool
+    
+    init(
+      homeInfo: HomeInfo,
+      fortuneLoadingComplete: FortuneLoadingCompleteReducer.State? = nil,
+      isFirstLaunchOfToday: Bool
+    ) {
+      self.homeInfo = homeInfo
+      self.fortuneLoadingComplete = fortuneLoadingComplete
+      self.isFirstLaunchOfToday = isFirstLaunchOfToday
+    }
   }
 
   enum Action {
@@ -32,6 +53,7 @@ struct HomeReducer {
     case homeDataResponse(HomeInfo)
     case homeDataFailed(Error)
     case missionList(MissionListReducer.Action)
+    case fortuneLoadingComplete(FortuneLoadingCompleteReducer.Action)
 
     // Navigation Actions
     case path(StackActionOf<Path>)
@@ -51,8 +73,16 @@ struct HomeReducer {
     Reduce { state, action in
       switch action {
       case .onAppear:
+        if state.isFirstLaunchOfToday {
+          withAnimation(.easeInOut(duration: 0.5)) {
+            state.viewState = .firstLaunch
+          }
+        } else {
+          state.viewState = .home
+        }
+        
         return .send(.fetchHomeData)
-
+        
       case .fetchHomeData:
         return .run { send in
           do {
@@ -62,19 +92,52 @@ struct HomeReducer {
             await send(.homeDataFailed(error))
           }
         }
-
+        
       case .homeDataResponse(let homeInfo):
-        state.homeInfo = homeInfo
-        return .merge(
-          .send(.missionList(.updateLongTermMission(homeInfo.longTermMission))),
-          .send(.missionList(.updateDailyMissions(homeInfo.todayDailyMissionList)))
-        )
-
+        if state.isFirstLaunchOfToday {
+          let dailyFortune = homeInfo.todayDailyFortune
+          state.fortuneLoadingComplete = .init(
+            scoreInfo: .init(
+              date: formatDate(from: dailyFortune.date),
+              scoreString: "\(dailyFortune.score)점",
+              score: dailyFortune.score,
+              summary: dailyFortune.fortuneTitle
+            ),
+            cardInfo: .init(
+              backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
+              title: "최고의 날",
+              fortune: "네잎클로버"
+            )
+          )
+          
+          withAnimation(.easeInOut(duration: 0.5)) {
+            state.viewState = .firstLaunch
+          }
+          return .none
+        } else {
+          state.homeInfo = homeInfo
+          return .merge(
+            .send(.missionList(.updateLongTermMission(homeInfo.longTermMission))),
+            .send(.missionList(.updateDailyMissions(homeInfo.todayDailyMissionList)))
+          )
+        }
+        
       case .homeDataFailed:
         return .none
-
+        
       case .missionList:
         return .none
+        
+      case .fortuneLoadingComplete(let action):
+        switch action {
+        case .delegate(.moveToHome):
+          withAnimation(.easeInOut(duration: 0.5)) {
+            state.viewState = .home
+          }
+          return .none
+        default:
+          return .none
+        }
         
       case .moveToFortuneDetail:
         state.path.append(.fortuneDetail(FortuneDetailReducer.State(type: .detail)))
@@ -92,6 +155,15 @@ struct HomeReducer {
       }
     }
     .forEach(\.path, action: \.path)
+    .ifLet(\.fortuneLoadingComplete, action: \.fortuneLoadingComplete) {
+      FortuneLoadingCompleteReducer()
+    }
+  }
+  
+  private func formatDate(from dateString: String) -> String {
+    let date = dateFormatterCache.formatter(for: "yyyy-MM-dd").date(from: dateString) ?? Date()
+    let formattedString = dateFormatterCache.formatter(for: "yyyy년 M월 d일").string(from: date)
+    return formattedString
   }
 }
 

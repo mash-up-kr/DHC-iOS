@@ -20,12 +20,11 @@ struct MainTabView: View {
   var body: some View {
     TabView(selection: $store.selectedTab.sending(\.selectedTabChanged)) {
       Tab(value: .home) {
-        HomeView(
-          store: store.scope(
-            state: \.homeTab,
-            action: \.homeTab
-          )
-        )
+        IfLetStore(
+          store.scope(state: \.homeTab, action: \.homeTab)
+        ) { homeStore in
+          HomeView(store: homeStore)
+        }
       } label: {
         Image(.Icon.home)
           .renderingMode(.template)
@@ -63,6 +62,9 @@ struct MainTabView: View {
       }
     }
     .tint(ColorResource.Neutral._200.color)
+    .onAppear {
+      store.send(.onAppear)
+    }
   }
 }
 

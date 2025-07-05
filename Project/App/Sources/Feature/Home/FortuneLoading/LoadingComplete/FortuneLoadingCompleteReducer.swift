@@ -9,6 +9,8 @@ import ComposableArchitecture
 
 @Reducer
 struct FortuneLoadingCompleteReducer {
+  @Dependency(\.launchManager) var launchManager
+  
   init() {}
 
   @ObservableState
@@ -46,6 +48,8 @@ struct FortuneLoadingCompleteReducer {
       switch action {
       case .cardFlipped:
         state.isCardFlipped = true
+        launchManager.setLastLaunchDate()
+        
         return .run { send in
           do {
             try await Task.sleep(for: .seconds(1.5))

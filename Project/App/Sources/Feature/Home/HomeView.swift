@@ -16,42 +16,20 @@ struct HomeView: View {
     NavigationStack(
       path: $store.scope(state: \.path, action: \.path)
     ) {
-      ScrollView {
-        VStack(spacing: 0) {
-          headerSection
-
-          FortuneCardFrontView(
-            backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
-            title: "최고의 날",
-            fortune: "네잎클로버"
-          )
-          .radialGradientBackground(
-            type: .backgroundGradient01,
-            endRadiusMultiplier: 0.4,
-            scaleEffectX: 2.5,
-            scaleEffectY: 1.6
-          )
-          .rotationEffect(.init(degrees: 4))
-          .padding([.horizontal, .top], 20)
-          .padding(.bottom, 60)
-          .onTapGesture {
-            store.send(.moveToFortuneDetail)
+      Group {
+        switch store.viewState {
+        case .firstLaunch:
+          IfLetStore(
+            store.scope(state: \.fortuneLoadingComplete, action: \.fortuneLoadingComplete)
+          ) { fortuneLoadingCompleteStore in
+            FortuneLoadingCompleteView(store: fortuneLoadingCompleteStore)
+          } else: {
+            homeView
           }
-
-          MissionListView(
-            store: store.scope(
-              state: \.missionList,
-              action: \.missionList
-            )
-          )
+        case .home:
+          homeView
         }
       }
-      .radialGradientBackground(
-        type: .backgroundGradient02,
-        endRadiusMultiplier: 1.2,
-        scaleEffectX: 1.8
-      )
-      .background(ColorResource.Background.main.color)
       .onAppear {
         store.send(.onAppear)
       }
@@ -61,6 +39,45 @@ struct HomeView: View {
         FortuneDetailView(store: store)
       }
     }
+  }
+  
+  private var homeView: some View {
+    ScrollView {
+      VStack(spacing: 0) {
+        headerSection
+
+        FortuneCardFrontView(
+          backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
+          title: "최고의 날",
+          fortune: "네잎클로버"
+        )
+        .radialGradientBackground(
+          type: .backgroundGradient01,
+          endRadiusMultiplier: 0.4,
+          scaleEffectX: 2.5,
+          scaleEffectY: 1.6
+        )
+        .rotationEffect(.init(degrees: 4))
+        .padding([.horizontal, .top], 20)
+        .padding(.bottom, 60)
+        .onTapGesture {
+          store.send(.moveToFortuneDetail)
+        }
+
+        MissionListView(
+          store: store.scope(
+            state: \.missionList,
+            action: \.missionList
+          )
+        )
+      }
+    }
+    .radialGradientBackground(
+      type: .backgroundGradient02,
+      endRadiusMultiplier: 1.2,
+      scaleEffectX: 1.8
+    )
+    .background(ColorResource.Background.main.color)
   }
 
   // MARK: 상단 타이틀 섹션
@@ -123,7 +140,7 @@ struct HomeView: View {
 #Preview {
   HomeView(
     store: Store(
-      initialState: .init(homeInfo: HomeInfo.sample),
+      initialState: .init(homeInfo: HomeInfo.sample, isFirstLaunchOfToday: true),
       reducer: HomeReducer.init
     )
   )

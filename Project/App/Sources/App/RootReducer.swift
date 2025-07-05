@@ -54,7 +54,6 @@ struct RootReducer {
         return .none
         
       case .destination(.presented(.selectGender(.delegate(.registerCompleted)))):
-        // TODO: 홈에서 로직 처리 필요
         state.destination = .mainTab(MainTabReducer.State())
         return .none
         

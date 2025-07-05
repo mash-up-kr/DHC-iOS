@@ -24,7 +24,7 @@ struct FortuneCoreView: View {
 
         Text("\(score)점")
           .textStyle(.h3)
-          .foregroundStyle(fortuneScore.textGradient)
+          .foregroundStyle(LinearGradient(fortuneScore.textGradient))
       }
       .padding(20)
       .background {
@@ -37,8 +37,7 @@ struct FortuneCoreView: View {
           .overlay(
             Circle()
               .stroke(
-                fortuneScore.strokeGradient
-                  .opacity(0.28),
+                fortuneScore.strokeGradient.opacity(0.28),
                 lineWidth: 1
               )
           )
@@ -47,43 +46,41 @@ struct FortuneCoreView: View {
   }
 }
 
-extension FortuneCoreView {
-  enum FortuneScore {
-    case top, mid, low
+enum FortuneScore {
+  case top, mid, low
 
-    init(score: Int) {
-      switch score {
-      case 0...40:
-        self = .low
-      case 41...70:
-        self = .mid
-      case 71...100:
-        self = .top
-      default:
-        self = .low
-      }
+  init(score: Int) {
+    switch score {
+    case 0...40:
+      self = .low
+    case 41...70:
+      self = .mid
+    case 71...100:
+      self = .top
+    default:
+      self = .low
     }
+  }
 
-    var strokeGradient: LinearGradient {
-      switch self {
-      case .low:
-        return LinearGradient(.fortuneBorderLow)
-      case .mid:
-        return LinearGradient(.fortuneBorderMid)
-      case .top:
-        return LinearGradient(.fortuneBorderTop)
-      }
+  var strokeGradient: LinearGradient {
+    switch self {
+    case .low:
+      return LinearGradient(.fortuneBorderLow)
+    case .mid:
+      return LinearGradient(.fortuneBorderMid)
+    case .top:
+      return LinearGradient(.fortuneBorderTop)
     }
+  }
 
-    var textGradient: LinearGradient {
-      switch self {
-      case .low:
-        return LinearGradient(.fortuneGradientLow)
-      case .mid:
-        return LinearGradient(.fortuneGradientMid)
-      case .top:
-        return LinearGradient(.fortuneGradientTop)
-      }
+  var textGradient: LinearGradient.LinearType {
+    switch self {
+    case .low:
+      return .fortuneGradientLow
+    case .mid:
+      return .fortuneGradientMid
+    case .top:
+      return .fortuneGradientTop
     }
   }
 }

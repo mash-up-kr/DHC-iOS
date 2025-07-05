@@ -21,7 +21,7 @@ extension MyPageDTO {
 
     enum CodingKeys: String, CodingKey {
       case name
-      case cardImageURL = "cardImageUrl"
+      case cardImageURL = "cardImage"
     }
 
     init(from decoder: Decoder) throws {
@@ -61,7 +61,7 @@ extension MyPageDTO {
     enum CodingKeys: String, CodingKey {
       case name
       case displayName
-      case imageURL = "imageUrl"
+      case imageURL = "image"
     }
   }
 }

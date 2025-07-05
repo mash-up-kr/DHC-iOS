@@ -49,12 +49,14 @@ extension SignUpAPI: RequestTarget {
   
   var queryParameters: Parameters? {
     switch self {
-      case .searchUser(let deviceToken):
-        [
-          "userToken": deviceToken
-        ]
-      case .missionCategories, .registerUser:
-        nil
+    case .searchUser(let deviceToken):
+      [
+        "userToken": deviceToken
+      ]
+    case .missionCategories:
+      ["format": "png"]
+    case .registerUser:
+      nil
     }
   }
   

@@ -11,10 +11,11 @@ import ComposableArchitecture
 
 @Reducer
 struct HomeReducer {
-  @Dependency(\.homeClient) var homeClient
+  @Dependency(\.homeAPIClient) var homeAPIClient
 
   @ObservableState
   struct State: Equatable {
+    var path = StackState<Path.State>()
     var missionList = MissionListReducer.State(
       longTermMission: HomeInfo.sample.longTermMission,
       todayDailyMissionList: HomeInfo.sample.todayDailyMissionList
@@ -33,6 +34,13 @@ struct HomeReducer {
     case missionList(MissionListReducer.Action)
 
     // Navigation Actions
+    case path(StackActionOf<Path>)
+    case moveToFortuneDetail
+  }
+  
+  @Reducer
+  enum Path {
+    case fortuneDetail(FortuneDetailReducer)
   }
 
   var body: some ReducerOf<Self> {
@@ -48,7 +56,7 @@ struct HomeReducer {
       case .fetchHomeData:
         return .run { send in
           do {
-            let homeInfo = try await homeClient.fetchHomeInfo()
+            let homeInfo = try await homeAPIClient.fetchHomeInfo()
             await send(.homeDataResponse(homeInfo))
           } catch {
             await send(.homeDataFailed(error))
@@ -67,7 +75,24 @@ struct HomeReducer {
 
       case .missionList:
         return .none
+        
+      case .moveToFortuneDetail:
+        state.path.append(.fortuneDetail(FortuneDetailReducer.State(type: .detail)))
+        return .none
+        
+      case let .path(action):
+        switch action {
+        case let .element(id: id, action: .fortuneDetail(.backButtonTapped)):
+          state.path.pop(from: id)
+          return .none
+          
+        default:
+          return .none
+        }
       }
     }
+    .forEach(\.path, action: \.path)
   }
 }
+
+extension HomeReducer.Path.State: Equatable {}

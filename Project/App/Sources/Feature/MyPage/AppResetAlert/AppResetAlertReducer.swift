@@ -12,6 +12,7 @@ struct AppResetAlertReducer {
   @Dependency(\.userManager) var userManager
   @Dependency(\.deviceIDManager) var deviceIDManager
   @Dependency(\.myPageClient) var myPageClient
+  @Dependency(\.launchManager) var launchManager
 
   init() {}
 
@@ -41,6 +42,7 @@ struct AppResetAlertReducer {
         return .run { send in
           try await myPageClient.resetApp()
           userManager.deleteUserID()
+          launchManager.deleteLastLaunchDate()
           try? deviceIDManager.deleteDeviceID()
           await send(.delegate(.resetCompleted))
         }

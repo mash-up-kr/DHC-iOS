@@ -140,7 +140,7 @@ struct HomeView: View {
 #Preview {
   HomeView(
     store: Store(
-      initialState: .init(homeInfo: HomeInfo.sample),
+      initialState: .init(homeInfo: HomeInfo.sample, isFirstLaunchOfToday: true),
       reducer: HomeReducer.init
     )
   )

@@ -104,7 +104,7 @@ struct HomeReducer {
 
         return .run { send in
           do {
-            try await homeClient.todayMissionDone(todayDate)
+            try await homeAPIClient.todayMissionDone(todayDate)
             await send(.fetchHomeData)
           } catch {
             #if DEBUG

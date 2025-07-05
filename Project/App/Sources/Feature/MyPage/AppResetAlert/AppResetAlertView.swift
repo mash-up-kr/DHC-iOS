@@ -30,15 +30,6 @@ struct AppResetAlertView: View {
         .frame(maxWidth: .infinity, alignment: .trailing)
 
         VStack(spacing: 16) {
-          RoundedRectangle(cornerRadius: 12)
-            .fill(ColorResource.Neutral._500.color)
-            .frame(height: 100)
-            .overlay(
-              Text("그래픽 들어갈 자리")
-                .foregroundColor(.white)
-            )
-            .padding(.horizontal, 16)
-
           VStack(spacing: 4) {
             Text("정말 앱을 초기화 하시겠어요?")
               .textStyle(.h3)

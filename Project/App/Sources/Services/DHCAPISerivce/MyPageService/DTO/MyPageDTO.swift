@@ -10,7 +10,7 @@ import Foundation
 struct MyPageDTO: Decodable {
   let animalCard: AnimalCardInfo
   let birthDate: BirthDateInfo
-  let birthTime: String
+  let birthTime: String?
   let preferredMissionCategoryList: [MissionCategoryInfo]
 }
 

@@ -48,7 +48,7 @@ extension SignUpClient: DependencyKey {
         @Dependency(\.dateFormatterCache) var dateFormatterCache
         
         let birthdayString = dateFormatterCache.formatter(for: "yyyy-MM-dd").string(from: birthday)
-        var birthTimeString = ""
+        var birthTimeString: String? = nil
         if let birthTime {
           birthTimeString = dateFormatterCache.formatter(for: "HH:mm:ss").string(from: birthTime)
         }

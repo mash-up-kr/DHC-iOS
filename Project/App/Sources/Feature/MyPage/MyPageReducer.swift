@@ -112,12 +112,14 @@ struct MyPageReducer {
       return myPageInfo.birthDate.date
     }
 
-    var formattedBirthTime: String {
+    var formattedBirthTime: String? {
       // "12:00" -> "오후 12시 00분" 형식으로 변환
-      if let time = dateFormatterCache.formatter(for: "HH:mm").date(from: myPageInfo.birthDate.birthTime) {
+      if let birthTime = myPageInfo.birthDate.birthTime,
+         let time = dateFormatterCache.formatter(for: "HH:mm").date(from: birthTime) {
         let timeFormatter = dateFormatterCache.formatter(for: "a h시 mm분")
         return timeFormatter.string(from: time)
       }
+      
       return myPageInfo.birthDate.birthTime
     }
 

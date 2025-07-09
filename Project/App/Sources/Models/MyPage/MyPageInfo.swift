@@ -23,7 +23,7 @@ extension MyPageInfo {
 extension MyPageInfo {
   struct BirthDateInfo: Equatable {
     let date: String
-    let birthTime: String
+    let birthTime: String?
   }
 }
 

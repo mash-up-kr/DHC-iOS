@@ -33,7 +33,7 @@ struct HomeReducer {
     var presentMissionDonePopup = false
     
     var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
-    let isFirstLaunchOfToday: Bool
+    var isFirstLaunchOfToday: Bool
     
     init(
       homeInfo: HomeInfo,
@@ -174,6 +174,7 @@ struct HomeReducer {
       case .fortuneLoadingComplete(let action):
         switch action {
         case .delegate(.moveToHome):
+          state.isFirstLaunchOfToday.toggle()
           withAnimation(.easeInOut(duration: 0.5)) {
             state.viewState = .home
           }

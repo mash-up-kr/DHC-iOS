@@ -18,16 +18,13 @@ struct MissionListReducer {
     var isTooltipVisible = false
     var longTermMission: HomeInfo.Mission
     var todayDailyMissionList: [HomeInfo.Mission] = []
-    let isUserInteractionEnabled: Bool
 
     init(
       longTermMission: HomeInfo.Mission,
-      todayDailyMissionList: [HomeInfo.Mission],
-      isUserInteractionEnabled: Bool = true
+      todayDailyMissionList: [HomeInfo.Mission]
     ) {
       self.longTermMission = longTermMission
       self.todayDailyMissionList = todayDailyMissionList
-      self.isUserInteractionEnabled = isUserInteractionEnabled
     }
   }
 

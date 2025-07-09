@@ -28,11 +28,7 @@ struct MissionExampleView: View {
       .padding(.bottom, 45)
       
       ScrollView {
-        IfLetStore(
-          store.scope(state: \.missionList, action: \.missionList)
-        ) { missionListStore in
-          MissionListView(store: missionListStore)
-        }
+        MissionListView(store: Store(initialState: store.missionList, reducer: EmptyReducer.init))
       }
       .padding(.bottom, bottomVStackHeight)
       .scrollIndicators(.hidden)
@@ -61,9 +57,6 @@ struct MissionExampleView: View {
       bottomVStackHeight = height
     }
     .navigationBarBackButtonHidden()
-    .onAppear {
-      store.send(.onAppear)
-    }
   }
 }
 

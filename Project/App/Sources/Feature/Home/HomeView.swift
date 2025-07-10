@@ -41,7 +41,7 @@ struct HomeView: View {
       }
     }
   }
-  
+
   private var homeView: some View {
     ZStack(alignment: .bottomTrailing) {
       ScrollView {
@@ -75,7 +75,7 @@ struct HomeView: View {
         }
       }
 
-      if !store.homeInfo.todayDone {
+      if !store.homeInfo.isTodayMissionDone {
         FloatingButton(title: "오늘 미션 끝내기") {
           store.send(.presentBottomSheet(true))
         }
@@ -144,7 +144,7 @@ struct HomeView: View {
 
       HStack(alignment: .top, spacing: 0) {
         VStack(alignment: .leading, spacing: 12) {
-          Text(store.homeInfo.todayDailyFortune.fortuneTitle)
+          Text(store.homeInfo.dailyFortune.fortuneTitle)
             .textStyle(.h2)
             .foregroundStyle(ColorResource.Text.Body.primary.color)
 
@@ -152,7 +152,7 @@ struct HomeView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
-        FortuneCoreView(score: store.homeInfo.todayDailyFortune.score) {
+        FortuneCoreView(score: store.homeInfo.dailyFortune.score) {
           store.send(.moveToFortuneDetail)
         }
       }

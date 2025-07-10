@@ -61,7 +61,7 @@ struct MissionListView: View {
           until: store.longTermMission.endDate
         ),
         isMissionCompleted: Binding(
-          get: { store.longTermMission.finished },
+          get: { store.longTermMission.isFinished },
           set: { _ in store.send(.longTermMissionTapped) }
         )
       )
@@ -77,13 +77,13 @@ struct MissionListView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal,20)
 
-      ForEach(store.todayDailyMissionList, id: \.missionId) { mission in
+      ForEach(store.todayDailyMissionList, id: \.id) { mission in
         DailyMissionItemView(
           missionTitle: mission.title,
           missionLevel: missionLevel(for: mission.difficulty),
           isMissionCompleted: Binding(
-            get: { mission.finished },
-            set: { _ in store.send(.dailyMissionTapped(missionID: mission.missionId)) }
+            get: { mission.isFinished },
+            set: { _ in store.send(.dailyMissionTapped(missionID: mission.id)) }
           )
         )
         .allowsHitTesting(store.isUserInteractionEnabled)
@@ -121,7 +121,7 @@ struct MissionListView: View {
       initialState: MissionListReducer
         .State(
           longTermMission: HomeInfo.sample.longTermMission,
-          todayDailyMissionList: HomeInfo.sample.todayDailyMissionList
+          todayDailyMissionList: HomeInfo.sample.dailyMissionList
         ),
       reducer: MissionListReducer.init
     )

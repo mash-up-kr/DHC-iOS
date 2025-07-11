@@ -40,7 +40,7 @@ struct AppResetAlertReducer {
       case .confirmButtonTapped:
         state.isLoading = true
         return .run { send in
-          try await myPageClient.resetApp()
+          try? await myPageClient.resetApp()
           userManager.deleteUserID()
           launchManager.deleteLastLaunchDate()
           try? deviceIDManager.deleteDeviceID()

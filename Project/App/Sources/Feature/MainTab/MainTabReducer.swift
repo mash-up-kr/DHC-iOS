@@ -35,6 +35,13 @@ struct MainTabReducer {
   }
 
   var body: some ReducerOf<Self> {
+    Scope(state: \.reportTab, action: \.reportTab) {
+      ReportReducer()
+    }
+    Scope(state: \.myPageTab, action: \.myPageTab) {
+      MyPageReducer()
+    }
+
     Reduce { state, action in
       switch action {
       case .onAppear:
@@ -55,13 +62,6 @@ struct MainTabReducer {
     }
     .ifLet(\.homeTab, action: \.homeTab) {
       HomeReducer()
-    }
-
-    Scope(state: \.reportTab, action: \.reportTab) {
-      ReportReducer()
-    }
-    Scope(state: \.myPageTab, action: \.myPageTab) {
-      MyPageReducer()
     }
   }
 }

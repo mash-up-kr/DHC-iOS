@@ -17,7 +17,7 @@ extension MissionAPI: RequestTarget {
   var path: String {
     switch self {
     case .updateMissionStatus(let missionID, _):
-      return "/view/users/{userID}/missions/\(missionID)"
+      return "/api/users/{userID}/missions/\(missionID)"
     }
   }
 

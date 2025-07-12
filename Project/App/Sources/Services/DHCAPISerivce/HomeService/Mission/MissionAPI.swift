@@ -24,6 +24,15 @@ extension MissionAPI: RequestTarget {
   var method: HTTPMethod {
     .put
   }
+  
+  var headers: HTTPHeaders? {
+    switch self {
+    case .updateMissionStatus(_, _):
+      [
+        "Content-Type": "application/json"
+      ]
+    }
+  }
 
   var queryParameters: Alamofire.Parameters? {
     nil

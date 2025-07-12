@@ -17,6 +17,7 @@ extension URL {
     case redFace
     case splashLottie
     case onboardingVideo
+    case fortuneLoadingVideo
   }
   
   static func urlForResource(_ resource: Resource) -> URL? {
@@ -27,8 +28,6 @@ extension URL {
       return Bundle.main.url(forResource: "fortuneCardBackView", withExtension: "png")
     case .splashLottie:
       return Bundle.main.url(forResource: "splash", withExtension: "json")
-    case .onboardingVideo:
-      return Bundle.main.url(forResource: "onboardingVideo", withExtension: "mp4")
     case .clover:
       return Bundle.main.url(forResource: "clover", withExtension: "png")
     case .knife:
@@ -37,6 +36,10 @@ extension URL {
       return Bundle.main.url(forResource: "greenFace", withExtension: "png")
     case .redFace:
       return Bundle.main.url(forResource: "redFace", withExtension: "png")
+    case .onboardingVideo:
+      return Bundle.main.url(forResource: "onboardingVideo", withExtension: "mp4")
+    case .fortuneLoadingVideo:
+      return Bundle.main.url(forResource: "fortuneLoading", withExtension: "mp4")
     }
   }
 }

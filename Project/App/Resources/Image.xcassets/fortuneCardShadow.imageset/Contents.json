@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "FortuneCard-Shadow.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

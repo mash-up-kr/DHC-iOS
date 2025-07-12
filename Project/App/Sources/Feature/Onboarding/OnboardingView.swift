@@ -35,10 +35,13 @@ struct OnboardingView: View {
       .background {
         VStack(spacing: 0) {
           Spacer()
-          LoopingVideoPlayer(videoURL: .urlForResource(.onboardingVideo)!)
-            .ignoresSafeArea()
-            .allowsHitTesting(false)
-            .scaledToFill()
+          LoopingVideoPlayer(
+            videoURL: .urlForResource(.onboardingVideo)!,
+            needSoundMute: true
+          )
+          .ignoresSafeArea()
+          .allowsHitTesting(false)
+          .scaledToFill()
         }
       }
       .background(ColorResource._020202.color)

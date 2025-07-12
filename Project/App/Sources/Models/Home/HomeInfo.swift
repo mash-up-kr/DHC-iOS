@@ -29,26 +29,13 @@ extension HomeInfo {
 
   struct DailyFortune: Equatable {
     let date: String
-    let fortuneTitle: String
-    let fortuneDetail: String
-    let jinxedColor: String
-    let jinxedColorHex: String
-    let jinxedColorImage: String
-    let jinxedMenu: String
-    let jinxedMenuImage: String
-    let jinxedNumber: Int
-    let luckyColor: String
-    let luckyColorHex: String
-    let luckyColorImage: String
-    let luckyNumber: Int
+    let title: String
     let positiveScore: Int
     let negativeScore: Int
-    let todayMenu: String
-    let todayMenuImage: String
     let score: Int
-    let luckyColorType: String
-    let jinxedColorType: String
-    let fortuneCardImage: String
+    let cardImage: String
+    let cardTitle: String
+    let cardSubTitle: String
   }
 }
 
@@ -98,30 +85,17 @@ extension HomeInfo {
         endDate: "2025-07-05",
         title: "따릉이(공공자전거) 이용하기",
         switchCount: 0
-      )
+      ),
     ],
     dailyFortune: .init(
       date: "2025-07-09",
-      fortuneTitle: "투자 아이디어! 신중한 판단이 필요한 날",
-      fortuneDetail: "오늘은 새로운 투자 아이디어가 떠오를 수 있습니다. 하지만, 충분한 검토 없이 섣불리 투자하는 것은 위험합니다. 신중하게 판단하고 결정해야 합니다. 노란색 옷은 자제하는 것이 좋습니다.",
-      jinxedColor: "검정색",
-      jinxedColorHex: "#000000",
-      jinxedColorImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/fortune/svg/jinxedColor.svg",
-      jinxedMenu: "커피",
-      jinxedMenuImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/fortune/svg/jinxedMenu.svg",
-      jinxedNumber: 3,
-      luckyColor: "빨간색",
-      luckyColorHex: "#FF0000",
-      luckyColorImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/fortune/svg/luckyColor.svg",
-      luckyNumber: 5,
-      positiveScore: 50,
-      negativeScore: 50,
-      todayMenu: "따뜻한 차",
-      todayMenuImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/fortune/svg/todayMenu.svg",
+      title: "투자 아이디어! 신중한 판단이 필요한 날",
+      positiveScore: 100,
+      negativeScore: 0,
       score: 100,
-      luckyColorType: "RED",
-      jinxedColorType: "BLACK",
-      fortuneCardImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/mainCard/png/fourLeafClover.png"
+      cardImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/mainCard/png/fourLeafClover.png",
+      cardTitle: "",
+      cardSubTitle: ""
     ),
     isTodayMissionDone: false
   )
@@ -141,7 +115,7 @@ extension HomeInfo.Mission {
       switchCount: 0
     )
   }
-  
+
   static let onboardingDailyMissionList: [HomeInfo.Mission] = [
     .init(
       id: "0",
@@ -197,6 +171,6 @@ extension HomeInfo.Mission {
       endDate: "2024-12-31",
       title: "오늘 하루 배달앱 알림 꺼두기",
       switchCount: 0
-    )
+    ),
   ]
 }

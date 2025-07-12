@@ -12,7 +12,7 @@ struct HomeDTO: Decodable {
   let dailyMissionList: [MissionInfo]
   let todayFortune: DailyFortuneInfo
   let isTodayMissionDone: Bool
-  
+
   enum CodingKeys: String, CodingKey {
     case longTermMission
     case dailyMissionList = "todayDailyMissionList"
@@ -32,7 +32,7 @@ extension HomeDTO {
     let endDate: String
     let title: String
     let switchCount: Int
-    
+
     enum CodingKeys: String, CodingKey {
       case missionID = "missionId"
       case category
@@ -50,49 +50,23 @@ extension HomeDTO {
 extension HomeDTO {
   struct DailyFortuneInfo: Decodable {
     let date: String
-    let fortuneTitle: String
-    let fortuneDetail: String
-    let jinxedColor: String
-    let jinxedColorHex: String
-    let jinxedColorImage: String
-    let jinxedMenu: String
-    let jinxedMenuImage: String
-    let jinxedNumber: Int
-    let luckyColor: String
-    let luckyColorHex: String
-    let luckyColorImage: String
-    let luckyNumber: Int
+    let title: String
     let positiveScore: Int
     let negativeScore: Int
-    let todayMenu: String
-    let todayMenuImage: String
     let score: Int
-    let luckyColorType: String
-    let jinxedColorType: String
-    let fortuneCardImage: String
-    
+    let cardImage: String
+    let cardTitle: String
+    let cardSubTitle: String
+
     enum CodingKeys: String, CodingKey {
       case date
-      case fortuneTitle
-      case fortuneDetail
-      case jinxedColor
-      case jinxedColorHex
-      case jinxedColorImage
-      case jinxedMenu
-      case jinxedMenuImage
-      case jinxedNumber
-      case luckyColor
-      case luckyColorHex
-      case luckyColorImage
-      case luckyNumber
+      case title = "fortuneTitle"
       case positiveScore
       case negativeScore
-      case todayMenu
-      case todayMenuImage
       case score = "totalScore"
-      case luckyColorType
-      case jinxedColorType
-      case fortuneCardImage
+      case cardImage = "fortuneCardImage"
+      case cardTitle = "fortuneCardTitle"
+      case cardSubTitle = "fortuneCardSubTitle"
     }
   }
 }
@@ -126,26 +100,13 @@ extension HomeDTO {
       },
       dailyFortune: .init(
         date: todayFortune.date,
-        fortuneTitle: todayFortune.fortuneTitle,
-        fortuneDetail: todayFortune.fortuneDetail,
-        jinxedColor: todayFortune.jinxedColor,
-        jinxedColorHex: todayFortune.jinxedColorHex,
-        jinxedColorImage: todayFortune.jinxedColorImage,
-        jinxedMenu: todayFortune.jinxedMenu,
-        jinxedMenuImage: todayFortune.jinxedMenuImage,
-        jinxedNumber: todayFortune.jinxedNumber,
-        luckyColor: todayFortune.luckyColor,
-        luckyColorHex: todayFortune.luckyColorHex,
-        luckyColorImage: todayFortune.luckyColorImage,
-        luckyNumber: todayFortune.luckyNumber,
+        title: todayFortune.title,
         positiveScore: todayFortune.positiveScore,
         negativeScore: todayFortune.negativeScore,
-        todayMenu: todayFortune.todayMenu,
-        todayMenuImage: todayFortune.todayMenuImage,
         score: todayFortune.score,
-        luckyColorType: todayFortune.luckyColorType,
-        jinxedColorType: todayFortune.jinxedColorType,
-        fortuneCardImage: todayFortune.fortuneCardImage
+        cardImage: todayFortune.cardImage,
+        cardTitle: todayFortune.cardTitle,
+        cardSubTitle: todayFortune.cardSubTitle
       ),
       isTodayMissionDone: isTodayMissionDone
     )

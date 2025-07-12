@@ -144,7 +144,7 @@ struct HomeReducer {
               date: formatDate(from: dailyFortune.date),
               scoreString: "\(dailyFortune.score)점",
               score: dailyFortune.score,
-              summary: dailyFortune.fortuneTitle
+              summary: dailyFortune.title
             ),
             cardInfo: .init(
               backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),

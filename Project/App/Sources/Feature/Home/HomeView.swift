@@ -144,7 +144,7 @@ struct HomeView: View {
 
       HStack(alignment: .top, spacing: 0) {
         VStack(alignment: .leading, spacing: 12) {
-          Text(store.homeInfo.dailyFortune.fortuneTitle)
+          Text(store.homeInfo.dailyFortune.title)
             .textStyle(.h2)
             .foregroundStyle(ColorResource.Text.Body.primary.color)
 

@@ -23,7 +23,7 @@ extension HomeAPI: RequestTarget {
     case .fortuneDetail:
       return "/api/users/{userID}/fortune"
     case .todayMissionDone:
-      return "/view/users/{userID}/done"
+      return "/api/users/{userID}/done"
     }
   }
 
@@ -33,6 +33,17 @@ extension HomeAPI: RequestTarget {
       .get
     case .todayMissionDone:
       .post
+    }
+  }
+
+  var headers: HTTPHeaders? {
+    switch self {
+    case .home, .fortuneDetail:
+      nil
+    case .todayMissionDone:
+      [
+        "Content-Type": "application/json",
+      ]
     }
   }
 

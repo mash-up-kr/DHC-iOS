@@ -83,8 +83,7 @@ struct FortunePickExampleView: View {
         gradientType: .text02,
         cardBackgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
         cardTitle: "최고의 날",
-        cardFortune: "네잎클로버",
-        needsGradientBackground: true
+        cardFortune: "네잎클로버"
       )
       .frame(maxHeight: .infinity)
       

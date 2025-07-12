@@ -15,7 +15,6 @@ struct FortuneView: View {
   private let cardBackgroundImageURL: URL?
   private let cardTitle: String
   private let cardFortune: String
-  private let needsGradientBackground: Bool
   
   init(
     date: String,
@@ -24,8 +23,7 @@ struct FortuneView: View {
     gradientType: LinearGradient.LinearType,
     cardBackgroundImageURL: URL?,
     cardTitle: String,
-    cardFortune: String,
-    needsGradientBackground: Bool = false
+    cardFortune: String
   ) {
     self.date = date
     self.score = score
@@ -34,33 +32,29 @@ struct FortuneView: View {
     self.cardBackgroundImageURL = cardBackgroundImageURL
     self.cardTitle = cardTitle
     self.cardFortune = cardFortune
-    self.needsGradientBackground = needsGradientBackground
   }
   
   var body: some View {
-    VStack(spacing: 20) {
+    VStack(spacing: 0) {
       FortuneScoreView(
         date: date,
         score: score,
         summary: summary,
         gradientType: gradientType
       )
+      .padding(.bottom, 24)
       
       FortuneCardFrontView(
         backgroundImageURL: cardBackgroundImageURL,
         title: cardTitle,
         fortune: cardFortune
       )
-      .if(needsGradientBackground) { cardView in
-        cardView
-          .radialGradientBackground(
-            type: .backgroundGradient01,
-            endRadiusMultiplier: 0.4,
-            scaleEffectX: 2.5,
-            scaleEffectY: 1.6
-          )
-      }
-      .padding(.bottom, 20)
+      .padding(.top, 40)
+      .padding(.bottom, 12)
+      
+      ImageResource.fortuneCardShadow.image
+        .resizable()
+        .frame(height: 32)
     }
   }
 }

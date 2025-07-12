@@ -71,8 +71,7 @@ struct FortuneLoadingCompleteView: View {
       gradientType: FortuneScore(score: store.scoreInfo.score).textGradient,
       cardBackgroundImageURL: store.cardInfo.backgroundImageURL,
       cardTitle: store.cardInfo.title,
-      cardFortune: store.cardInfo.fortune,
-      needsGradientBackground: true
+      cardFortune: store.cardInfo.fortune
     )
     .frame(maxHeight: .infinity)
   }

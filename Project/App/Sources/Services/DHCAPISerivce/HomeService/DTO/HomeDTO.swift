@@ -9,53 +9,64 @@ import Foundation
 
 struct HomeDTO: Decodable {
   let longTermMission: MissionInfo
-  let todayDailyMissionList: [MissionInfo]
-  let todayDailyFortune: DailyFortuneInfo
-  let todayDone: Bool
+  let dailyMissionList: [MissionInfo]
+  let todayFortune: DailyFortuneInfo
+  let isTodayMissionDone: Bool
+
+  enum CodingKeys: String, CodingKey {
+    case longTermMission
+    case dailyMissionList = "todayDailyMissionList"
+    case todayFortune = "todayDailyFortune"
+    case isTodayMissionDone = "todayDone"
+  }
 }
 
 extension HomeDTO {
   struct MissionInfo: Decodable {
-    let missionId: String
+    let missionID: String
     let category: String
     let difficulty: Int
     let type: String
-    let finished: Bool
+    let isFinished: Bool
     let cost: String
     let endDate: String
     let title: String
     let switchCount: Int
+
+    enum CodingKeys: String, CodingKey {
+      case missionID = "missionId"
+      case category
+      case difficulty
+      case type
+      case isFinished = "finished"
+      case cost
+      case endDate
+      case title
+      case switchCount
+    }
   }
 }
 
 extension HomeDTO {
   struct DailyFortuneInfo: Decodable {
     let date: String
-    let fortuneTitle: String
-    let fortuneDetail: String
-    let jinxedColor: String
-    let jinxedColorHex: String
-    let jinxedMenu: String
-    let jinxedNumber: Int
-    let luckyColor: String
-    let luckyColorHex: String
-    let luckyNumber: Int
+    let title: String
+    let positiveScore: Int
+    let negativeScore: Int
     let score: Int
-    let todayMenu: String
-    
+    let cardImage: String
+    let cardTitle: String
+    let cardSubTitle: String
+
     enum CodingKeys: String, CodingKey {
       case date
-      case fortuneTitle
-      case fortuneDetail
-      case jinxedColor
-      case jinxedColorHex
-      case jinxedMenu
-      case jinxedNumber
-      case luckyColor
-      case luckyColorHex
-      case luckyNumber
+      case title = "fortuneTitle"
+      case positiveScore
+      case negativeScore
       case score = "totalScore"
-      case todayMenu
+      case cardImage = "fortuneCardImage"
+      case cardTitle = "fortuneCardTitle"
+      case cardSubTitle = "fortuneCardSubTitle"
     }
   }
 }
@@ -64,44 +75,40 @@ extension HomeDTO {
   func toDomain() -> HomeInfo {
     HomeInfo(
       longTermMission: .init(
-        missionId: longTermMission.missionId,
+        id: longTermMission.missionID,
         category: longTermMission.category,
         difficulty: longTermMission.difficulty,
         type: longTermMission.type,
-        finished: longTermMission.finished,
+        isFinished: longTermMission.isFinished,
         cost: longTermMission.cost,
         endDate: longTermMission.endDate,
         title: longTermMission.title,
         switchCount: longTermMission.switchCount
       ),
-      todayDailyMissionList: todayDailyMissionList.map {
+      dailyMissionList: dailyMissionList.map {
         .init(
-          missionId: $0.missionId,
+          id: $0.missionID,
           category: $0.category,
           difficulty: $0.difficulty,
           type: $0.type,
-          finished: $0.finished,
+          isFinished: $0.isFinished,
           cost: $0.cost,
           endDate: $0.endDate,
           title: $0.title,
           switchCount: $0.switchCount
         )
       },
-      todayDailyFortune: .init(
-        date: todayDailyFortune.date,
-        fortuneTitle: todayDailyFortune.fortuneTitle,
-        fortuneDetail: todayDailyFortune.fortuneDetail,
-        jinxedColor: todayDailyFortune.jinxedColor,
-        jinxedColorHex: todayDailyFortune.jinxedColorHex,
-        jinxedMenu: todayDailyFortune.jinxedMenu,
-        jinxedNumber: todayDailyFortune.jinxedNumber,
-        luckyColor: todayDailyFortune.luckyColor,
-        luckyColorHex: todayDailyFortune.luckyColorHex,
-        luckyNumber: todayDailyFortune.luckyNumber,
-        score: todayDailyFortune.score,
-        todayMenu: todayDailyFortune.todayMenu
+      dailyFortune: .init(
+        date: todayFortune.date,
+        title: todayFortune.title,
+        positiveScore: todayFortune.positiveScore,
+        negativeScore: todayFortune.negativeScore,
+        score: todayFortune.score,
+        cardImage: todayFortune.cardImage,
+        cardTitle: todayFortune.cardTitle,
+        cardSubTitle: todayFortune.cardSubTitle
       ),
-      todayDone: todayDone
+      isTodayMissionDone: isTodayMissionDone
     )
   }
 }

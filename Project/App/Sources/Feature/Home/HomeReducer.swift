@@ -26,7 +26,7 @@ struct HomeReducer {
     var path = StackState<Path.State>()
     var missionList = MissionListReducer.State(
       longTermMission: HomeInfo.sample.longTermMission,
-      todayDailyMissionList: HomeInfo.sample.todayDailyMissionList
+      todayDailyMissionList: HomeInfo.sample.dailyMissionList
     )
     var homeInfo: HomeInfo
     var presentBottomSheet = false
@@ -138,13 +138,13 @@ struct HomeReducer {
         
       case .homeDataResponse(let homeInfo):
         if state.isFirstLaunchOfToday {
-          let dailyFortune = homeInfo.todayDailyFortune
+          let dailyFortune = homeInfo.dailyFortune
           state.fortuneLoadingComplete = .init(
             scoreInfo: .init(
               date: formatDate(from: dailyFortune.date),
               scoreString: "\(dailyFortune.score)점",
               score: dailyFortune.score,
-              summary: dailyFortune.fortuneTitle
+              summary: dailyFortune.title
             ),
             cardInfo: .init(
               backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
@@ -161,7 +161,7 @@ struct HomeReducer {
           state.homeInfo = homeInfo
           return .merge(
             .send(.missionList(.updateLongTermMission(homeInfo.longTermMission))),
-            .send(.missionList(.updateDailyMissions(homeInfo.todayDailyMissionList)))
+            .send(.missionList(.updateDailyMissions(homeInfo.dailyMissionList)))
           )
         }
         

@@ -9,18 +9,18 @@ import Foundation
 
 struct HomeInfo: Equatable {
   let longTermMission: Mission
-  let todayDailyMissionList: [Mission]
-  let todayDailyFortune: DailyFortune
-  var todayDone: Bool
+  let dailyMissionList: [Mission]
+  let dailyFortune: DailyFortune
+  var isTodayMissionDone: Bool
 }
 
 extension HomeInfo {
   struct Mission: Equatable {
-    let missionId: String
+    let id: String
     let category: String
     let difficulty: Int
     let type: String
-    var finished: Bool
+    var isFinished: Bool
     let cost: String
     let endDate: String
     let title: String
@@ -29,145 +29,148 @@ extension HomeInfo {
 
   struct DailyFortune: Equatable {
     let date: String
-    let fortuneTitle: String
-    let fortuneDetail: String
-    let jinxedColor: String
-    let jinxedColorHex: String
-    let jinxedMenu: String
-    let jinxedNumber: Int
-    let luckyColor: String
-    let luckyColorHex: String
-    let luckyNumber: Int
+    let title: String
+    let positiveScore: Int
+    let negativeScore: Int
     let score: Int
-    let todayMenu: String
+    let cardImage: String
+    let cardTitle: String
+    let cardSubTitle: String
   }
 }
 
 extension HomeInfo {
   static let sample = HomeInfo(
     longTermMission: .init(
-      missionId: "507f1f77bcf86cd799439033",
-      category: "취미·문화",
-      difficulty: 5,
+      id: "long-term-001",
+      category: "생활",
+      difficulty: 3,
       type: "LONG_TERM",
-      finished: false,
-      cost: "100.00",
-      endDate: "2024-12-31",
-      title: "여행 가기 위해 돈 모으기",
-      switchCount: 0
+      isFinished: false,
+      cost: "25000",
+      endDate: "2025-07-18",
+      title: "주중 3일 승용차 대신 대중교통 이용하기",
+      switchCount: 1
     ),
-    todayDailyMissionList: [
+    dailyMissionList: [
       .init(
-        missionId: "507f1f77bcf86cd799439044",
-        category: "식음료",
-        difficulty: 2,
+        id: "daily-001",
+        category: "이동·교통",
+        difficulty: 3,
         type: "DAILY",
-        finished: false,
-        cost: "15.00",
-        endDate: "2024-01-15",
-        title: "점심 도시락 싸가기",
-        switchCount: 1
+        isFinished: false,
+        cost: "24000",
+        endDate: "2025-07-05",
+        title: "하루 동안 승용차 대신 대중교통 타기",
+        switchCount: 0
       ),
       .init(
-        missionId: "507f1f77bcf86cd799439055",
+        id: "daily-002",
+        category: "이동·교통",
+        difficulty: 2,
+        type: "DAILY",
+        isFinished: false,
+        cost: "12000",
+        endDate: "2025-07-05",
+        title: "도보 10분 이내 거리 무조건 걷기",
+        switchCount: 0
+      ),
+      .init(
+        id: "daily-003",
         category: "이동·교통",
         difficulty: 1,
         type: "DAILY",
-        finished: true,
-        cost: "5.00",
-        endDate: "2024-01-15",
-        title: "대중교통 이용하기",
+        isFinished: false,
+        cost: "4000",
+        endDate: "2025-07-05",
+        title: "따릉이(공공자전거) 이용하기",
         switchCount: 0
-      )
+      ),
     ],
-    todayDailyFortune: .init(
-      date: "2024-01-15",
-      fortuneTitle: "좋은 하루",
-      fortuneDetail: "오늘은 좋은 일이 생길 것입니다",
-      jinxedColor: "빨간색",
-      jinxedColorHex: "#FF0000",
-      jinxedMenu: "매운 음식",
-      jinxedNumber: 4,
-      luckyColor: "파란색",
-      luckyColorHex: "#0000FF",
-      luckyNumber: 7,
-      score: 85,
-      todayMenu: "샐러드"
-    ), 
-    todayDone: false
+    dailyFortune: .init(
+      date: "2025-07-09",
+      title: "투자 아이디어! 신중한 판단이 필요한 날",
+      positiveScore: 100,
+      negativeScore: 0,
+      score: 100,
+      cardImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/mainCard/png/fourLeafClover.png",
+      cardTitle: "",
+      cardSubTitle: ""
+    ),
+    isTodayMissionDone: false
   )
 }
 
 extension HomeInfo.Mission {
   static func onboardingLongTermMisson(endDate: String) -> HomeInfo.Mission {
     .init(
-      missionId: "-1",
+      id: "-1",
       category: "식음료",
       difficulty: 5,
       type: "LONG_TERM",
-      finished: false,
+      isFinished: false,
       cost: "100.00",
       endDate: endDate,
       title: "도시락 싸서 점심·저녁 해결하기",
       switchCount: 0
     )
   }
-  
+
   static let onboardingDailyMissionList: [HomeInfo.Mission] = [
     .init(
-      missionId: "0",
+      id: "0",
       category: "취미·문화",
       difficulty: 1,
       type: "DAILY",
-      finished: false,
+      isFinished: false,
       cost: "100.00",
       endDate: "2024-12-31",
       title: "간식은 집에서 챙겨 다니기",
       switchCount: 0
     ),
     .init(
-      missionId: "1",
+      id: "1",
       category: "취미·문화",
       difficulty: 1,
       type: "DAILY",
-      finished: false,
+      isFinished: false,
       cost: "100.00",
       endDate: "2024-12-31",
       title: "아침 집밥 챙겨먹기",
       switchCount: 0
     ),
     .init(
-      missionId: "2",
+      id: "2",
       category: "취미·문화",
       difficulty: 1,
       type: "DAILY",
-      finished: false,
+      isFinished: false,
       cost: "100.00",
       endDate: "2024-12-31",
       title: "커피는 집에서 내려 마시기",
       switchCount: 0
     ),
     .init(
-      missionId: "3",
+      id: "3",
       category: "취미·문화",
       difficulty: 1,
       type: "DAILY",
-      finished: false,
+      isFinished: false,
       cost: "100.00",
       endDate: "2024-12-31",
       title: "음료 구매할때 텀블러 할인받기",
       switchCount: 0
     ),
     .init(
-      missionId: "4",
+      id: "4",
       category: "취미·문화",
       difficulty: 1,
       type: "DAILY",
-      finished: false,
+      isFinished: false,
       cost: "100.00",
       endDate: "2024-12-31",
       title: "오늘 하루 배달앱 알림 꺼두기",
       switchCount: 0
-    )
+    ),
   ]
 }

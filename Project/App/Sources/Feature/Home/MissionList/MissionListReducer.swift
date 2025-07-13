@@ -58,19 +58,19 @@ struct MissionListReducer {
         return .none
 
       case .longTermMissionTapped:
-        state.longTermMission.finished.toggle()
+        state.longTermMission.isFinished.toggle()
 
         let mission = state.longTermMission
 
         return .run { send in
           do {
             try await missionClient.updateMissionStatus(
-              mission.missionId,
-              mission.finished
+              mission.id,
+              mission.isFinished
             )
             await send(
               .missionStatusUpdateResult(
-                .success(mission.missionId)
+                .success(mission.id)
               )
             )
           } catch {
@@ -86,20 +86,20 @@ struct MissionListReducer {
         guard let index = state.todayDailyMissionList
           .firstIndex(
             where: {
-              $0.missionId == missionID
+              $0.id == missionID
             }
           )
         else {
           return .none
         }
 
-        state.todayDailyMissionList[index].finished.toggle()
+        state.todayDailyMissionList[index].isFinished.toggle()
         let updatedMission = state.todayDailyMissionList[index]
 
         return .run { send in
           do {
-            try await missionClient.updateMissionStatus(updatedMission.missionId, updatedMission.finished)
-            await send(.missionStatusUpdateResult(.success(updatedMission.missionId)))
+            try await missionClient.updateMissionStatus(updatedMission.id, updatedMission.isFinished)
+            await send(.missionStatusUpdateResult(.success(updatedMission.id)))
           } catch {
             await send(.missionStatusUpdateResult(.failure(error)))
           }

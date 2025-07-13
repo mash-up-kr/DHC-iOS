@@ -40,9 +40,12 @@ struct FortuneLoadingView: View {
   @ViewBuilder
   private var mainView: some View {
     if store.shouldPlayVideo {
-      LoopingVideoPlayer(videoURL: Bundle.main.url(forResource: "fortuneLoading", withExtension: "mp4")!)
-        .disabled(true)
-        .ignoresSafeArea()
+      LoopingVideoPlayer(
+        videoURL: .urlForResource(.fortuneLoadingVideo)!,
+        needSoundMute: true
+      )
+      .disabled(true)
+      .ignoresSafeArea()
     } else {
       ImageResource.fortuneLoadingThumbnail.image
         .ignoresSafeArea()

@@ -27,7 +27,7 @@ extension MissionAPI: RequestTarget {
   
   var headers: HTTPHeaders? {
     switch self {
-    case .updateMissionStatus(_, _):
+    case .updateMissionStatus:
       [
         "Content-Type": "application/json"
       ]

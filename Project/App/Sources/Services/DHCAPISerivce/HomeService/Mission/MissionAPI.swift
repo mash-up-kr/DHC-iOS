@@ -17,12 +17,21 @@ extension MissionAPI: RequestTarget {
   var path: String {
     switch self {
     case .updateMissionStatus(let missionID, _):
-      return "/view/users/{userID}/missions/\(missionID)"
+      return "/api/users/{userID}/missions/\(missionID)"
     }
   }
 
   var method: HTTPMethod {
     .put
+  }
+  
+  var headers: HTTPHeaders? {
+    switch self {
+    case .updateMissionStatus:
+      [
+        "Content-Type": "application/json"
+      ]
+    }
   }
 
   var queryParameters: Alamofire.Parameters? {

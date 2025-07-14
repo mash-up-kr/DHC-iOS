@@ -81,9 +81,13 @@ struct FortunePickExampleView: View {
         score: "35점",
         summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요.",
         gradientType: .text02,
-        cardBackgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
-        cardTitle: "최고의 날",
-        cardFortune: "네잎클로버"
+        cardView: {
+          FortuneCardFrontView(
+            backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
+            title: "최고의 날",
+            fortune: "네잎클로버"
+          )
+        }
       )
       .frame(maxHeight: .infinity)
       

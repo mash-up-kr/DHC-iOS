@@ -7,32 +7,25 @@
 
 import SwiftUI
 
-struct FortuneView: View {
-  private let date: String
+struct FortuneView<Card: View>: View {
   private let date: String?
   private let score: String
   private let summary: String
   private let gradientType: LinearGradient.LinearType
-  private let cardBackgroundImageURL: URL?
-  private let cardTitle: String
-  private let cardFortune: String
+  private let cardView: Card
   
   init(
     date: String?,
     score: String,
     summary: String,
     gradientType: LinearGradient.LinearType,
-    cardBackgroundImageURL: URL?,
-    cardTitle: String,
-    cardFortune: String
+    @ViewBuilder cardView: () -> Card
   ) {
     self.date = date
     self.score = score
     self.summary = summary
     self.gradientType = gradientType
-    self.cardBackgroundImageURL = cardBackgroundImageURL
-    self.cardTitle = cardTitle
-    self.cardFortune = cardFortune
+    self.cardView = cardView()
   }
   
   var body: some View {
@@ -45,11 +38,7 @@ struct FortuneView: View {
       )
       .padding(.bottom, 24)
       
-      FortuneCardFrontView(
-        backgroundImageURL: cardBackgroundImageURL,
-        title: cardTitle,
-        fortune: cardFortune
-      )
+      cardView
       .padding(.top, 40)
       .padding(.bottom, 12)
       

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FortuneView: View {
   private let date: String
+  private let date: String?
   private let score: String
   private let summary: String
   private let gradientType: LinearGradient.LinearType
@@ -17,7 +18,7 @@ struct FortuneView: View {
   private let cardFortune: String
   
   init(
-    date: String,
+    date: String?,
     score: String,
     summary: String,
     gradientType: LinearGradient.LinearType,

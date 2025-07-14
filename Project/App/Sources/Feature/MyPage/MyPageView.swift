@@ -94,5 +94,6 @@ struct MyPageView: View {
     .resetAlert(
       item: $store.scope(state: \.appResetAlert, action: \.appResetAlert)
     )
+    .background(ColorResource.Background.main.color)
   }
 }

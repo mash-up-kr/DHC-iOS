@@ -38,8 +38,8 @@ extension FortuneDetail {
     .init(
       scoreInfo: .init(
         date: date,
-        scoreString: "35점",
-        score: 35,
+        scoreString: "85점",
+        score: 85,
         summary: "마음이 들뜨는 날이에요,\n한템포 쉬어가요."
       ),
       cardInfo: .init(

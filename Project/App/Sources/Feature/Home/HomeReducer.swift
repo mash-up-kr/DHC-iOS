@@ -162,7 +162,8 @@ struct HomeReducer {
           state.homeInfo = homeInfo
           return .merge(
             .send(.missionList(.updateLongTermMission(homeInfo.longTermMission))),
-            .send(.missionList(.updateDailyMissions(homeInfo.dailyMissionList)))
+            .send(.missionList(.updateDailyMissions(homeInfo.dailyMissionList))),
+            .send(.missionList(.updateTodayMissionDone(homeInfo.isTodayMissionDone)))
           )
         }
         

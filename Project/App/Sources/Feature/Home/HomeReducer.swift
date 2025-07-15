@@ -36,6 +36,10 @@ struct HomeReducer {
     var isFirstLaunchOfToday: Bool
     var todaySavedMoney: String?
     
+    var bottomContentMargin: CGFloat {
+      homeInfo.isTodayMissionDone ? 10 : 82
+    }
+    
     init(
       homeInfo: HomeInfo,
       fortuneLoadingComplete: FortuneLoadingCompleteReducer.State? = nil,

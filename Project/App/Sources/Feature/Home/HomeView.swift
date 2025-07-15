@@ -64,7 +64,7 @@ struct HomeView: View {
         .onTapGesture {
           store.send(.moveToFortuneDetail)
         }
-
+        
         MissionListView(
           store: store.scope(
             state: \.missionList,
@@ -73,6 +73,8 @@ struct HomeView: View {
         )
       }
     }
+    .scrollIndicators(.hidden)
+    .contentMargins(.bottom, store.bottomContentMargin)
     .overlay(alignment: .bottomTrailing) {
       if !store.homeInfo.isTodayMissionDone {
         FloatingButton(title: "오늘 미션 끝내기") {

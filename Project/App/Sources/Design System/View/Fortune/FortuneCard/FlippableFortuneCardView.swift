@@ -45,6 +45,9 @@ struct FlippableCard<Front: View, Back: View>: View {
         )
     }
     .frame(width: 144, height: 200)
+    .onTapGesture {
+      flipCard()
+    }
     .gesture(
       DragGesture()
         .onChanged { value in
@@ -79,5 +82,17 @@ struct FlippableCard<Front: View, Back: View>: View {
     let positiveAngle = normalizedAngle >= 0 ? normalizedAngle : normalizedAngle + 360
     
     return positiveAngle >= 90 && positiveAngle <= 270
+  }
+  
+  private func flipCard() {
+    withAnimation(.linear(duration: 0.5)) {
+      rotationAngle = isFlipped ? 0 : 180
+    } completion: {
+      isFlipped.toggle()
+      
+      if isFlipped {
+        flipCompletion()
+      }
+    }
   }
 }

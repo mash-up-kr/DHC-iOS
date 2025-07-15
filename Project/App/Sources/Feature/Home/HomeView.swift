@@ -75,6 +75,7 @@ struct HomeView: View {
         }
       }
       .scrollIndicators(.hidden)
+      .contentMargins(.bottom, store.bottomContentMargin)
 
       if !store.homeInfo.isTodayMissionDone {
         FloatingButton(title: "오늘 미션 끝내기") {

@@ -34,6 +34,7 @@ struct HomeReducer {
     
     var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
     var isFirstLaunchOfToday: Bool
+    var todaySavedMoney: String?
     
     init(
       homeInfo: HomeInfo,
@@ -61,6 +62,7 @@ struct HomeReducer {
     case fetchHomeData
     case homeDataResponse(HomeInfo)
     case homeDataFailed(Error)
+    case todayMissionDoneResponse(String)
     case missionList(MissionListReducer.Action)
     case fortuneLoadingComplete(FortuneLoadingCompleteReducer.Action)
 
@@ -108,7 +110,8 @@ struct HomeReducer {
 
         return .run { send in
           do {
-            try await homeAPIClient.todayMissionDone(todayDate)
+            let todaySavedMoney = try await homeAPIClient.todayMissionDone(todayDate)
+            await send(.todayMissionDoneResponse(todaySavedMoney))
             await send(.fetchHomeData)
           } catch {
             #if DEBUG
@@ -201,6 +204,10 @@ struct HomeReducer {
         }
         
       case .delegate:
+        return .none
+        
+      case .todayMissionDoneResponse(let todaySavedMoney):
+        state.todaySavedMoney = todaySavedMoney
         return .none
       }
     }

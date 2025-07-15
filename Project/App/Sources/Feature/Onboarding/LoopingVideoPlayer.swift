@@ -26,7 +26,16 @@ struct LoopingVideoPlayer: View {
   
   var body: some View {
     VideoPlayer(player: player)
-      .onAppear { player.play() }
-      .onDisappear{ player.pause() }
+      .onAppear { 
+        player.play() 
+      }
+      .onDisappear{ 
+        player.pause() 
+      }
+      .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+        if player.timeControlStatus != .playing {
+          player.play()
+        }
+      }
   }
 }

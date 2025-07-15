@@ -14,6 +14,7 @@ struct HomeAPIClient {
   var fetchHomeInfo: () async throws -> HomeInfo
   var todayMissionDone: (_ date: String) async throws -> Void
   var fetchFortuneDetail: (_ date: String) async throws -> FortuneDetail
+  static var callCount = 0
 }
 
 extension HomeAPIClient: DependencyKey {
@@ -37,22 +38,35 @@ extension HomeAPIClient: DependencyKey {
       },
       fetchFortuneDetail: { date in
         let endPoint = HomeAPI.fortuneDetail(date: date)
+        // 테스트용: 처음 3번은 needAPIRecall 에러 발생
+        callCount += 1
         
-        do {
-          let response = try await networkManager
-            .request(endPoint)
-            .map(to: FortuneDetailDTO.self)
-            .toDomain
-          return response
-        } catch {
-          if let networkManageError = error as? NetworkManagerError,
-             case .requestFailed(let error, let statusCode) = networkManageError {
-            if statusCode == 404 {
-              throw HomeAPIClientError(code: .needAPIRecall)
+        #if DEBUG
+        print("fetchFortuneDetail 호출 횟수: \(callCount)")
+        #endif
+        
+        if callCount <= 10 {
+          #if DEBUG
+          print("테스트: needAPIRecall 에러 발생")
+          #endif
+          throw HomeAPIClientError(code: .needAPIRecall)
+        } else {
+          do {
+            let response = try await networkManager
+              .request(endPoint)
+              .map(to: FortuneDetailDTO.self)
+              .toDomain
+            return response
+          } catch {
+            if let networkManageError = error as? NetworkManagerError,
+               case .requestFailed(let error, let statusCode) = networkManageError {
+              if statusCode == 404 {
+                throw HomeAPIClientError(code: .needAPIRecall)
+              }
             }
+            
+            throw HomeAPIClientError(code: .invalidResponse)
           }
-          
-          throw HomeAPIClientError(code: .invalidResponse)
         }
       }
     )

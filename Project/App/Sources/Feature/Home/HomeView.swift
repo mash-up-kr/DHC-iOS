@@ -29,10 +29,27 @@ struct HomeView: View {
           }
         case .home:
           homeView
+        case .loading:
+          IfLetStore(
+            store.scope(state: \.fortuneLoading, action: \.fortuneLoading)
+          ) { fortuneLoadingStore in
+            FortuneLoadingView(store: fortuneLoadingStore)
+          } else: {
+            homeView
+          }
         }
       }
       .onAppear {
         store.send(.onAppear)
+      }
+      .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+        // 앱이 포그라운드로 돌아올 때 폴링 상태 확인
+        if store.isFirstLaunchOfToday && store.isPolling {
+          #if DEBUG
+          print("앱이 포그라운드로 복귀 - 폴링 상태 확인")
+          #endif
+          store.send(.checkPollingStatus)
+        }
       }
     } destination: { store in
       switch store.case {

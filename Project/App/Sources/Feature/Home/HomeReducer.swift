@@ -19,6 +19,7 @@ struct HomeReducer {
     enum ViewState {
       case firstLaunch
       case home
+      case loading
     }
     
     var viewState: ViewState = .home
@@ -33,7 +34,11 @@ struct HomeReducer {
     var presentMissionDonePopup = false
     
     var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
+    var fortuneLoading: FortuneLoadingReducer.State?
     var isFirstLaunchOfToday: Bool
+    
+    // 폴링 관련 상태
+    var isPolling = false
     
     init(
       homeInfo: HomeInfo,
@@ -61,8 +66,17 @@ struct HomeReducer {
     case fetchHomeData
     case homeDataResponse(HomeInfo)
     case homeDataFailed(Error)
+    case fetchFortuneDetail
+    case fortuneDetailResponse(FortuneDetail)
+    case fortuneDetailFailed(Error)
     case missionList(MissionListReducer.Action)
     case fortuneLoadingComplete(FortuneLoadingCompleteReducer.Action)
+    case fortuneLoading(FortuneLoadingReducer.Action)
+    
+    // 폴링 관련 액션
+    case startPolling
+    case pollingTimeout
+    case checkPollingStatus
 
     // Navigation Actions
     case path(StackActionOf<Path>)
@@ -83,14 +97,18 @@ struct HomeReducer {
       switch action {
       case .onAppear:
         if state.isFirstLaunchOfToday {
-          withAnimation(.easeInOut(duration: 0.5)) {
-            state.viewState = .firstLaunch
+          // 이미 폴링 중이거나 fortuneLoadingComplete가 있으면 API 호출하지 않음
+          if state.isPolling || state.fortuneLoadingComplete != nil {
+            return .none
           }
+          
+          // 첫 진입인 경우 loading 상태로 설정하고 fortuneDetail API 호출
+          state.viewState = .loading
+          return .send(.fetchFortuneDetail)
         } else {
           state.viewState = .home
+          return .send(.fetchHomeData)
         }
-        
-        return .send(.fetchHomeData)
 
       case .presentBottomSheet(let isVisible):
         state.presentBottomSheet = isVisible
@@ -136,39 +154,120 @@ struct HomeReducer {
           }
         }
         
-      case .homeDataResponse(let homeInfo):
-        if state.isFirstLaunchOfToday {
-          let dailyFortune = homeInfo.dailyFortune
-          state.fortuneLoadingComplete = .init(
-            scoreInfo: .init(
-              date: formatDate(from: dailyFortune.date),
-              scoreString: "\(dailyFortune.score)점",
-              score: dailyFortune.score,
-              summary: dailyFortune.title
-            ),
-            cardInfo: .init(
-              backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
-              title: "최고의 날",
-              fortune: "네잎클로버"
-            )
-          )
-          
-          withAnimation(.easeInOut(duration: 0.5)) {
-            state.viewState = .firstLaunch
+      case .fetchFortuneDetail:
+        let todayDate = formattedTodayDate()
+        
+        return .run { send in
+          do {
+            let fortuneDetail = try await homeAPIClient.fetchFortuneDetail(todayDate)
+            await send(.fortuneDetailResponse(fortuneDetail))
+          } catch {
+            await send(.fortuneDetailFailed(error))
           }
-          return .none
-        } else {
-          state.homeInfo = homeInfo
-          return .merge(
-            .send(.missionList(.updateLongTermMission(homeInfo.longTermMission))),
-            .send(.missionList(.updateDailyMissions(homeInfo.dailyMissionList)))
-          )
         }
+        
+      case .fortuneDetailResponse(let fortuneDetail):
+        // 폴링 중지
+        state.isPolling = false
+        
+        #if DEBUG
+        print("폴링 성공! FortuneLoadingCompleteView로 전환")
+        #endif
+        
+        // FortuneLoadingCompleteView 표시
+        state.fortuneLoadingComplete = .init(
+          scoreInfo: .init(
+            date: formatDate(from: fortuneDetail.scoreInfo.date),
+            scoreString: fortuneDetail.scoreInfo.scoreString,
+            score: fortuneDetail.scoreInfo.score,
+            summary: fortuneDetail.scoreInfo.summary
+          ),
+          cardInfo: fortuneDetail.cardInfo
+        )
+        
+        // firstLaunch 상태로 설정
+        withAnimation(.easeInOut(duration: 0.5)) {
+          state.viewState = .firstLaunch
+        }
+        return .none
+        
+      case .fortuneDetailFailed(let error):
+        // needAPIRecall 에러인 경우에만 폴링 시작
+        if let homeAPIClientError = error as? HomeAPIClientError,
+           homeAPIClientError.code == .needAPIRecall {
+          return .send(.startPolling)
+        }
+        return .none
+        
+      case .homeDataResponse(let homeInfo):
+        state.homeInfo = homeInfo
+        return .merge(
+          .send(.missionList(.updateLongTermMission(homeInfo.longTermMission))),
+          .send(.missionList(.updateDailyMissions(homeInfo.dailyMissionList)))
+        )
         
       case .homeDataFailed:
         return .none
         
+      case .startPolling:
+        guard !state.isPolling else { return .none }
+        
+        state.isPolling = true
+        
+        // FortuneLoadingView 표시
+        if state.fortuneLoading == nil {
+          state.fortuneLoading = .init()
+          state.viewState = .loading
+        }
+        
+        #if DEBUG
+        print("폴링 시작 - viewState: \(state.viewState)")
+        #endif
+        
+        return .run { send in
+          try await Task.sleep(for: .seconds(5))
+          await send(.pollingTimeout)
+        }
+        
+      case .pollingTimeout:
+        guard state.isPolling else { return .none }
+        
+        #if DEBUG
+        print("폴링 타임아웃 - 재시도 중...")
+        #endif
+        
+        let todayDate = formattedTodayDate()
+        
+        return .run { send in
+          do {
+            let fortuneDetail = try await homeAPIClient.fetchFortuneDetail(todayDate)
+            await send(.fortuneDetailResponse(fortuneDetail))
+          } catch {
+            // needAPIRecall 에러인 경우에만 계속 폴링
+            if let homeAPIClientError = error as? HomeAPIClientError,
+               homeAPIClientError.code == .needAPIRecall {
+              #if DEBUG
+              print("폴링 계속 - needAPIRecall 에러")
+              #endif
+              await send(.startPolling)
+            }
+          }
+        }
+        
+      case .checkPollingStatus:
+        // isFirstLaunchOfToday이고 폴링 중이지만 fortuneLoadingComplete가 없으면 폴링 재시작
+        if state.isFirstLaunchOfToday && state.isPolling && state.fortuneLoadingComplete == nil {
+          #if DEBUG
+          print("폴링 상태 확인 - 폴링 재시작")
+          #endif
+          return .send(.startPolling)
+        }
+        return .none
+        
       case .missionList:
+        return .none
+        
+      case .fortuneLoading:
         return .none
         
       case .fortuneLoadingComplete(let action):
@@ -201,6 +300,9 @@ struct HomeReducer {
     .forEach(\.path, action: \.path)
     .ifLet(\.fortuneLoadingComplete, action: \.fortuneLoadingComplete) {
       FortuneLoadingCompleteReducer()
+    }
+    .ifLet(\.fortuneLoading, action: \.fortuneLoading) {
+      FortuneLoadingReducer()
     }
   }
   

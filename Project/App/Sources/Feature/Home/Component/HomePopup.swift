@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomePopup: View {
-  let todaySavedAmount: Int
+  let todaySavedAmount: String?
   let onSeeStatistics: () -> Void
   let onDismiss: () -> Void
 
@@ -39,7 +39,7 @@ struct HomePopup: View {
           HStack(spacing: 2) {
             Text("오늘 총")
 
-            Text("\(String(todaySavedAmount))원")
+            Text("\((todaySavedAmount ?? "0").formatToNumber)원")
               .foregroundStyle(LinearGradient(.text01))
 
             Text("을")
@@ -82,5 +82,5 @@ struct HomePopup: View {
 }
 
 #Preview {
-  HomePopup(todaySavedAmount: 3300) {} onDismiss: {}
+  HomePopup(todaySavedAmount: "3300") {} onDismiss: {}
 }

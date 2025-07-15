@@ -33,18 +33,14 @@ struct OnboardingView: View {
         onboardingCTAButton
       }
       .background {
-        VStack(spacing: 0) {
-          Spacer()
-          LoopingVideoPlayer(
-            videoURL: .urlForResource(.onboardingVideo)!,
-            needSoundMute: true
-          )
-          .ignoresSafeArea()
-          .allowsHitTesting(false)
-          .scaledToFill()
-        }
+        LoopingVideoPlayer(
+          videoURL: .urlForResource(.onboardingVideo)!,
+          needSoundMute: true
+        )
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
+        .scaledToFill()
       }
-      .background(ColorResource._020202.color)
     } destination: { store in
       switch store.case {
       case .serviceExplanation(let store):

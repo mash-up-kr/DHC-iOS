@@ -11,6 +11,7 @@ extension RadialGradient {
   enum RadialType {
     case backgroundGradient01
     case backgroundGradient02
+    case buttonSurface01
     
     var stops: [Gradient.Stop] {
       switch self {
@@ -29,6 +30,11 @@ extension RadialGradient {
           .init(color: ColorResource.Violet._400.color.opacity(0.08), location: 0.4),
           .init(color: ColorResource.Violet._400.color.opacity(0), location: 0.67)
         ]
+      case .buttonSurface01:
+        return [
+          .init(color: ColorResource.Violet._300.color, location: 0.3),
+          .init(color: ColorResource.Violet._300.color.opacity(0), location: 1.0)
+        ]
       }
     }
     
@@ -38,11 +44,18 @@ extension RadialGradient {
         return .init(x: UnitPoint.center.x, y: UnitPoint.center.y + 0.09)
       case .backgroundGradient02:
         return .init(x: UnitPoint.center.x + 0.22, y: UnitPoint.top.y)
+      case .buttonSurface01:
+        return .init(x: UnitPoint.center.x, y: UnitPoint.bottom.y + 0.2)
       }
     }
     
     var opacity: CGFloat {
-      0.6
+      switch self {
+      case .buttonSurface01:
+        return 1.0
+      case .backgroundGradient01, .backgroundGradient02:
+        return 0.6
+      }
     }
   }
 }

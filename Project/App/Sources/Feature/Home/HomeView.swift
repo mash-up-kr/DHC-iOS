@@ -43,43 +43,43 @@ struct HomeView: View {
   }
 
   private var homeView: some View {
-    ZStack(alignment: .bottomTrailing) {
-      ScrollView {
-        VStack(spacing: 0) {
-          headerSection
+    ScrollView {
+      VStack(spacing: 0) {
+        headerSection
 
-          FortuneCardFrontView(
-            backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
-            title: "최고의 날",
-            fortune: "네잎클로버"
-          )
-          .radialGradientBackground(
-            type: .backgroundGradient01,
-            endRadiusMultiplier: 0.4,
-            scaleEffectX: 2.5,
-            scaleEffectY: 1.6
-          )
-          .rotationEffect(.init(degrees: 4))
-          .padding([.horizontal, .top], 20)
-          .padding(.bottom, 60)
-          .onTapGesture {
-            store.send(.moveToFortuneDetail)
-          }
-
-          MissionListView(
-            store: store.scope(
-              state: \.missionList,
-              action: \.missionList
-            )
-          )
+        FortuneCardFrontView(
+          backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
+          title: "최고의 날",
+          fortune: "네잎클로버"
+        )
+        .radialGradientBackground(
+          type: .backgroundGradient01,
+          endRadiusMultiplier: 0.4,
+          scaleEffectX: 2.5,
+          scaleEffectY: 1.6
+        )
+        .rotationEffect(.init(degrees: 4))
+        .padding([.horizontal, .top], 20)
+        .padding(.bottom, 60)
+        .onTapGesture {
+          store.send(.moveToFortuneDetail)
         }
+        
+        MissionListView(
+          store: store.scope(
+            state: \.missionList,
+            action: \.missionList
+          )
+        )
       }
-
+    }
+    .scrollIndicators(.hidden)
+    .contentMargins(.bottom, store.bottomContentMargin)
+    .overlay(alignment: .bottomTrailing) {
       if !store.homeInfo.isTodayMissionDone {
         FloatingButton(title: "오늘 미션 끝내기") {
           store.send(.presentBottomSheet(true))
         }
-        .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 20)
         .padding(.bottom, 24)
       }
@@ -125,7 +125,7 @@ struct HomeView: View {
         ColorResource._0_F_1114.color
           .ignoresSafeArea()
 
-        HomePopup(todaySavedAmount: 3300) { // TODO: 절약 금액 연결하기
+        HomePopup(todaySavedAmount: store.todaySavedMoney) { // TODO: 절약 금액 연결하기
           store.send(.popupConfirmButtonTapped)
         } onDismiss: {
           store.send(.popupDismissButtonTapped)

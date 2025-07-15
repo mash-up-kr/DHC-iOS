@@ -70,7 +70,7 @@ extension DHCBadge {
       case .easy:
         return "Easy"
       case .medium:
-        return "Medium"
+        return "Mid"
       case .hard:
         return "Hard"
       }

@@ -69,7 +69,7 @@ struct MissionItem<V>: View where V: View {
       missionTitle: "가까운 거리 걸어가기",
       isPinned: true,
       isActive: true,
-      isMissionCompleted: .constant(true),
+      isMissionCompleted: .constant(true)
     ) {
       DHCBadge(
         badgeTitle: "D-3",
@@ -82,7 +82,7 @@ struct MissionItem<V>: View where V: View {
       missionTitle: "가까운 거리 걸어가기",
       isPinned: true,
       isActive: false,
-      isMissionCompleted: .constant(false),
+      isMissionCompleted: .constant(false)
     ) {
       DHCBadge(
         badgeTitle: "D-3",

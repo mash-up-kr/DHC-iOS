@@ -76,6 +76,7 @@ struct ReportView: View {
         .padding(.bottom, 20)
       }
     }
+    .clipShape(Rectangle())
     .onAppear {
       store.send(.onAppear)
     }

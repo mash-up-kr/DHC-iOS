@@ -10,12 +10,14 @@ import SwiftUI
 struct DailyMissionItemView: View {
   let missionTitle: String
   let missionLevel: DHCBadge.MissionLevel
+  let isAcive: Bool
   @Binding var isMissionCompleted: Bool
 
   var body: some View {
     MissionItem(
       missionTitle: missionTitle,
       isPinned: false,
+      isActive: isAcive,
       isMissionCompleted: $isMissionCompleted
     ) {
       DHCBadge(
@@ -30,18 +32,21 @@ struct DailyMissionItemView: View {
   DailyMissionItemView(
     missionTitle: "커피 안 마시기",
     missionLevel: .easy,
+    isAcive: true,
     isMissionCompleted: .constant(true)
   )
 
   DailyMissionItemView(
     missionTitle: "1시간 걸어가기",
     missionLevel: .medium,
+    isAcive: true,
     isMissionCompleted: .constant(false)
   )
 
   DailyMissionItemView(
     missionTitle: "2줄 테스트\n무지출무지출무지출무지출무지출무",
     missionLevel: .hard,
+    isAcive: true,
     isMissionCompleted: .constant(false)
   )
 }

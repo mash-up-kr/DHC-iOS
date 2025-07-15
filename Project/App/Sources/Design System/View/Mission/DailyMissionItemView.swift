@@ -22,7 +22,8 @@ struct DailyMissionItemView: View {
     ) {
       DHCBadge(
         badgeTitle: missionLevel.displayName,
-        badgeStyle: .missionLevel(missionLevel)
+        badgeStyle: .missionLevel(missionLevel),
+        isActive: isAcive
       )
     }
   }

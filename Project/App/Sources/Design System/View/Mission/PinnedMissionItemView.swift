@@ -22,7 +22,8 @@ struct PinnedMissionItemView: View {
     ) {
       DHCBadge(
         badgeTitle: badgeTitle,
-        badgeStyle: .spendCategory
+        badgeStyle: .spendCategory,
+        isActive: isActive
       )
     }
   }

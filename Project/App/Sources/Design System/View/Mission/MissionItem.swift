@@ -82,7 +82,8 @@ struct MissionItem<V>: View where V: View {
     ) {
       DHCBadge(
         badgeTitle: "D-3",
-        badgeStyle: .dDay
+        badgeStyle: .dDay,
+        isActive: true
       )
     }
 
@@ -94,7 +95,8 @@ struct MissionItem<V>: View where V: View {
     ) {
       DHCBadge(
         badgeTitle: "D-3",
-        badgeStyle: .dDay
+        badgeStyle: .dDay,
+        isActive: false
       )
     }
   }

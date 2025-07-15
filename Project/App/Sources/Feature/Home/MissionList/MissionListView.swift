@@ -50,7 +50,8 @@ struct MissionListView: View {
 
         DHCBadge(
           badgeTitle: store.longTermMission.category,
-          badgeStyle: .spendCategory
+          badgeStyle: .spendCategory,
+          isActive: true
         )
       }
       .padding(.horizontal, 20)

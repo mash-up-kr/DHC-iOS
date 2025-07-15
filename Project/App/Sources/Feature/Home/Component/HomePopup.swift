@@ -27,7 +27,8 @@ struct HomePopup: View {
       VStack(spacing: 16) {
         DHCBadge(
           badgeTitle: "미션 성공",
-          badgeStyle: .today
+          badgeStyle: .today,
+          isActive: true
         )
 
         Text("대단해요!")

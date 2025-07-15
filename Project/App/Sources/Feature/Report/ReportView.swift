@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 struct ReportView: View {
   @Bindable var store: StoreOf<ReportReducer>
-  @State private var currentPage: Date = Date()
+  @State private var currentPage = Date()
 
   private let dates = [
     Calendar.current.date(byAdding: .day, value: 1, to: Date())!,

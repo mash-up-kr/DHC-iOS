@@ -30,7 +30,7 @@ struct ReportView: View {
 
   var body: some View {
     ScrollView {
-      LargeNavigationTitleView(title: "통계")
+      LargeNavigationTitleView(title: "리포트")
         .unredacted()
 
       VStack(spacing: 0) {

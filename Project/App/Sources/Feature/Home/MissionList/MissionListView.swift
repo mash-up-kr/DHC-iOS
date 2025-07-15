@@ -23,7 +23,7 @@ struct MissionListView: View {
   }
 
   private var pinnedMissionSection: some View {
-    VStack(alignment: .leading, spacing: 4) {
+    VStack(alignment: .leading, spacing: 16) {
       HStack(spacing: 12) {
         HStack(spacing: 8) {
           Text("소비습관 미션")

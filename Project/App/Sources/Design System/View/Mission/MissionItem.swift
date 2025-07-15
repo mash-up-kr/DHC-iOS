@@ -20,29 +20,27 @@ struct MissionItem<V>: View where V: View {
       HStack(alignment: .top, spacing: 12) {
         badgeView()
 
-          Text(missionTitle)
-            .textStyle(.body3)
-            .foregroundStyle(
-              isActive ? ColorResource.Text.Body.primary.color : ColorResource.Neutral
-                ._400.color
-            )
-            .multilineTextAlignment(.leading)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
+        Text(missionTitle)
+          .textStyle(.body3)
+          .foregroundStyle(
+            isActive ? ColorResource.Text.Body.primary.color : ColorResource.Neutral
+              ._400.color
+          )
+          .multilineTextAlignment(.leading)
+          .frame(maxWidth: .infinity, alignment: .leading)
       }
 
-        Button {
-          isMissionCompleted.toggle()
-        } label: {
-          CheckMark(
-            size: .medium,
-            style: isActive
-              ? (isMissionCompleted ? .active : .enabled)
-              : .disabled
-          )
-          .padding(20)
-        }
-    .disabled(!isActive)
+      Button {
+        isMissionCompleted.toggle()
+      } label: {
+        CheckMark(
+          size: .medium,
+          style: isActive
+            ? (isMissionCompleted ? .active : .enabled)
+            : .disabled
+        )
+      }
+      .disabled(!isActive)
     }
     .frame(maxWidth: .infinity)
     .padding(.horizontal, 16)

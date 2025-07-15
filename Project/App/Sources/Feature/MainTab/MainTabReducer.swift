@@ -49,8 +49,14 @@ struct MainTabReducer {
         state.homeTab = HomeReducer.State(homeInfo: .sample, isFirstLaunchOfToday: isFirstLaunch)
         return .none
         
-      case .homeTab:
-        return .none
+      case .homeTab(let action):
+        switch action {
+        case .delegate(.moveToReportTab):
+          state.selectedTab = .report
+          return .none
+        default:
+          return .none
+        }
       case .reportTab:
         return .none
       case .myPageTab:

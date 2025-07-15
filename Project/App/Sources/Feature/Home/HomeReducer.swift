@@ -34,6 +34,7 @@ struct HomeReducer {
     
     var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
     var isFirstLaunchOfToday: Bool
+    var todaySavedMoney: String?
     
     var bottomContentMargin: CGFloat {
       homeInfo.isTodayMissionDone ? 10 : 82
@@ -65,12 +66,17 @@ struct HomeReducer {
     case fetchHomeData
     case homeDataResponse(HomeInfo)
     case homeDataFailed(Error)
+    case todayMissionDoneResponse(String)
     case missionList(MissionListReducer.Action)
     case fortuneLoadingComplete(FortuneLoadingCompleteReducer.Action)
 
     // Navigation Actions
     case path(StackActionOf<Path>)
     case moveToFortuneDetail
+    case delegate(Delegate)
+    enum Delegate {
+      case moveToReportTab
+    }
   }
   
   @Reducer
@@ -108,7 +114,8 @@ struct HomeReducer {
 
         return .run { send in
           do {
-            try await homeAPIClient.todayMissionDone(todayDate)
+            let todaySavedMoney = try await homeAPIClient.todayMissionDone(todayDate)
+            await send(.todayMissionDoneResponse(todaySavedMoney))
             await send(.fetchHomeData)
           } catch {
             #if DEBUG
@@ -123,8 +130,7 @@ struct HomeReducer {
 
       case .popupConfirmButtonTapped:
         state.presentMissionDonePopup = false
-        // TODO: 통계 탭으로 이동
-        return .none
+        return .send(.delegate(.moveToReportTab))
 
       case .popupDismissButtonTapped:
         state.presentMissionDonePopup = false
@@ -200,6 +206,13 @@ struct HomeReducer {
         default:
           return .none
         }
+        
+      case .delegate:
+        return .none
+        
+      case .todayMissionDoneResponse(let todaySavedMoney):
+        state.todaySavedMoney = todaySavedMoney
+        return .none
       }
     }
     .forEach(\.path, action: \.path)

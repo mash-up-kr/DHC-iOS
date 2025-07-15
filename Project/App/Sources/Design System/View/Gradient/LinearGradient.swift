@@ -20,6 +20,7 @@ extension LinearGradient {
     case fortuneGradientLow
     case fortuneGradientMid
     case fortuneGradientTop
+    case buttonBorder01
 
     var stops: [Gradient.Stop] {
       switch self {
@@ -82,6 +83,13 @@ extension LinearGradient {
         return [
           .init(color: ColorResource.E_9_FBFF.color, location: 0.17),
           .init(color: ColorResource._5194_FF.color, location: 1.0),
+        ]
+        
+      case .buttonBorder01:
+        return [
+          .init(color: ColorResource.Violet._400.color, location: 0),
+          .init(color: ColorResource.Violet._400.color, location: 0.83),
+          .init(color: ColorResource.Violet._300.color, location: 1.0)
         ]
       }
     }

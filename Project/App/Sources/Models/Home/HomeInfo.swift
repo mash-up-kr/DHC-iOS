@@ -30,8 +30,6 @@ extension HomeInfo {
   struct DailyFortune: Equatable {
     let date: String
     let title: String
-    let positiveScore: Int
-    let negativeScore: Int
     let score: Int
     let cardImage: String
     let cardTitle: String
@@ -90,8 +88,6 @@ extension HomeInfo {
     dailyFortune: .init(
       date: "2025-07-09",
       title: "투자 아이디어! 신중한 판단이 필요한 날",
-      positiveScore: 100,
-      negativeScore: 0,
       score: 100,
       cardImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/mainCard/png/fourLeafClover.png",
       cardTitle: "",

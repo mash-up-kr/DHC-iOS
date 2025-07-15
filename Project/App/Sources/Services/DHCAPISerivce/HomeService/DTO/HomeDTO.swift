@@ -10,7 +10,7 @@ import Foundation
 struct HomeDTO: Decodable {
   let longTermMission: MissionInfo
   let dailyMissionList: [MissionInfo]
-  let todayFortune: DailyFortuneInfo
+  let todayFortune: FortuneDetailDTO
   let isTodayMissionDone: Bool
 
   enum CodingKeys: String, CodingKey {
@@ -48,30 +48,6 @@ extension HomeDTO {
 }
 
 extension HomeDTO {
-  struct DailyFortuneInfo: Decodable {
-    let date: String
-    let title: String
-    let positiveScore: Int
-    let negativeScore: Int
-    let score: Int
-    let cardImage: String
-    let cardTitle: String
-    let cardSubTitle: String
-
-    enum CodingKeys: String, CodingKey {
-      case date
-      case title = "fortuneTitle"
-      case positiveScore
-      case negativeScore
-      case score = "totalScore"
-      case cardImage = "fortuneCardImage"
-      case cardTitle = "fortuneCardTitle"
-      case cardSubTitle = "fortuneCardSubTitle"
-    }
-  }
-}
-
-extension HomeDTO {
   func toDomain() -> HomeInfo {
     HomeInfo(
       longTermMission: .init(
@@ -100,13 +76,11 @@ extension HomeDTO {
       },
       dailyFortune: .init(
         date: todayFortune.date,
-        title: todayFortune.title,
-        positiveScore: todayFortune.positiveScore,
-        negativeScore: todayFortune.negativeScore,
-        score: todayFortune.score,
-        cardImage: todayFortune.cardImage,
-        cardTitle: todayFortune.cardTitle,
-        cardSubTitle: todayFortune.cardSubTitle
+        title: todayFortune.fortuneTitle,
+        score: todayFortune.totalScore,
+        cardImage: todayFortune.cardInfo.image,
+        cardTitle: todayFortune.cardInfo.title,
+        cardSubTitle: todayFortune.cardInfo.subTitle
       ),
       isTodayMissionDone: isTodayMissionDone
     )

@@ -7,34 +7,13 @@
 
 import SwiftUI
 
-struct FortuneDetailDTO: Codable {
-  let date, fortuneTitle, fortuneDetail, jinxedColor: String
-  let jinxedColorHex: String
-  let jinxedColorImageURL: String
-  let jinxedMenu: String
-  let jinxedMenuImageURL: String
-  let jinxedNumber: Int
-  let luckyColor, luckyColorHex: String
-  let luckyColorImageURL: String
-  let luckyNumber, positiveScore, negativeScore, totalScore: Int
-  let todayMenu: String
-  let todayMenuImageURL: String
-  let luckyColorType, jinxedColorType: String
+// MARK: - FortuneDetailDTO
+struct FortuneDetailDTO: Decodable {
+  let date, fortuneTitle, fortuneDetail: String
+  let totalScore: Int
+  let tips: [TipDTO]
+  let cardInfo: CardInfoDTO
   
-  enum CodingKeys: String, CodingKey {
-    case date, fortuneTitle, fortuneDetail, jinxedColor, jinxedColorHex
-    case jinxedColorImageURL = "jinxedColorImage"
-    case jinxedMenu
-    case jinxedMenuImageURL = "jinxedMenuImage"
-    case jinxedNumber, luckyColor, luckyColorHex
-    case luckyColorImageURL = "luckyColorImage"
-    case luckyNumber, positiveScore, negativeScore, totalScore, todayMenu
-    case todayMenuImageURL = "todayMenuImage"
-    case luckyColorType, jinxedColorType
-  }
-}
-
-extension FortuneDetailDTO {
   var toDomain: FortuneDetail {
     .init(
       scoreInfo: .init(
@@ -43,38 +22,39 @@ extension FortuneDetailDTO {
         score: totalScore,
         summary: fortuneTitle
       ),
-      cardInfo: .init(
-        backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
-        title: "최고의 날",
-        fortune: "네잎클로버"
-      ),
+      cardInfo: cardInfo.toDomain,
       detailMessage: fortuneDetail,
-      tipInfos: [
-        .init(
-          imageURL: URL(string: todayMenuImageURL),
-          title: "오늘의 추천메뉴",
-          content: todayMenu,
-          contentColor: nil
-        ),
-        .init(
-          imageURL: URL(string: luckyColorImageURL),
-          title: "행운의 색상",
-          content: luckyColor,
-          contentColor: Color(hexCode: luckyColorHex)
-        ),
-        .init(
-          imageURL: URL(string: jinxedMenuImageURL),
-          title: "피해야 할 음식",
-          content: jinxedMenu,
-          contentColor: nil
-        ),
-        .init(
-          imageURL: URL(string: jinxedColorImageURL),
-          title: "피해야 할 색상",
-          content: jinxedColor,
-          contentColor: Color(hexCode: jinxedColorHex)
-        )
-      ]
+      tipInfos: tips.map { $0.toDomain }
+    )
+  }
+}
+
+// MARK: - CardInfo
+struct CardInfoDTO: Decodable {
+  let image: String
+  let title, subTitle: String
+  
+  var toDomain: FortuneDetail.FortuneCard {
+    .init(
+      backgroundImageURL: URL(string: image),
+      title: title,
+      fortune: subTitle
+    )
+  }
+}
+
+// MARK: - Tip
+struct TipDTO: Decodable {
+  let image: String
+  let title, description: String
+  let hexColor: String?
+  
+  var toDomain: FortuneDetail.Tip {
+    .init(
+      imageURL: URL(string: image),
+      title: title,
+      content: description,
+      contentColor: Color(hexCode: hexColor)
     )
   }
 }

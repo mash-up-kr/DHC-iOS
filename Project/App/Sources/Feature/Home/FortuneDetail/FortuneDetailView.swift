@@ -37,9 +37,13 @@ struct FortuneDetailView: View {
               score: detailInfo.scoreInfo.scoreString,
               summary: detailInfo.scoreInfo.summary,
               gradientType: FortuneScore(score: detailInfo.scoreInfo.score).textGradient,
-              cardBackgroundImageURL: detailInfo.cardInfo.backgroundImageURL,
-              cardTitle: detailInfo.cardInfo.title,
-              cardFortune: detailInfo.cardInfo.fortune
+              cardView: {
+                FortuneCardFrontView(
+                  backgroundImageURL: detailInfo.cardInfo.backgroundImageURL,
+                  title: detailInfo.cardInfo.title,
+                  fortune: detailInfo.cardInfo.fortune
+                )
+              }
             )
             .padding(.top, 32)
           }

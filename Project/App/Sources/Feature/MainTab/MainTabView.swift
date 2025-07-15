@@ -71,7 +71,8 @@ struct MainTabView: View {
 extension MainTabView {
   private func configureTabBar() {
     let appearance = UITabBarAppearance()
-    appearance.configureWithOpaqueBackground()
+    appearance.configureWithTransparentBackground()
+    
     UITabBar.appearance().backgroundColor = ColorResource.Background.main.color.uiColor
     UITabBar.appearance().unselectedItemTintColor = ColorResource.Neutral._600.uiColor
     UITabBar.appearance().standardAppearance = appearance

@@ -44,7 +44,7 @@ struct FlippableCard<Front: View, Back: View>: View {
           perspective: 0.5
         )
     }
-    .frame(width: 250, height: 350)
+    .frame(width: 144, height: 200)
     .gesture(
       DragGesture()
         .onChanged { value in

@@ -16,3 +16,20 @@ extension View {
     }
   }
 }
+
+extension View {
+  func plainListRow() -> some View {
+    self
+      .listRowSeparator(.hidden)
+      .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+      .listRowBackground(ColorResource.Background.main.color)
+      .background(ColorResource.Background.main.color)
+  }
+
+  func plainListBackground() -> some View {
+    self
+      .listStyle(.plain)
+      .scrollContentBackground(.hidden)
+      .background(ColorResource.Background.main.color)
+  }
+}

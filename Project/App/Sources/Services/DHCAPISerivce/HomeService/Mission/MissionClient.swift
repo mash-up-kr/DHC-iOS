@@ -12,6 +12,7 @@ import ComposableArchitecture
 @DependencyClient
 struct MissionClient: Sendable {
   var updateMissionStatus: (_ missionId: String, _ finished: Bool) async throws -> Void
+  var switchMission: (_ missionID: String) async throws -> SwitchMissionInfo
 }
 
 extension MissionClient: DependencyKey {
@@ -22,17 +23,22 @@ extension MissionClient: DependencyKey {
       updateMissionStatus: { missionId, finished in
         _ = try await networkManager
           .request(MissionAPI.updateMissionStatus(missionId: missionId, finished: finished))
+      },
+      switchMission: { missionID in
+        try await networkManager
+          .request(MissionAPI.switchMission(missionID: missionID))
+          .map(to: SwitchMissionDTO.self)
+          .toDomain()
       }
     )
   }()
 
   static let previewValue = MissionClient(
-    updateMissionStatus: { _, _ in }
+    updateMissionStatus: { _, _ in },
+    switchMission: { _ in .sample }
   )
 
-  static let testValue = MissionClient(
-    updateMissionStatus: { _, _ in }
-  )
+  static let testValue = Self()
 }
 
 extension DependencyValues {

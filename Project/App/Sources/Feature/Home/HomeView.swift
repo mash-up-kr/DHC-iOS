@@ -74,6 +74,7 @@ struct HomeView: View {
           )
         }
       }
+      .scrollIndicators(.hidden)
 
       if !store.homeInfo.isTodayMissionDone {
         FloatingButton(title: "오늘 미션 끝내기") {

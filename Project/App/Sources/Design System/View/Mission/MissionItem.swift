@@ -33,14 +33,13 @@ struct MissionItem<V>: View where V: View {
           CheckMark(
             size: .medium, 
             style: isMissionCompleted ? .active : .enabled)
-          .padding(20)
         }
       }
-      .padding(.horizontal, 16)
-      .background(ColorResource.Neutral._700.color)
-      .clipShape(RoundedRectangle(cornerRadius: 12))
       .frame(maxWidth: .infinity)
       .padding(.horizontal, 16)
+      .padding(.vertical, 20)
+      .background(ColorResource.Neutral._700.color)
+      .clipShape(RoundedRectangle(cornerRadius: 12))
 
       if isPinned {
         pinView()

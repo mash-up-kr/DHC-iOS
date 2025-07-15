@@ -16,7 +16,6 @@ struct MissionListView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 24) {
       pinnedMissionSection
-
       dailyMissionSection
     }
     .frame(maxWidth: .infinity, alignment: .leading)
@@ -53,7 +52,6 @@ struct MissionListView: View {
           badgeStyle: .spendCategory
         )
       }
-      .padding(.horizontal, 20)
 
       PinnedMissionItemView(
         missionTitle: store.longTermMission.title,
@@ -66,6 +64,7 @@ struct MissionListView: View {
         )
       )
     }
+    .padding(.horizontal, 20)
   }
 
   private var dailyMissionSection: some View {
@@ -74,7 +73,6 @@ struct MissionListView: View {
         .textStyle(.h4_1)
         .foregroundStyle(ColorResource.Text.Body.primary.color)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal,20)
 
       ForEach(store.todayDailyMissionList, id: \.id) { mission in
         DailyMissionItemView(
@@ -87,6 +85,7 @@ struct MissionListView: View {
         )
       }
     }
+    .padding(.horizontal, 20)
   }
 
   private func remainingDays(until dateString: String) -> Int {

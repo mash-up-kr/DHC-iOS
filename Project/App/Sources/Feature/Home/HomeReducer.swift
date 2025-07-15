@@ -67,6 +67,10 @@ struct HomeReducer {
     // Navigation Actions
     case path(StackActionOf<Path>)
     case moveToFortuneDetail
+    case delegate(Delegate)
+    enum Delegate {
+      case moveToReportTab
+    }
   }
   
   @Reducer
@@ -119,8 +123,7 @@ struct HomeReducer {
 
       case .popupConfirmButtonTapped:
         state.presentMissionDonePopup = false
-        // TODO: 통계 탭으로 이동
-        return .none
+        return .send(.delegate(.moveToReportTab))
 
       case .popupDismissButtonTapped:
         state.presentMissionDonePopup = false
@@ -196,6 +199,9 @@ struct HomeReducer {
         default:
           return .none
         }
+        
+      case .delegate:
+        return .none
       }
     }
     .forEach(\.path, action: \.path)

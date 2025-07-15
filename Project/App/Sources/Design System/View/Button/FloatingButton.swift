@@ -39,7 +39,16 @@ struct FloatingButton: View {
 					.padding(.vertical, 13)
 					.padding(.horizontal, 20)
 					.background(backgroundColor)
-					.clipShape(Capsule())
+          .if(isEnabled) {
+            $0.border(
+              LinearGradient.init(
+                .buttonBorder01,
+                startPoint: .leading,
+                endPoint: .trailing
+              )
+            )
+          }
+          .clipShape(Capsule())
 			}
 		)
 	}

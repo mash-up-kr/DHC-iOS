@@ -95,7 +95,7 @@ extension DHCBadge {
     DHCBadge(
       badgeTitle: "식음료",
       badgeStyle: .spendCategory,
-      isActive: true
+      isActive: false
     )
 
     DHCBadge(

@@ -38,7 +38,7 @@ struct HomePopup: View {
           HStack(spacing: 2) {
             Text("오늘 총")
 
-            Text("\(todaySavedAmount ?? "0")원")
+            Text("\((todaySavedAmount ?? "0").formatToNumber)원")
               .foregroundStyle(LinearGradient(.text01))
 
             Text("을")

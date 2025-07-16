@@ -22,6 +22,11 @@ struct LoopingVideoPlayer: View {
     self.player = AVQueuePlayer(playerItem: item)
     self.player.isMuted = needSoundMute
     self.playerLooper = AVPlayerLooper(player: player, templateItem: item)
+    try? AVAudioSession.sharedInstance().setCategory(
+      AVAudioSession.Category.playback,
+      mode: .default,
+      options: .mixWithOthers
+    )
   }
   
   var body: some View {

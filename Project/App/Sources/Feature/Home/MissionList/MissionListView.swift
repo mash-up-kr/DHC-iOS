@@ -88,16 +88,18 @@ struct MissionListView: View {
               set: { _ in store.send(.dailyMissionTapped(missionID: mission.id)) }
             )
           )
-          .swipeActions(edge: .leading) {
-            Button {
-              store.send(.switchMissionButtonTapped(missionID: mission.id))
-            } label: {
-              ImageResource.Icon.update.image
-                .frame(width: 20, height: 20)
+          .if(!store.isTodayMissionDone) {
+            $0.swipeActions(edge: .leading) {
+              Button {
+                store.send(.switchMissionButtonTapped(missionID: mission.id))
+              } label: {
+                ImageResource.Icon.update.image
+                  .frame(width: 20, height: 20)
 
-              Text("미션 바꾸기")
+                Text("미션 바꾸기")
+              }
+              .tint(ColorResource.Violet._400.color)
             }
-            .tint(ColorResource.Violet._400.color)
           }
           .plainListRow()
         }

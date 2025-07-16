@@ -36,13 +36,15 @@ struct MissionListReducer {
     case tooltipTapped
     case longTermMissionTapped
     case dailyMissionTapped(missionID: String)
+    case switchMissionButtonTapped(missionID: String)
 
     // Internal Action
     case updateLongTermMission(HomeInfo.Mission)
     case updateDailyMissions([HomeInfo.Mission])
     case updateTodayMissionDone(Bool)
     case missionStatusUpdateResult(Result<String, Error>)
-
+    case switchMissionResponse(Result<SwitchMissionInfo, Error>)
+    
     // Route Action
   }
 
@@ -111,6 +113,27 @@ struct MissionListReducer {
           } catch {
             await send(.missionStatusUpdateResult(.failure(error)))
           }
+        }
+
+      case .switchMissionButtonTapped(let missionID):
+        return .run { send in
+          do {
+            let switchMissionInfo = try await missionClient.switchMission(missionID: missionID)
+            await send(.switchMissionResponse(.success(switchMissionInfo)))
+          } catch {
+            await send(.switchMissionResponse(.failure(error)))
+          }
+        }
+
+      case .switchMissionResponse(let result):
+        switch result {
+        case .success(let switchMissionInfo):
+          state.longTermMission = switchMissionInfo.longTermMission
+          state.todayDailyMissionList = switchMissionInfo.dailyMissionList
+          return .none
+        case .failure(let error):
+          print(error)
+          return .none
         }
 
       case .missionStatusUpdateResult(let result):

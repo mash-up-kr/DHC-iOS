@@ -75,20 +75,37 @@ struct MissionListView: View {
         .textStyle(.h4_1)
         .foregroundStyle(ColorResource.Text.Body.primary.color)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 20)
 
-      ForEach(store.todayDailyMissionList, id: \.id) { mission in
-        DailyMissionItemView(
-          missionTitle: mission.title,
-          missionLevel: missionLevel(for: mission.difficulty),
-          isActive: !store.isTodayMissionDone,
-          isMissionCompleted: Binding(
-            get: { mission.isFinished },
-            set: { _ in store.send(.dailyMissionTapped(missionID: mission.id)) }
+      List {
+        ForEach(store.todayDailyMissionList, id: \.id) { mission in
+          DailyMissionItemView(
+            missionTitle: mission.title,
+            missionLevel: missionLevel(for: mission.difficulty),
+            isMissionCompleted: Binding(
+              get: { mission.isFinished },
+              set: { _ in store.send(.dailyMissionTapped(missionID: mission.id)) }
+            )
           )
-        )
+          .swipeActions(edge: .leading) {
+            Button {
+              store.send(.switchMissionButtonTapped(missionID: mission.id))
+            } label: {
+              ImageResource.Icon.update.image
+                .frame(width: 20, height: 20)
+
+              Text("미션 바꾸기")
+            }
+            .tint(ColorResource.Violet._400.color)
+          }
+          .plainListRow()
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 20)
       }
+      .plainListBackground()
+      .frame(minHeight: 300)
     }
-    .padding(.horizontal, 20)
   }
 
   private func remainingDays(until dateString: String) -> Int {

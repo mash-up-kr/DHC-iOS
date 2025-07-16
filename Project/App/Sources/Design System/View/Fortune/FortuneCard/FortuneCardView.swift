@@ -23,10 +23,12 @@ struct FortuneCardView: View {
         image.resizable()
       },
       placeholder: {
-        Rectangle()
+        ImageResource.fortuneCardPlaceholder.image
+          .resizable()
+          .frame(width: 144, height: 200)
       }
     )
-    .frame(width: 144, height: 200, alignment: .center)
+    .frame(width: 144, height: 200)
     .clipShape(RoundedRectangle(cornerRadius: 12))
   }
 }

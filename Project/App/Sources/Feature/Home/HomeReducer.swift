@@ -158,9 +158,9 @@ struct HomeReducer {
               summary: dailyFortune.title
             ),
             cardInfo: .init(
-              backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
-              title: "최고의 날",
-              fortune: "네잎클로버"
+              backgroundImageURL: dailyFortune.cardImageURL,
+              title: dailyFortune.cardTitle,
+              fortune: dailyFortune.cardSubTitle
             )
           )
           

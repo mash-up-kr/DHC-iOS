@@ -88,7 +88,7 @@ struct MissionListView: View {
               set: { _ in store.send(.dailyMissionTapped(missionID: mission.id)) }
             )
           )
-          .if(!store.isTodayMissionDone) {
+          .if(!store.isTodayMissionDone && store.isSwipeEnabled) {
             $0.swipeActions(edge: .leading) {
               Button {
                 store.send(.switchMissionButtonTapped(missionID: mission.id))

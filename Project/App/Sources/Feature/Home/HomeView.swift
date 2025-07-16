@@ -52,18 +52,15 @@ struct HomeView: View {
           title: "최고의 날",
           fortune: "네잎클로버"
         )
-        .radialGradientBackground(
-          type: .backgroundGradient01,
-          endRadiusMultiplier: 0.4,
-          scaleEffectX: 2.5,
-          scaleEffectY: 1.6
-        )
         .rotationEffect(.init(degrees: 4))
-        .padding([.horizontal, .top], 20)
-        .padding(.bottom, 60)
+        .padding(.top, 20)
+        .padding(.bottom, 12)
         .onTapGesture {
           store.send(.moveToFortuneDetail)
         }
+        
+        ImageResource.fortuneCardShadow.image
+          .padding(.bottom, 12)
         
         MissionListView(
           store: store.scope(
@@ -84,6 +81,7 @@ struct HomeView: View {
         .padding(.bottom, 24)
       }
     }
+    .clipShape(Rectangle())
     .radialGradientBackground(
       type: .backgroundGradient02,
       endRadiusMultiplier: 1.2,

@@ -87,6 +87,7 @@ struct MyPageView: View {
         .padding(.horizontal, 20)
       }
     }
+    .clipShape(Rectangle())
     .onAppear {
       store.send(.onAppear)
     }

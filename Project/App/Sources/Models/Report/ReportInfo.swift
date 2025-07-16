@@ -9,8 +9,7 @@ import Foundation
 
 struct ReportInfo: Equatable {
   let totalSavedMoney: Double
-  let weeklySavedMoney: Double
-  let monthlySpendMoney: Double
+  let weeklySpendMoney: Double
   let generationComparison: GenerationComparison
 }
 
@@ -39,8 +38,7 @@ extension ReportInfo {
 extension ReportInfo {
   static let sample = ReportInfo(
     totalSavedMoney: 130000,
-    weeklySavedMoney: 28000,
-    monthlySpendMoney: 45600.00,
+    weeklySpendMoney: 28000,
     generationComparison: GenerationComparison(
       generation: "20대",
       gender: .male,

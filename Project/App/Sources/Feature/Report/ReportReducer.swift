@@ -162,7 +162,7 @@ struct ReportReducer {
     let chartData: [SpendChartData] = [
       SpendChartData(
         category: "내 소비",
-        amount: reportInfo.weeklySavedMoney,
+        amount: reportInfo.weeklySpendMoney,
         isHighlighted: true
       ),
       SpendChartData(
@@ -190,7 +190,7 @@ struct ReportReducer {
       " \(reportInfo.generationComparison.generation) \(reportInfo.generationComparison.gender.title) 대비\n"
     )
 
-    let spendDifference = reportInfo.generationComparison.averageSpendMoney - reportInfo.monthlySpendMoney
+    let spendDifference = reportInfo.generationComparison.averageSpendMoney - reportInfo.weeklySpendMoney
     let amountText = AttributedString("\(abs(spendDifference).formatted(.number))원 ")
 
     var savedText = AttributedString(spendDifference >= 0 ? "더 절약했어요" : "더 낭비했어요")

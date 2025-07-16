@@ -53,11 +53,13 @@ struct ReportReducer {
         }
       }
 
-    Reduce { state, action in
+    Reduce {
+      state,
+      action in
       switch action {
       case .binding:
         return .none
-
+        
       case .onAppear:
         state.isLoading = true
         state.isRedacted = true
@@ -70,7 +72,7 @@ struct ReportReducer {
             await send(.fetchMissionHistoryCalendar(currentCalendarMonth))
           },
         ])
-
+        
       case .fetchReportData:
         return .run { send in
           do {
@@ -80,12 +82,16 @@ struct ReportReducer {
             await send(.reportDataFailed(error))
           }
         }
-
+        
       case .fetchMissionHistoryCalendar(let date):
         return .run { send in
           do {
             let currentYearMonth = getCurrentCalendarYearMonth(from: date)
-            let missionHistory = try await reportClient.fetchMissionHistoryCalendar(currentYearMonth)
+            let usesCache = !Calendar.current.isDate(date, inSameDayAs: .now)
+            let missionHistory = try await reportClient.fetchMissionHistoryCalendar(
+              currentYearMonth,
+              usesCache
+            )
             await send(.missionHistoryCalendarResponse(missionHistory))
           } catch {
             await send(.missionHistoryCalendarFailed(error))

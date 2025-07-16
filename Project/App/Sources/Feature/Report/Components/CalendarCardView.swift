@@ -91,6 +91,9 @@ struct CalendarCardView: View {
     .onChange(of: displayedMonth) { _, _ in
       calendarCells = calculateCalendarCells()
     }
+    .onChange(of: dateModels) { _, _ in
+      calendarCells = calculateCalendarCells()
+    }
   }
 
   // MARK: - Calendar Header

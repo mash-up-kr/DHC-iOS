@@ -48,9 +48,9 @@ struct HomeView: View {
         headerSection
 
         FortuneCardFrontView(
-          backgroundImageURL: .urlForResource(.fortuneCardFrontDefaultView),
-          title: "최고의 날",
-          fortune: "네잎클로버"
+          backgroundImageURL: store.homeInfo.dailyFortune.cardImageURL,
+          title: store.homeInfo.dailyFortune.cardTitle,
+          fortune: store.homeInfo.dailyFortune.cardSubTitle
         )
         .rotationEffect(.init(degrees: 4))
         .padding(.top, 20)

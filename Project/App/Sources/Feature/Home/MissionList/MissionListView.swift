@@ -82,6 +82,7 @@ struct MissionListView: View {
           DailyMissionItemView(
             missionTitle: mission.title,
             missionLevel: missionLevel(for: mission.difficulty),
+            isActive: !store.isTodayMissionDone,
             isMissionCompleted: Binding(
               get: { mission.isFinished },
               set: { _ in store.send(.dailyMissionTapped(missionID: mission.id)) }

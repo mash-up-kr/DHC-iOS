@@ -26,7 +26,8 @@ struct MissionExampleReducer {
       self.missionList = .init(
         longTermMission: longTermMission,
         todayDailyMissionList: HomeInfo.Mission.onboardingDailyMissionList,
-        isTodayMissionDone: false
+        isTodayMissionDone: false,
+        isSwipeEnabled: false
       )
     }
   }

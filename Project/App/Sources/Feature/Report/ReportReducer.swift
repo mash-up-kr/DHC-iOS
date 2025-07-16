@@ -24,7 +24,7 @@ struct ReportReducer {
     var currentCalendarMonth = Date.now
     var calendarDateModels: [CalendarDateModelKey: CalendarDateModel] = [:]
     var isLoading = false
-    var isRedacted = false
+    var hapticTrigger = false
 
     struct SpendChart: Equatable {
       let title: AttributedString
@@ -35,21 +35,20 @@ struct ReportReducer {
   enum Action: BindableAction {
     case binding(BindingAction<State>)
     case onAppear
-    case fetchReportData
-    case fetchMissionHistoryCalendar(Date)
     case reportDataResponse(ReportInfo)
     case missionHistoryCalendarResponse(MissionHistoryCalendar)
     case reportDataFailed(Error)
     case missionHistoryCalendarFailed(Error)
+    case onShake
+    case reload
+    case isLoading(Bool)
   }
 
   var body: some ReducerOf<Self> {
     BindingReducer()
       .onChange(of: \.currentCalendarMonth) { _, _ in
         Reduce { state, _ in
-          .run { [currentCalendarMonth = state.currentCalendarMonth] send in
-            await send(.fetchMissionHistoryCalendar(currentCalendarMonth))
-          }
+          fetchMissionHistoryCalendar(state.currentCalendarMonth)
         }
       }
 
@@ -59,49 +58,15 @@ struct ReportReducer {
         return .none
 
       case .onAppear:
-        state.isLoading = true
-        state.isRedacted = true
         state.spendChart = makeSpendChart(from: .sample)
-        return .merge([
-          .run { send in
-            await send(.fetchReportData)
-          },
-          .run { [currentCalendarMonth = state.currentCalendarMonth] send in
-            await send(.fetchMissionHistoryCalendar(currentCalendarMonth))
-          },
-        ])
-
-      case .fetchReportData:
-        return .run { send in
-          do {
-            let report = try await reportClient.fetchReport()
-            await send(.reportDataResponse(report))
-          } catch {
-            await send(.reportDataFailed(error))
-          }
-        }
-
-      case .fetchMissionHistoryCalendar(let date):
-        return .run { send in
-          do {
-            let currentYearMonth = getCurrentCalendarYearMonth(from: date)
-            let missionHistory = try await reportClient.fetchMissionHistoryCalendar(currentYearMonth)
-            await send(.missionHistoryCalendarResponse(missionHistory))
-          } catch {
-            await send(.missionHistoryCalendarFailed(error))
-          }
-        }
+        return .send(.reload)
 
       case .reportDataResponse(let report):
-        state.isLoading = false
-        state.isRedacted = false
         state.reportInfo = report
         state.spendChart = makeSpendChart(from: report)
         return .none
 
       case .missionHistoryCalendarResponse(let missionHistory):
-        state.isLoading = false
-        state.isRedacted = false
         state.missionHistoryCalendar = missionHistory
         state.currentMonthHistory = missionHistory.monthlyHistory.first(where: {
           $0.month == state.currentCalendarMonth.month
@@ -125,6 +90,55 @@ struct ReportReducer {
       case .missionHistoryCalendarFailed:
         state.isLoading = false
         return .none
+
+      case .onShake:
+        state.hapticTrigger.toggle()
+        return .run { send in
+          try? await reportClient.addJulyHistory()
+          await send(.reload)
+        }
+
+      case .reload:
+        state.currentCalendarMonth = .now
+        return .concatenate([
+          .send(.isLoading(true)),
+          .merge([
+            fetchReportData(),
+            fetchMissionHistoryCalendar(state.currentCalendarMonth),
+          ]),
+          .send(.isLoading(false)),
+        ])
+
+      case .isLoading(let isLoading):
+        state.isLoading = isLoading
+        return .none
+      }
+    }
+  }
+
+  private func fetchReportData() -> Effect<Action> {
+    .run { send in
+      do {
+        let report = try await reportClient.fetchReport()
+        await send(.reportDataResponse(report))
+      } catch {
+        await send(.reportDataFailed(error))
+      }
+    }
+  }
+
+  private func fetchMissionHistoryCalendar(_ date: Date) -> Effect<Action> {
+    .run { send in
+      do {
+        let currentYearMonth = formatDateToYYYYmm(from: date)
+        let usesCache = !Calendar.current.isDate(date, inSameDayAs: .now)
+        let missionHistory = try await reportClient.fetchMissionHistoryCalendar(
+          currentYearMonth,
+          usesCache
+        )
+        await send(.missionHistoryCalendarResponse(missionHistory))
+      } catch {
+        await send(.missionHistoryCalendarFailed(error))
       }
     }
   }
@@ -135,7 +149,7 @@ struct ReportReducer {
     let chartData: [SpendChartData] = [
       SpendChartData(
         category: "내 소비",
-        amount: reportInfo.weeklySavedMoney,
+        amount: reportInfo.weeklySpendMoney,
         isHighlighted: true
       ),
       SpendChartData(
@@ -163,7 +177,7 @@ struct ReportReducer {
       " \(reportInfo.generationComparison.generation) \(reportInfo.generationComparison.gender.title) 대비\n"
     )
 
-    let spendDifference = reportInfo.generationComparison.averageSpendMoney - reportInfo.monthlySpendMoney
+    let spendDifference = reportInfo.generationComparison.averageSpendMoney - reportInfo.weeklySpendMoney
     let amountText = AttributedString("\(abs(spendDifference).formatted(.number))원 ")
 
     var savedText = AttributedString(spendDifference >= 0 ? "더 절약했어요" : "더 낭비했어요")
@@ -178,7 +192,7 @@ struct ReportReducer {
   }
 
   /// 현재 년월을 "yyyy-MM" 포맷으로 반환
-  private func getCurrentCalendarYearMonth(from date: Date) -> String {
+  private func formatDateToYYYYmm(from date: Date) -> String {
     let formatter = dateFormatterCache.formatter(for: "yyyy-MM")
     return formatter.string(from: date)
   }

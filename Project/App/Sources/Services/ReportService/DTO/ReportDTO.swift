@@ -9,8 +9,7 @@ import Foundation
 
 struct ReportDTO: Decodable {
   let totalSavedMoney: String
-  let weeklySavedMoney: String
-  let monthlySpendMoney: String
+  let weeklySpendMoney: String
   let generationMoneyViewResponse: GenerationMoneyViewResponse
 }
 
@@ -26,8 +25,7 @@ extension ReportDTO {
   func toDomain() -> ReportInfo {
     ReportInfo(
       totalSavedMoney: Double(totalSavedMoney) ?? 0,
-      weeklySavedMoney: Double(weeklySavedMoney) ?? 0,
-      monthlySpendMoney: Double(monthlySpendMoney) ?? 0,
+      weeklySpendMoney: Double(weeklySpendMoney) ?? 0,
       generationComparison: .init(
         generation: generationMoneyViewResponse.generation,
         gender: ReportInfo.GenerationComparison.Gender(

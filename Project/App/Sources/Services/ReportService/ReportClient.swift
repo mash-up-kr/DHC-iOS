@@ -12,7 +12,8 @@ import ComposableArchitecture
 @DependencyClient
 struct ReportClient {
   var fetchReport: @Sendable () async throws -> ReportInfo
-  var fetchMissionHistoryCalendar: @Sendable (_ yearMonth: String) async throws -> MissionHistoryCalendar
+  var fetchMissionHistoryCalendar: @Sendable (_ yearMonth: String, _ usesCache: Bool) async throws -> MissionHistoryCalendar
+  var addJulyHistory: @Sendable () async throws -> Void
 }
 
 extension ReportClient: DependencyKey {
@@ -25,12 +26,12 @@ extension ReportClient: DependencyKey {
         .request(ReportAPI.analysis)
         .map(to: ReportDTO.self)
         .toDomain()
-    }, fetchMissionHistoryCalendar: { yearMonth in
+    }, fetchMissionHistoryCalendar: { yearMonth, usesCache in
       let cachedResult = cache.withLock {
         $0[yearMonth]
       }
 
-      if let cachedResult {
+      if usesCache, let cachedResult {
         return cachedResult
       }
 
@@ -44,6 +45,9 @@ extension ReportClient: DependencyKey {
       }
 
       return result
+    }, addJulyHistory: {
+      _ = try await networkManager
+        .request(ReportAPI.addJulyHistory)
     })
   }()
 

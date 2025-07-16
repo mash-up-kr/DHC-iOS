@@ -22,7 +22,7 @@ struct SpendChartData: Identifiable, Equatable {
 
 struct SpendChartView: View {
   private let data: [SpendChartData]
-  private let maxAmount = 120000
+  private let maxAmount: Double = 120000
 
   init(data: [SpendChartData]) {
     self.data = data
@@ -32,7 +32,7 @@ struct SpendChartView: View {
     Chart(data) { item in
       BarMark(
         x: .value("Category", item.category),
-        y: .value("Amount", item.amount),
+        y: .value("Amount", min(item.amount, maxAmount)),
         width: .fixed(48)
       )
       .foregroundStyle(

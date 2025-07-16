@@ -77,37 +77,30 @@ struct MissionListView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
 
-      List {
+      VStack(spacing: 8) {
         ForEach(store.todayDailyMissionList, id: \.id) { mission in
-          DailyMissionItemView(
+          SwipeableMissionItemView(
             missionTitle: mission.title,
-            missionLevel: missionLevel(for: mission.difficulty),
+            isPinned: false,
             isActive: !store.isTodayMissionDone,
+            isSwipeEnabled: !store.isTodayMissionDone && store.isSwipeEnabled,
+            badgeTitle: missionLevel(for: mission.difficulty).displayName,
+            badgeStyle: .missionLevel(missionLevel(for: mission.difficulty)),
+            onMissionTap: {
+              store.send(.dailyMissionTapped(missionID: mission.id))
+            },
+            onSwitchMission: {
+              store.send(.switchMissionButtonTapped(missionID: mission.id))
+            },
             isMissionCompleted: Binding(
               get: { mission.isFinished },
               set: { _ in store.send(.dailyMissionTapped(missionID: mission.id)) }
             )
           )
-          .if(!store.isTodayMissionDone) {
-            $0.swipeActions(edge: .leading) {
-              Button {
-                store.send(.switchMissionButtonTapped(missionID: mission.id))
-              } label: {
-                ImageResource.Icon.update.image
-                  .frame(width: 20, height: 20)
-
-                Text("미션 바꾸기")
-              }
-              .tint(ColorResource.Violet._400.color)
-            }
-          }
-          .plainListRow()
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 20)
       }
-      .plainListBackground()
-      .frame(minHeight: 300)
+      .padding(.horizontal, 20)
+      .padding(.vertical, 8)
     }
   }
 

@@ -19,15 +19,18 @@ struct MissionListReducer {
     var longTermMission: HomeInfo.Mission
     var todayDailyMissionList: [HomeInfo.Mission] = []
     var isTodayMissionDone: Bool
+    let isSwipeEnabled: Bool
 
     init(
       longTermMission: HomeInfo.Mission,
       todayDailyMissionList: [HomeInfo.Mission],
-      isTodayMissionDone: Bool
+      isTodayMissionDone: Bool,
+      isSwipeEnabled: Bool = true
     ) {
       self.longTermMission = longTermMission
       self.todayDailyMissionList = todayDailyMissionList
       self.isTodayMissionDone = isTodayMissionDone
+      self.isSwipeEnabled = isSwipeEnabled
     }
   }
 

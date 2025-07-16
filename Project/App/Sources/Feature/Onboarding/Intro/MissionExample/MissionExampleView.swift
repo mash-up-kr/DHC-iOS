@@ -28,7 +28,12 @@ struct MissionExampleView: View {
       .padding(.bottom, 45)
       
       ScrollView {
-        MissionListView(store: Store(initialState: store.missionList, reducer: EmptyReducer.init))
+        MissionListView(
+          store: Store(
+            initialState: store.missionList,
+            reducer: EmptyReducer.init
+          )
+        )
       }
       .padding(.bottom, bottomVStackHeight)
       .scrollIndicators(.hidden)

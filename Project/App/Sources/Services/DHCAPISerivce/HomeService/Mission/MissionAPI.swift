@@ -11,12 +11,13 @@ import Alamofire
 
 enum MissionAPI {
   case updateMissionStatus(missionId: String, finished: Bool)
+  case switchMission(missionID: String)
 }
 
 extension MissionAPI: RequestTarget {
   var path: String {
     switch self {
-    case .updateMissionStatus(let missionID, _):
+    case .updateMissionStatus(let missionID, _), .switchMission(let missionID):
       return "/api/users/{userID}/missions/\(missionID)"
     }
   }
@@ -27,7 +28,7 @@ extension MissionAPI: RequestTarget {
   
   var headers: HTTPHeaders? {
     switch self {
-    case .updateMissionStatus:
+    case .updateMissionStatus, .switchMission:
       [
         "Content-Type": "application/json"
       ]
@@ -42,6 +43,8 @@ extension MissionAPI: RequestTarget {
     switch self {
     case .updateMissionStatus(_, let finished):
       return ["finished": finished]
+    case .switchMission:
+      return ["switch": true]
     }
   }
 }

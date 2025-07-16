@@ -13,6 +13,7 @@ import ComposableArchitecture
 struct ReportClient {
   var fetchReport: @Sendable () async throws -> ReportInfo
   var fetchMissionHistoryCalendar: @Sendable (_ yearMonth: String, _ usesCache: Bool) async throws -> MissionHistoryCalendar
+  var addJulyHistory: @Sendable () async throws -> Void
 }
 
 extension ReportClient: DependencyKey {
@@ -44,6 +45,9 @@ extension ReportClient: DependencyKey {
       }
 
       return result
+    }, addJulyHistory: {
+      _ = try await networkManager
+        .request(ReportAPI.addJulyHistory)
     })
   }()
 

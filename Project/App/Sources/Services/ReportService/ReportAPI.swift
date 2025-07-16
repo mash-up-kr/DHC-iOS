@@ -13,6 +13,8 @@ enum ReportAPI {
   case analysis
   /// yearMonth는 "yyyy-MM" 포맷
   case calendar(yearMonth: String)
+  /// 데이터를 채우는 이스터에그
+  case addJulyHistory
 }
 
 extension ReportAPI: RequestTarget {
@@ -22,6 +24,8 @@ extension ReportAPI: RequestTarget {
       "/view/users/{userID}/analysis"
     case .calendar:
       "/view/users/{userID}/calendar"
+    case .addJulyHistory:
+      "/api/users/{userID}/add-july-history"
     }
   }
 
@@ -29,12 +33,14 @@ extension ReportAPI: RequestTarget {
     switch self {
     case .analysis, .calendar:
       .get
+    case .addJulyHistory:
+      .post
     }
   }
 
   var queryParameters: Parameters? {
     switch self {
-    case .analysis:
+    case .analysis, .addJulyHistory:
       nil
     case .calendar(let yearMonth):
       ["yearMonth": yearMonth]
@@ -43,7 +49,7 @@ extension ReportAPI: RequestTarget {
 
   var bodyParameters: (any Encodable)? {
     switch self {
-    case .analysis, .calendar:
+    case .analysis, .calendar, .addJulyHistory:
       nil
     }
   }

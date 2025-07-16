@@ -31,7 +31,7 @@ extension HomeInfo {
     let date: String
     let title: String
     let score: Int
-    let cardImage: String
+    let cardImageURL: URL?
     let cardTitle: String
     let cardSubTitle: String
   }
@@ -89,7 +89,7 @@ extension HomeInfo {
       date: "2025-07-09",
       title: "투자 아이디어! 신중한 판단이 필요한 날",
       score: 100,
-      cardImage: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/mainCard/png/fourLeafClover.png",
+      cardImageURL: URL(string: "https://kr.object.ncloudstorage.com/dhc-object-storage/logos/mainCard/png/fourLeafClover.png"),
       cardTitle: "",
       cardSubTitle: ""
     ),

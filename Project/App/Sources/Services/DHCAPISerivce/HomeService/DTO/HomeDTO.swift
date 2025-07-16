@@ -78,7 +78,7 @@ extension HomeDTO {
         date: todayFortune.date,
         title: todayFortune.fortuneTitle,
         score: todayFortune.totalScore,
-        cardImage: todayFortune.cardInfo.image,
+        cardImageURL: URL(string: todayFortune.cardInfo.image),
         cardTitle: todayFortune.cardInfo.title,
         cardSubTitle: todayFortune.cardInfo.subTitle
       ),

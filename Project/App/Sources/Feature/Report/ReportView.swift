@@ -88,5 +88,14 @@ struct ReportView: View {
     )
     .background(ColorResource.Background.main.color)
     .redacted(reason: store.isRedacted ? .placeholder : [])
+    .onShake {
+      store.send(.onShake)
+    }
+    .sensoryFeedback(
+      .impact(
+        weight: .heavy
+      ),
+      trigger: store.hapticTrigger
+    )
   }
 }

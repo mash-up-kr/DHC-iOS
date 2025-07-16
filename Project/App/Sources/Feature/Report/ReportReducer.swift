@@ -25,6 +25,7 @@ struct ReportReducer {
     var calendarDateModels: [CalendarDateModelKey: CalendarDateModel] = [:]
     var isLoading = false
     var isRedacted = false
+    var hapticTrigger = false
 
     struct SpendChart: Equatable {
       let title: AttributedString
@@ -41,6 +42,8 @@ struct ReportReducer {
     case missionHistoryCalendarResponse(MissionHistoryCalendar)
     case reportDataFailed(Error)
     case missionHistoryCalendarFailed(Error)
+    case onShake
+    case reload
   }
 
   var body: some ReducerOf<Self> {
@@ -86,7 +89,7 @@ struct ReportReducer {
       case .fetchMissionHistoryCalendar(let date):
         return .run { send in
           do {
-            let currentYearMonth = getCurrentCalendarYearMonth(from: date)
+            let currentYearMonth = formatDateToYYYYmm(from: date)
             let usesCache = !Calendar.current.isDate(date, inSameDayAs: .now)
             let missionHistory = try await reportClient.fetchMissionHistoryCalendar(
               currentYearMonth,
@@ -131,6 +134,24 @@ struct ReportReducer {
       case .missionHistoryCalendarFailed:
         state.isLoading = false
         return .none
+
+      case .onShake:
+        state.hapticTrigger.toggle()
+        return .run { send in
+          try? await reportClient.addJulyHistory()
+          await send(.reload)
+        }
+
+      case .reload:
+        state.currentCalendarMonth = .now
+        return .merge([
+          .run { send in
+            await send(.fetchReportData)
+          },
+          .run { send in
+            await send(.fetchMissionHistoryCalendar(.now))
+          },
+        ])
       }
     }
   }
@@ -184,7 +205,7 @@ struct ReportReducer {
   }
 
   /// 현재 년월을 "yyyy-MM" 포맷으로 반환
-  private func getCurrentCalendarYearMonth(from date: Date) -> String {
+  private func formatDateToYYYYmm(from date: Date) -> String {
     let formatter = dateFormatterCache.formatter(for: "yyyy-MM")
     return formatter.string(from: date)
   }

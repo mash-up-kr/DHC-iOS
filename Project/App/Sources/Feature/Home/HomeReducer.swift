@@ -26,7 +26,8 @@ struct HomeReducer {
     var path = StackState<Path.State>()
     var missionList = MissionListReducer.State(
       longTermMission: HomeInfo.sample.longTermMission,
-      todayDailyMissionList: HomeInfo.sample.dailyMissionList
+      todayDailyMissionList: HomeInfo.sample.dailyMissionList,
+      isTodayMissionDone: HomeInfo.sample.isTodayMissionDone
     )
     var homeInfo: HomeInfo
     var presentBottomSheet = false
@@ -171,7 +172,8 @@ struct HomeReducer {
           state.homeInfo = homeInfo
           return .merge(
             .send(.missionList(.updateLongTermMission(homeInfo.longTermMission))),
-            .send(.missionList(.updateDailyMissions(homeInfo.dailyMissionList)))
+            .send(.missionList(.updateDailyMissions(homeInfo.dailyMissionList))),
+            .send(.missionList(.updateTodayMissionDone(homeInfo.isTodayMissionDone)))
           )
         }
         

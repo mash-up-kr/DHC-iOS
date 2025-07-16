@@ -49,7 +49,8 @@ struct MissionListView: View {
 
         DHCBadge(
           badgeTitle: store.longTermMission.category,
-          badgeStyle: .spendCategory
+          badgeStyle: .spendCategory,
+          isActive: true
         )
       }
 
@@ -58,6 +59,7 @@ struct MissionListView: View {
         remainingDays: remainingDays(
           until: store.longTermMission.endDate
         ),
+        isActive: !store.isTodayMissionDone,
         isMissionCompleted: Binding(
           get: { store.longTermMission.isFinished },
           set: { _ in store.send(.longTermMissionTapped) }
@@ -136,7 +138,8 @@ struct MissionListView: View {
       initialState: MissionListReducer
         .State(
           longTermMission: HomeInfo.sample.longTermMission,
-          todayDailyMissionList: HomeInfo.sample.dailyMissionList
+          todayDailyMissionList: HomeInfo.sample.dailyMissionList,
+          isTodayMissionDone: HomeInfo.sample.isTodayMissionDone
         ),
       reducer: MissionListReducer.init
     )

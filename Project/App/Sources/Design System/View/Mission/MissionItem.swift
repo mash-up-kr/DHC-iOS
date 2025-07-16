@@ -11,6 +11,7 @@ import SwiftUI
 struct MissionItem<V>: View where V: View {
   let missionTitle: String
   let isPinned: Bool
+  let isActive: Bool
   @Binding var isMissionCompleted: Bool
   @ViewBuilder var badgeView: () -> V
 
@@ -21,7 +22,10 @@ struct MissionItem<V>: View where V: View {
 
         Text(missionTitle)
           .textStyle(.body3)
-          .foregroundStyle(ColorResource.Text.Body.primary.color)
+          .foregroundStyle(
+            isActive ? ColorResource.Text.Body.primary.color : ColorResource.Neutral
+              ._400.color
+          )
           .multilineTextAlignment(.leading)
           .frame(maxWidth: .infinity, alignment: .leading)
       }
@@ -31,8 +35,12 @@ struct MissionItem<V>: View where V: View {
       } label: {
         CheckMark(
           size: .medium,
-          style: isMissionCompleted ? .active : .enabled)
+          style: isActive
+            ? (isMissionCompleted ? .active : .enabled)
+            : .disabled
+        )
       }
+      .disabled(!isActive)
     }
     .frame(maxWidth: .infinity)
     .padding(.horizontal, 16)
@@ -60,22 +68,26 @@ struct MissionItem<V>: View where V: View {
     MissionItem(
       missionTitle: "가까운 거리 걸어가기",
       isPinned: true,
+      isActive: true,
       isMissionCompleted: .constant(true)
     ) {
       DHCBadge(
         badgeTitle: "D-3",
-        badgeStyle: .dDay
+        badgeStyle: .dDay,
+        isActive: true
       )
     }
 
     MissionItem(
       missionTitle: "가까운 거리 걸어가기",
       isPinned: true,
+      isActive: false,
       isMissionCompleted: .constant(false)
     ) {
       DHCBadge(
         badgeTitle: "D-3",
-        badgeStyle: .dDay
+        badgeStyle: .dDay,
+        isActive: false
       )
     }
   }

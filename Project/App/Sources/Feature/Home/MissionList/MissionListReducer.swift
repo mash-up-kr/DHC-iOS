@@ -18,13 +18,16 @@ struct MissionListReducer {
     var isTooltipVisible = false
     var longTermMission: HomeInfo.Mission
     var todayDailyMissionList: [HomeInfo.Mission] = []
+    var isTodayMissionDone: Bool
 
     init(
       longTermMission: HomeInfo.Mission,
-      todayDailyMissionList: [HomeInfo.Mission]
+      todayDailyMissionList: [HomeInfo.Mission],
+      isTodayMissionDone: Bool
     ) {
       self.longTermMission = longTermMission
       self.todayDailyMissionList = todayDailyMissionList
+      self.isTodayMissionDone = isTodayMissionDone
     }
   }
 
@@ -38,6 +41,7 @@ struct MissionListReducer {
     // Internal Action
     case updateLongTermMission(HomeInfo.Mission)
     case updateDailyMissions([HomeInfo.Mission])
+    case updateTodayMissionDone(Bool)
     case missionStatusUpdateResult(Result<String, Error>)
     case switchMissionResponse(Result<SwitchMissionInfo, Error>)
     
@@ -57,6 +61,10 @@ struct MissionListReducer {
 
       case .updateDailyMissions(let missions):
         state.todayDailyMissionList = missions
+        return .none
+        
+      case .updateTodayMissionDone(let isDone):
+        state.isTodayMissionDone = isDone
         return .none
 
       case .longTermMissionTapped:

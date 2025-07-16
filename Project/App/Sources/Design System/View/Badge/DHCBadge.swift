@@ -10,13 +10,14 @@ import SwiftUI
 struct DHCBadge: View {
   let badgeTitle: String
   let badgeStyle: BadgeStyle
+  let isActive: Bool
 
   var body: some View {
     Badge(
       badgeTitle: badgeTitle,
       textStyle: badgeStyle.textStyle,
-      textColor: badgeStyle.textColor,
-      backgroundColor: badgeStyle.backgroundColor
+      textColor: isActive ? badgeStyle.textColor : ColorResource.Neutral._300.color,
+      backgroundColor: isActive ? badgeStyle.backgroundColor : ColorResource.Neutral._500.color
     )
   }
 }
@@ -93,32 +94,38 @@ extension DHCBadge {
   VStack(spacing: 8) {
     DHCBadge(
       badgeTitle: "식음료",
-      badgeStyle: .spendCategory
+      badgeStyle: .spendCategory,
+      isActive: false
     )
 
     DHCBadge(
       badgeTitle: "2025년 5월 20일",
-      badgeStyle: .today
+      badgeStyle: .today,
+      isActive: true
     )
 
     DHCBadge(
       badgeTitle: "D-12",
-      badgeStyle: .dDay
+      badgeStyle: .dDay,
+      isActive: true
     )
 
     DHCBadge(
       badgeTitle: "Easy",
-      badgeStyle: .missionLevel(.easy)
+      badgeStyle: .missionLevel(.easy),
+      isActive: true
     )
 
     DHCBadge(
       badgeTitle: "Medium",
-      badgeStyle: .missionLevel(.medium)
+      badgeStyle: .missionLevel(.medium),
+      isActive: false
     )
 
     DHCBadge(
       badgeTitle: "Hard",
-      badgeStyle: .missionLevel(.hard)
+      badgeStyle: .missionLevel(.hard),
+      isActive: true
     )
   }
 }

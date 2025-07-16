@@ -87,7 +87,7 @@ struct ReportView: View {
       scaleEffectX: 1.8
     )
     .background(ColorResource.Background.main.color)
-    .redacted(reason: store.isRedacted ? .placeholder : [])
+    .redacted(reason: store.isLoading ? .placeholder : [])
     .onShake {
       store.send(.onShake)
     }

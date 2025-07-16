@@ -44,6 +44,8 @@ struct CalendarCellData: Identifiable {
 struct CalendarCardView: View {
   @Binding private var displayedMonth: Date
   @State private var calendarCells: [CalendarCellData] = []
+  @State private var dragOffset: CGFloat = 0
+  @State private var isDragging: Bool = false
 
   private static let dateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
@@ -67,17 +69,6 @@ struct CalendarCardView: View {
 
       // Calendar Grid (Weekdays + Dates)
       calendarGrid
-        .gesture(
-          DragGesture()
-            .onEnded { value in
-              let threshold: CGFloat = 100
-              if value.translation.width > threshold {
-                moveToPreviousMonth()
-              } else if value.translation.width < -threshold {
-                moveToNextMonth()
-              }
-            }
-        )
     }
     .padding(.vertical, 24)
     .padding(.horizontal, 16)
@@ -140,7 +131,30 @@ struct CalendarCardView: View {
       ForEach(calendarCells) { cellData in
         CalendarCellView(cellData: cellData)
       }
+      .offset(x: dragOffset)
+      .opacity(1.0 - min(abs(dragOffset) / 200.0, 0.5))
+      .gesture(
+        DragGesture()
+          .onChanged { value in
+            isDragging = true
+            dragOffset = value.translation.width
+          }
+          .onEnded { value in
+            isDragging = false
+            let threshold: CGFloat = 100
+
+            withAnimation(.default) {
+              if value.translation.width > threshold {
+                moveToPreviousMonth()
+              } else if value.translation.width < -threshold {
+                moveToNextMonth()
+              }
+              dragOffset = 0
+            }
+          }
+      )
     }
+    .clipShape(Rectangle())
   }
 
   // MARK: - Computed Properties

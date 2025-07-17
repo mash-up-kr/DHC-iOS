@@ -106,7 +106,7 @@ struct FortuneDetailView: View {
   var detailFortuneView: some View {
     VStack(alignment: .leading, spacing: 16) {
       Text("금전운 상세보기")
-        .textStyle(.h4_1)
+        .textStyle(.h5_1)
         .foregroundStyle(ColorResource.Text.main.color)
       
       MessageCardView(
@@ -120,7 +120,7 @@ struct FortuneDetailView: View {
   var tipView: some View {
     VStack(alignment: .leading, spacing: 16) {
       Text("오늘의 꿀팁")
-        .textStyle(.h4_1)
+        .textStyle(.h5_1)
         .foregroundStyle(ColorResource.Text.main.color)
       
       if let tipInfos = store.detailInfo?.tipInfos {

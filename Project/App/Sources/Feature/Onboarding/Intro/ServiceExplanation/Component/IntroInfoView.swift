@@ -24,7 +24,7 @@ struct IntroInfoView: View {
       indexView(index)
       
       Text(info)
-        .textStyle(.h4)
+        .textStyle(.h5)
         .foregroundStyle(ColorResource.Text.Body.primary.color)
     }
     .padding(20)

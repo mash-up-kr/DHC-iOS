@@ -81,6 +81,14 @@ struct HomeView: View {
         .padding(.bottom, 24)
       }
     }
+    .overlay(alignment: .bottom) {
+      if store.presentToast {
+        DHCToast(message: store.toastMessage)
+          .padding(.bottom, 24)
+          .transition(.opacity)
+          .animation(.easeInOut(duration: 0.3), value: store.presentToast)
+      }
+    }
     .clipShape(Rectangle())
     .radialGradientBackground(
       type: .backgroundGradient02,

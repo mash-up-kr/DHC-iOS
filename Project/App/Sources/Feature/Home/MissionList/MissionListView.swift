@@ -26,7 +26,7 @@ struct MissionListView: View {
       HStack(spacing: 12) {
         HStack(spacing: 8) {
           Text("소비습관 미션")
-            .textStyle(.h4_1)
+            .textStyle(.h5_1)
             .foregroundStyle(ColorResource.Text.Body.primary.color)
 
           Button {
@@ -75,8 +75,8 @@ struct MissionListView: View {
 
   private var dailyMissionSection: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text("금전운 기반 일일 미션")
-        .textStyle(.h4_1)
+      Text("금전운 일일 미션")
+        .textStyle(.h5_1)
         .foregroundStyle(ColorResource.Text.Body.primary.color)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)

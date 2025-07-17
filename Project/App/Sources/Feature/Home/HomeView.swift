@@ -164,6 +164,7 @@ struct HomeView: View {
       }
     }
     .padding(.horizontal, 20)
+    .padding(.top, 16)
   }
 
   private var seeMoreButton: some View {

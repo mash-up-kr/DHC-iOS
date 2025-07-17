@@ -32,10 +32,12 @@ struct HomeReducer {
     var homeInfo: HomeInfo
     var presentBottomSheet = false
     var presentMissionDonePopup = false
+    var presentToast = false
     
     var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
     var isFirstLaunchOfToday: Bool
     var todaySavedMoney: String?
+    var toastMessage = ""
     
     var bottomContentMargin: CGFloat {
       homeInfo.isTodayMissionDone ? 10 : 82
@@ -63,6 +65,9 @@ struct HomeReducer {
     case popupConfirmButtonTapped
     case popupDismissButtonTapped
 
+    case presentToast(String)
+    case setToastPresented(Bool)
+    
     // Internal Actions
     case fetchHomeData
     case homeDataResponse(HomeInfo)
@@ -105,6 +110,22 @@ struct HomeReducer {
 
       case .presentBottomSheet(let isVisible):
         state.presentBottomSheet = isVisible
+        return .none
+
+      case .presentToast(let toastMessage):
+        state.toastMessage = toastMessage
+        state.presentToast = true
+
+        return .run { send in
+          try await Task.sleep(for: .seconds(1.5))
+
+          await send(
+            .setToastPresented(false)
+          )
+        }
+
+      case .setToastPresented(let isPresented):
+        state.presentToast = isPresented
         return .none
 
       case .confirmTodayMissionDoneButtonTapped:
@@ -180,9 +201,17 @@ struct HomeReducer {
       case .homeDataFailed:
         return .none
         
-      case .missionList:
-        return .none
-        
+      case .missionList(let action):
+        switch action {
+        case .delegate(.presentToast(let message)):
+          return .send(
+            .presentToast(message)
+          )
+
+        default:
+          return .none
+        }
+
       case .fortuneLoadingComplete(let action):
         switch action {
         case .delegate(.moveToHome):

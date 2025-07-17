@@ -167,7 +167,7 @@ struct ReportReducer {
 
   private func makeChartTitle(from reportInfo: ReportInfo) -> AttributedString {
     var result = AttributedString()
-    result.font = .head3
+    result.font = .head4
     result.foregroundColor = ColorResource.Text.main.color
 
     var thisWeekText = AttributedString("이번주에")

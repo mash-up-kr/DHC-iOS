@@ -58,10 +58,10 @@ struct HomeView: View {
         .onTapGesture {
           store.send(.moveToFortuneDetail)
         }
-        
+
         ImageResource.fortuneCardShadow.image
           .padding(.bottom, 12)
-        
+
         MissionListView(
           store: store.scope(
             state: \.missionList,
@@ -79,6 +79,14 @@ struct HomeView: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 24)
+      }
+    }
+    .overlay(alignment: .bottom) {
+      if store.presentToast {
+        DHCToast(message: store.toastMessage)
+          .padding(.bottom, 24)
+          .transition(.opacity)
+          .animation(.easeInOut(duration: 0.3), value: store.presentToast)
       }
     }
     .clipShape(Rectangle())

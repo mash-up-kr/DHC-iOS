@@ -32,11 +32,17 @@ struct MissionListReducer {
   }
 
   enum Action {
+    case delegate(Delegate)
+
     // View Action
     case tooltipTapped
     case longTermMissionTapped
     case dailyMissionTapped(missionID: String)
     case switchMissionButtonTapped(missionID: String)
+
+    enum Delegate {
+      case presentToast(String)
+    }
 
     // Internal Action
     case updateLongTermMission(HomeInfo.Mission)
@@ -44,13 +50,16 @@ struct MissionListReducer {
     case updateTodayMissionDone(Bool)
     case missionStatusUpdateResult(Result<String, Error>)
     case switchMissionResponse(Result<SwitchMissionInfo, Error>)
-    
+
     // Route Action
   }
 
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
+      case .delegate:
+        return .none
+
       case .tooltipTapped:
         state.isTooltipVisible.toggle()
         return .none
@@ -62,7 +71,7 @@ struct MissionListReducer {
       case .updateDailyMissions(let missions):
         state.todayDailyMissionList = missions
         return .none
-        
+
       case .updateTodayMissionDone(let isDone):
         state.isTodayMissionDone = isDone
         return .none
@@ -83,6 +92,16 @@ struct MissionListReducer {
                 .success(mission.id)
               )
             )
+
+            if mission.isFinished {
+              await send(
+                .delegate(
+                  .presentToast(
+                    ToastMessages.mission.randomElement()!
+                  )
+                )
+              )
+            }
           } catch {
             await send(
               .missionStatusUpdateResult(
@@ -110,6 +129,16 @@ struct MissionListReducer {
           do {
             try await missionClient.updateMissionStatus(updatedMission.id, updatedMission.isFinished)
             await send(.missionStatusUpdateResult(.success(updatedMission.id)))
+
+            if updatedMission.isFinished {
+              await send(
+                .delegate(
+                  .presentToast(
+                    ToastMessages.mission.randomElement()!
+                  )
+                )
+              )
+            }
           } catch {
             await send(.missionStatusUpdateResult(.failure(error)))
           }

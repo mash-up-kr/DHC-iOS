@@ -20,9 +20,9 @@ struct HomeReducer {
       case firstLaunch
       case home
     }
-    
+
     var viewState: ViewState = .home
-    
+
     var path = StackState<Path.State>()
     var missionList = MissionListReducer.State(
       longTermMission: HomeInfo.sample.longTermMission,
@@ -32,15 +32,17 @@ struct HomeReducer {
     var homeInfo: HomeInfo
     var presentBottomSheet = false
     var presentMissionDonePopup = false
-    
+    var presentToast = false
+
     var fortuneLoadingComplete: FortuneLoadingCompleteReducer.State?
     var isFirstLaunchOfToday: Bool
     var todaySavedMoney: String?
-    
+    var toastMessage = ""
+
     var bottomContentMargin: CGFloat {
       homeInfo.isTodayMissionDone ? 10 : 82
     }
-    
+
     init(
       homeInfo: HomeInfo,
       fortuneLoadingComplete: FortuneLoadingCompleteReducer.State? = nil,
@@ -63,6 +65,9 @@ struct HomeReducer {
     case popupConfirmButtonTapped
     case popupDismissButtonTapped
 
+    case presentToast(String)
+    case setToastPresented(Bool)
+
     // Internal Actions
     case fetchHomeData
     case homeDataResponse(HomeInfo)
@@ -79,7 +84,7 @@ struct HomeReducer {
       case moveToReportTab
     }
   }
-  
+
   @Reducer
   enum Path {
     case fortuneDetail(FortuneDetailReducer)
@@ -100,11 +105,27 @@ struct HomeReducer {
         } else {
           state.viewState = .home
         }
-        
+
         return .send(.fetchHomeData)
 
       case .presentBottomSheet(let isVisible):
         state.presentBottomSheet = isVisible
+        return .none
+
+      case .presentToast(let toastMessage):
+        state.toastMessage = toastMessage
+        state.presentToast = true
+
+        return .run { send in
+          try await Task.sleep(for: .seconds(1.5))
+
+          await send(
+            .setToastPresented(false)
+          )
+        }
+
+      case .setToastPresented(let isPresented):
+        state.presentToast = isPresented
         return .none
 
       case .confirmTodayMissionDoneButtonTapped:
@@ -146,7 +167,7 @@ struct HomeReducer {
             await send(.homeDataFailed(error))
           }
         }
-        
+
       case .homeDataResponse(let homeInfo):
         if state.isFirstLaunchOfToday {
           let dailyFortune = homeInfo.dailyFortune
@@ -163,7 +184,7 @@ struct HomeReducer {
               fortune: dailyFortune.cardSubTitle
             )
           )
-          
+
           withAnimation(.easeInOut(duration: 0.5)) {
             state.viewState = .firstLaunch
           }
@@ -176,13 +197,21 @@ struct HomeReducer {
             .send(.missionList(.updateTodayMissionDone(homeInfo.isTodayMissionDone)))
           )
         }
-        
+
       case .homeDataFailed:
         return .none
-        
-      case .missionList:
-        return .none
-        
+
+      case .missionList(let action):
+        switch action {
+        case .delegate(.presentToast(let message)):
+          return .send(
+            .presentToast(message)
+          )
+
+        default:
+          return .none
+        }
+
       case .fortuneLoadingComplete(let action):
         switch action {
         case .delegate(.moveToHome):
@@ -194,24 +223,24 @@ struct HomeReducer {
         default:
           return .none
         }
-        
+
       case .moveToFortuneDetail:
         state.path.append(.fortuneDetail(FortuneDetailReducer.State(type: .detail)))
         return .none
-        
+
       case let .path(action):
         switch action {
-        case let .element(id: id, action: .fortuneDetail(.backButtonTapped)):
+        case .element(id: let id, action: .fortuneDetail(.backButtonTapped)):
           state.path.pop(from: id)
           return .none
-          
+
         default:
           return .none
         }
-        
+
       case .delegate:
         return .none
-        
+
       case .todayMissionDoneResponse(let todaySavedMoney):
         state.todaySavedMoney = todaySavedMoney
         return .none
@@ -222,7 +251,7 @@ struct HomeReducer {
       FortuneLoadingCompleteReducer()
     }
   }
-  
+
   private func formatDate(from dateString: String) -> String {
     let date = dateFormatterCache.formatter(for: "yyyy-MM-dd").date(from: dateString) ?? Date()
     let formattedString = dateFormatterCache.formatter(for: "yyyy년 M월 d일").string(from: date)

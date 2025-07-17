@@ -50,7 +50,7 @@ struct MissionListReducer {
     case updateTodayMissionDone(Bool)
     case missionStatusUpdateResult(Result<String, Error>)
     case switchMissionResponse(Result<SwitchMissionInfo, Error>)
-    
+
     // Route Action
   }
 
@@ -71,7 +71,7 @@ struct MissionListReducer {
       case .updateDailyMissions(let missions):
         state.todayDailyMissionList = missions
         return .none
-        
+
       case .updateTodayMissionDone(let isDone):
         state.isTodayMissionDone = isDone
         return .none

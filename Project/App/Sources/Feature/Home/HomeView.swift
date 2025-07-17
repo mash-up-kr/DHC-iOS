@@ -58,10 +58,10 @@ struct HomeView: View {
         .onTapGesture {
           store.send(.moveToFortuneDetail)
         }
-        
+
         ImageResource.fortuneCardShadow.image
           .padding(.bottom, 12)
-        
+
         MissionListView(
           store: store.scope(
             state: \.missionList,

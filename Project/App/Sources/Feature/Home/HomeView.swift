@@ -131,7 +131,7 @@ struct HomeView: View {
         ColorResource._0_F_1114.color
           .ignoresSafeArea()
 
-        HomePopup(todaySavedAmount: store.todaySavedMoney) { // TODO: 절약 금액 연결하기
+        HomePopup(todaySavedAmount: store.todaySavedMoney) {
           store.send(.popupConfirmButtonTapped)
         } onDismiss: {
           store.send(.popupDismissButtonTapped)

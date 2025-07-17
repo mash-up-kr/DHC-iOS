@@ -54,7 +54,6 @@ struct HomePopup: View {
       ImageResource.celebration.image
         .resizable()
         .frame(width: 161, height: 138)
-        .padding(.horizontal, 69.5)
 
       VStack(spacing: 4) {
         CTAButton(

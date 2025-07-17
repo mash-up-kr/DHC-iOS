@@ -35,7 +35,7 @@ struct FortuneInfoCardView: View {
           .textStyle(.body6)
           .foregroundStyle(ColorResource.Neutral._200.color)
         Text(fortune)
-          .textStyle(.h2)
+          .textStyle(.h3)
           .foregroundStyle(LinearGradient(.text02))
       }
     }

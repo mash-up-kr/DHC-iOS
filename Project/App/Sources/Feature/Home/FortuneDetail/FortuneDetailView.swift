@@ -54,6 +54,7 @@ struct FortuneDetailView: View {
             .padding(.bottom, store.type == .intro ? bottomVStackHeight : 53)
         }
       }
+      .clipShape(Rectangle())
       .scrollIndicators(.hidden)
       .if(store.type == .intro) { view in
         view

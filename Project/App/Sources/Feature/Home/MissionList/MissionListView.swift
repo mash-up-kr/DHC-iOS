@@ -53,13 +53,17 @@ struct MissionListView: View {
           isActive: true
         )
       }
-
-      PinnedMissionItemView(
+      
+      SwipeableMissionItemView(
         missionTitle: store.longTermMission.title,
-        remainingDays: remainingDays(
-          until: store.longTermMission.endDate
-        ),
+        isPinned: true,
         isActive: !store.isTodayMissionDone,
+        isSwipeEnabled: !store.isTodayMissionDone && store.isSwipeEnabled,
+        badgeTitle: remainigDayTitle(day: remainingDays(until: store.longTermMission.endDate)),
+        badgeStyle: .spendCategory,
+        onSwitchMission: {
+          store.send(.switchMissionButtonTapped(missionID: store.longTermMission.id))
+        },
         isMissionCompleted: Binding(
           get: { store.longTermMission.isFinished },
           set: { _ in store.send(.longTermMissionTapped) }
@@ -77,37 +81,27 @@ struct MissionListView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
 
-      List {
+      VStack(spacing: 8) {
         ForEach(store.todayDailyMissionList, id: \.id) { mission in
-          DailyMissionItemView(
+          SwipeableMissionItemView(
             missionTitle: mission.title,
-            missionLevel: missionLevel(for: mission.difficulty),
+            isPinned: false,
             isActive: !store.isTodayMissionDone,
+            isSwipeEnabled: !store.isTodayMissionDone && store.isSwipeEnabled,
+            badgeTitle: missionLevel(for: mission.difficulty).displayName,
+            badgeStyle: .missionLevel(missionLevel(for: mission.difficulty)),
+            onSwitchMission: {
+              store.send(.switchMissionButtonTapped(missionID: mission.id))
+            },
             isMissionCompleted: Binding(
               get: { mission.isFinished },
               set: { _ in store.send(.dailyMissionTapped(missionID: mission.id)) }
             )
           )
-          .if(!store.isTodayMissionDone) {
-            $0.swipeActions(edge: .leading) {
-              Button {
-                store.send(.switchMissionButtonTapped(missionID: mission.id))
-              } label: {
-                ImageResource.Icon.update.image
-                  .frame(width: 20, height: 20)
-
-                Text("미션 바꾸기")
-              }
-              .tint(ColorResource.Violet._400.color)
-            }
-          }
-          .plainListRow()
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 20)
       }
-      .plainListBackground()
-      .frame(minHeight: 300)
+      .padding(.horizontal, 20)
+      .padding(.vertical, 8)
     }
   }
 
@@ -123,6 +117,10 @@ struct MissionListView: View {
     let end = calendar.startOfDay(for: endDate)
 
     return max(calendar.dateComponents([.day], from: today, to: end).day ?? 0, 0)
+  }
+  
+  private func remainigDayTitle(day: Int) -> String {
+    day == 0 ? "D-day" : "D-\(day)"
   }
 
   private func missionLevel(for difficulty: Int) -> DHCBadge.MissionLevel {

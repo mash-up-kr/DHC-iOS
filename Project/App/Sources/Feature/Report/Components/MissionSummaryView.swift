@@ -34,11 +34,11 @@ struct MissionSummaryView: View {
       VStack(alignment: .leading, spacing: 0) {
         Text(title)
           .foregroundStyle(ColorResource.Text.Body.primary.color)
-          .textStyle(.body3)
+          .textStyle(.body5)
 
         Text(description)
           .foregroundStyle(ColorResource.Text.main.color)
-          .textStyle(.h3)
+          .textStyle(.h4)
       }
     }
     .padding(.vertical, 12)

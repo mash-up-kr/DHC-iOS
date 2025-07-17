@@ -61,7 +61,7 @@ struct ReportView: View {
 
           if let currentMonthHistory = store.currentMonthHistory {
             MissionSummaryView(
-              imageResource: .moneyWithWings,
+              imageResource: .bullseye,
               title: "\(currentMonthHistory.month)월달",
               description: "미션 평균 성공률 \(currentMonthHistory.averageSucceedProbability)%"
             )
@@ -76,6 +76,7 @@ struct ReportView: View {
         .padding(.bottom, 20)
       }
     }
+    .scrollIndicators(.hidden)
     .clipShape(Rectangle())
     .onAppear {
       store.send(.onAppear)

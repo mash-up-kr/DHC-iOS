@@ -32,11 +32,17 @@ struct MissionListReducer {
   }
 
   enum Action {
+    case delegate(Delegate)
+
     // View Action
     case tooltipTapped
     case longTermMissionTapped
     case dailyMissionTapped(missionID: String)
     case switchMissionButtonTapped(missionID: String)
+
+    enum Delegate {
+      case presentToast(String)
+    }
 
     // Internal Action
     case updateLongTermMission(HomeInfo.Mission)
@@ -51,6 +57,9 @@ struct MissionListReducer {
   var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
+      case .delegate:
+        return .none
+
       case .tooltipTapped:
         state.isTooltipVisible.toggle()
         return .none
@@ -83,6 +92,16 @@ struct MissionListReducer {
                 .success(mission.id)
               )
             )
+
+            if mission.isFinished {
+              await send(
+                .delegate(
+                  .presentToast(
+                    ToastMessages.mission.randomElement()!
+                  )
+                )
+              )
+            }
           } catch {
             await send(
               .missionStatusUpdateResult(
@@ -110,6 +129,16 @@ struct MissionListReducer {
           do {
             try await missionClient.updateMissionStatus(updatedMission.id, updatedMission.isFinished)
             await send(.missionStatusUpdateResult(.success(updatedMission.id)))
+
+            if updatedMission.isFinished {
+              await send(
+                .delegate(
+                  .presentToast(
+                    ToastMessages.mission.randomElement()!
+                  )
+                )
+              )
+            }
           } catch {
             await send(.missionStatusUpdateResult(.failure(error)))
           }
